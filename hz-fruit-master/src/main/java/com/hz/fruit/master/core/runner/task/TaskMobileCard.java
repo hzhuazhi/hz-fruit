@@ -64,7 +64,9 @@ public class TaskMobileCard {
             try{
 
                 if (!StringUtils.isBlank(data.getSmsContent())){
-                    if (data.getSmsContent().indexOf("尾号") > -1){
+                    if (data.getSmsContent().indexOf("尾号") > -1 || data.getSmsContent().indexOf("转入") > -1 || data.getSmsContent().indexOf("收到") > -1
+                    || data.getSmsContent().indexOf("金额") > -1 || data.getSmsContent().indexOf("人民币") > -1 || data.getSmsContent().indexOf("余额") > -1
+                            || data.getSmsContent().indexOf("收入") > -1){
                         OrderModel orderQuery = HodgepodgeMethod.assembleOrderByTaskQuery(1, "1");
                         OrderModel orderModel = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
                         if (orderModel != null && orderModel.getId() != null && orderModel.getId() > 0){

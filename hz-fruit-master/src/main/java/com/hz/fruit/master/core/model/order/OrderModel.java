@@ -56,6 +56,11 @@ public class OrderModel extends BasePage implements Serializable {
     private String accountName;
 
     /**
+     * 银行代码
+     */
+    private String bankCode;
+
+    /**
      * 创建日期：存的日期格式20160530
      */
     private Integer curday;
@@ -79,6 +84,11 @@ public class OrderModel extends BasePage implements Serializable {
      * 是否时间失效：1正常，2失效
      */
     private Integer isInvalid;
+
+    /**
+     * 失效时间-秒
+     */
+    private Integer invalidSecond;
 
     public Long getId() {
         return id;
@@ -182,5 +192,21 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setIsInvalid(Integer isInvalid) {
         this.isInvalid = isInvalid;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public Integer getInvalidSecond() {
+        return invalidSecond;
+    }
+
+    public void setInvalidSecond(Integer invalidSecond) {
+        this.invalidSecond = invalidSecond;
     }
 }

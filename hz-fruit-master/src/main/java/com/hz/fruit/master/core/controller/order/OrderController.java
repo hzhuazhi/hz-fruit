@@ -66,7 +66,7 @@ public class OrderController {
      * @author yoko
      * @date 2019/11/25 22:58
      * local:http://localhost:8089/fruit/order/getQrCode
-     * test:http://localhost:8089/fruit/order/getQrCode?money=5.00&bankName=bankName1&bankCard=bankCard1&accountName=accountName1&returnUrl=http://www.qidian.com&noredirect=
+     * test:http://localhost:8089/fruit/order/getQrCode?money=5.00&bankName=bankName1&bankCard=bankCard1&accountName=accountName1&bankCode=bankCode1&returnUrl=http://www.qidian.com&noredirect=
      * 请求的属性类:RequestAppeal
      * 必填字段:{"agtVer":1,"clientVer":1,"clientType":1,"ctime":201911071802959,"cctime":201911071802959,"sign":"abcdefg","token":"111111"}
      * 客户端加密字段:token+ctime+秘钥=sign
@@ -184,6 +184,11 @@ public class OrderController {
                     isInvalid = 2;
                 }
                 orderModel.setIsInvalid(isInvalid);
+                int invalidSecond = DateUtil.calLastedTime(orderModel.getInvalidTime());
+                if (invalidSecond <= 0){
+                    invalidSecond = 0;
+                }
+                orderModel.setInvalidSecond(invalidSecond);
             }
 
             String resData = JSON.toJSONString(orderModel);

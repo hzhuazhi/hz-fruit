@@ -41,6 +41,11 @@ public class RequestOrder extends BaseRequest implements Serializable {
     public String accountName;
 
     /**
+     * 银行卡码
+     */
+    public String bankCode;
+
+    /**
      * 是否302跳转
      * 为空302进行跳转，不为空返回地址
      */
@@ -109,5 +114,13 @@ public class RequestOrder extends BaseRequest implements Serializable {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 }

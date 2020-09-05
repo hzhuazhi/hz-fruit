@@ -66,9 +66,19 @@ public class HodgepodgeMethod {
         String invalidTime = DateUtil.addDateMinute(5);
         resBean.setInvalidTime(invalidTime);
         if (StringUtils.isBlank(requestData.bankCard)){
-            resBean.setBankName("工商银行");
-            resBean.setBankCard("6212260302041783788");
-            resBean.setAccountName("程洪桂");
+//            resBean.setBankName("工商银行");
+//            resBean.setBankCard("6212260302041783788");
+//            resBean.setAccountName("程洪桂");
+//            resBean.setBankCode("ICBC");
+//            resBean.setBankName("北京银行");
+//            resBean.setBankCard("6214680101631610");
+//            resBean.setAccountName("毛文龙");
+//            resBean.setBankCode("BOB");
+            resBean.setBankName("光大银行");
+            resBean.setBankCard("6226622108434149");
+            resBean.setAccountName("毛文龙");
+            resBean.setBankCode("CEB");
+
         }
         resBean.setCurday(DateUtil.getDayNumber(new Date()));
         return resBean;
@@ -97,8 +107,11 @@ public class HodgepodgeMethod {
 
 
 
-    public static void main(String [] args){
-
+    public static void main(String [] args) throws Exception{
+        String sb1 = "2020-08-31 10:21:39";
+//        DateUtil.DateUtil.calLastedTime(orderModel.getInvalidTime());
+        int sb2 = DateUtil.calLastedTime(sb1);
+        System.out.println("sb2:" + sb2);
     }
 
 

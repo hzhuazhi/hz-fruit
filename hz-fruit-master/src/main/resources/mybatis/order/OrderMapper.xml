@@ -7,7 +7,7 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.order_no,a.order_money,a.order_status,a.invalid_time,
+        a.id,a.order_no,a.order_money,a.bank_code,a.order_status,a.invalid_time,
         a.bank_name,a.bank_card,a.account_name,
         a.curday,a.create_time,a.update_time,a.yn
 
@@ -133,6 +133,9 @@
             <if test="accountName != null and accountName != '' " >
                 account_name,
             </if>
+            <if test="bankCode != null and bankCode != '' " >
+                bank_code,
+            </if>
             <if test="curday != null and curday != '' " >
                 curday,
             </if>
@@ -160,6 +163,9 @@
             </if>
             <if test="accountName != null and accountName != '' " >
                 <![CDATA[  #{accountName}, ]]>
+            </if>
+            <if test="bankCode != null and bankCode != '' " >
+                <![CDATA[  #{bankCode}, ]]>
             </if>
             <if test="curday != null and curday != '' " >
                 <![CDATA[  #{curday}, ]]>
