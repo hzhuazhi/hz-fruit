@@ -56,6 +56,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private TaskMobileCardService taskMobileCardService;
 
+    @Autowired
+    private BankService bankService;;
+
 
 
 
@@ -75,6 +78,8 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.mobileCardDataService = mobileCardDataService;
         ComponentUtil.orderService = orderService;
         ComponentUtil.taskMobileCardService = taskMobileCardService;
+
+        ComponentUtil.bankService = bankService;
 
         runThread = new RunThread();
         runThread.start();

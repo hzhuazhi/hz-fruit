@@ -22,6 +22,8 @@ public class ComponentUtil {
 
     public static TaskMobileCardService taskMobileCardService;
 
+    public static BankService bankService;
+
 
 
 

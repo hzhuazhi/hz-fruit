@@ -1,9 +1,13 @@
 package com.hz.fruit.master.util;
 
+import com.hz.fruit.master.core.common.exception.ServiceException;
 import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
+import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
+import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
+import com.hz.fruit.master.core.protocol.request.bank.RequestBank;
 import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -103,6 +107,117 @@ public class HodgepodgeMethod {
         resBean.setOrderStatus(orderStatus);
         return resBean;
     }
+
+    /**
+     * @Description: 校验银行数据
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/9/5 19:55
+    */
+    public static void checkBank(RequestBank requestModel) throws Exception {
+        if (requestModel == null) {
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00001.geteCode(), ErrorCode.ENUM_ERROR.B00001.geteDesc());
+        }
+        if (StringUtils.isBlank(requestModel.sourceId)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00002.geteCode(), ErrorCode.ENUM_ERROR.B00002.geteDesc());
+        }
+        if (StringUtils.isBlank(requestModel.bankName)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00003.geteCode(), ErrorCode.ENUM_ERROR.B00003.geteDesc());
+        }
+        if (StringUtils.isBlank(requestModel.bankCard)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00004.geteCode(), ErrorCode.ENUM_ERROR.B00004.geteDesc());
+        }
+        if (StringUtils.isBlank(requestModel.accountName)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00005.geteCode(), ErrorCode.ENUM_ERROR.B00005.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 组装查询银行卡的查询条件
+     * @param sourceId - 源银行卡主键ID
+     * @return
+     * @author yoko
+     * @date 2020/9/6 15:54
+    */
+    public static BankModel assembleBankBySourceQuery(String sourceId){
+        BankModel resBean = new BankModel();
+        resBean.setSourceId(sourceId);
+        return resBean;
+    }
+
+    /**
+     * @Description: 校验银行数据是否不为空
+     * @param bankModel
+     * @return
+     * @author yoko
+     * @date 2020/9/5 19:55
+     */
+    public static void checkBankData(BankModel bankModel) throws Exception {
+        if (bankModel != null && bankModel.getId() != null && bankModel.getId() > 0) {
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00006.geteCode(), ErrorCode.ENUM_ERROR.B00006.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: check校验新增银行数据是否成功
+     * @param num - 操作数据库的响应行
+     * @return
+     * @author yoko
+     * @date 2020/9/6 16:02
+    */
+    public static void checkAddBank(int num) throws Exception{
+        if (num <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00007.geteCode(), ErrorCode.ENUM_ERROR.B00007.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 校验银行更新状态的数据
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/9/5 19:55
+     */
+    public static void checkBankUpdateUseStatus(RequestBank requestModel) throws Exception {
+        if (requestModel == null) {
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00008.geteCode(), ErrorCode.ENUM_ERROR.B00008.geteDesc());
+        }
+        if (StringUtils.isBlank(requestModel.sourceId)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00009.geteCode(), ErrorCode.ENUM_ERROR.B00009.geteDesc());
+        }
+        if (requestModel.useStatus == null || requestModel.useStatus <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00010.geteCode(), ErrorCode.ENUM_ERROR.B00010.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 校验银行数据是否为空
+     * @param bankModel
+     * @return
+     * @author yoko
+     * @date 2020/9/5 19:55
+     */
+    public static void checkBankIsNullData(BankModel bankModel) throws Exception {
+        if (bankModel == null || bankModel.getId() == null || bankModel.getId() <= 0) {
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00011.geteCode(), ErrorCode.ENUM_ERROR.B00011.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: check校验更新银行状态数据是否成功
+     * @param num - 操作数据库的响应行
+     * @return
+     * @author yoko
+     * @date 2020/9/6 16:02
+     */
+    public static void checkBankUpdateUseStatus(int num) throws Exception{
+        if (num <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.B00012.geteCode(), ErrorCode.ENUM_ERROR.B00012.geteDesc());
+        }
+    }
+
 
 
 
