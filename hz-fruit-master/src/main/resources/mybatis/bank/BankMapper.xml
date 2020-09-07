@@ -9,7 +9,7 @@
     <sql id="Base_Column_List">
         a.id,a.mobile_card_id,a.bank_type_id,a.source_id,a.bank_name,a.bank_card,a.subbranch_name,a.account_name,a.bank_code,a.province,a.city,
         a.sms_num,a.last_num,a.card_merchant,a.trigger_money,a.out_money,a.docking_id,a.open_time,a.ascription_type,a.is_arrears,a.is_ok,
-        a.limit_info,a.remark,
+        a.limit_info,a.work_type,a.remark,
         a.use_status,
         a.create_time,a.update_time,a.yn
     </sql>
@@ -50,6 +50,9 @@
             </if>
             <if test="isOk != null and isOk != '' " >
                 and a.is_ok = #{isOk}
+            </if>
+            <if test="workType != null and workType != '' " >
+                and a.work_type = #{workType}
             </if>
             <if test="useStatus != null and useStatus != '' " >
                 and a.use_status = #{useStatus}
@@ -207,6 +210,9 @@
             <if test="limitInfo != null and limitInfo != '' " >
                 limit_info,
             </if>
+            <if test="workType != null and workType != '' " >
+                work_type,
+            </if>
             <if test="remark != null and remark != '' " >
                 remark,
             </if>
@@ -279,6 +285,9 @@
             </if>
             <if test="limitInfo != null and limitInfo != '' " >
                 <![CDATA[  #{limitInfo}, ]]>
+            </if>
+            <if test="workType != null and workType != '' " >
+                <![CDATA[  #{workType}, ]]>
             </if>
             <if test="remark != null and remark != '' " >
                 <![CDATA[  #{remark}, ]]>
@@ -356,6 +365,9 @@
             </if>
             <if test="limitInfo != null and limitInfo != '' " >
                 a.limit_info = #{limitInfo},
+            </if>
+            <if test="workType != null and workType != '' " >
+                a.work_type = #{workType},
             </if>
             <if test="remark != null and remark != '' " >
                 a.remark = #{remark},

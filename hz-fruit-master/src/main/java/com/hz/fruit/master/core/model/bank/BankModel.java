@@ -125,6 +125,11 @@ public class BankModel extends BasePage implements Serializable {
     private String limitInfo;
 
     /**
+     * 补充数据的类型：1初始化，2补充数据失败（其它原因等..），3补充数据成功
+     */
+    private Integer workType;
+
+    /**
      * 备注
      */
     private String remark;
@@ -377,5 +382,13 @@ public class BankModel extends BasePage implements Serializable {
 
     public void setMobileCardIdList(List<Long> mobileCardIdList) {
         this.mobileCardIdList = mobileCardIdList;
+    }
+
+    public Integer getWorkType() {
+        return workType;
+    }
+
+    public void setWorkType(Integer workType) {
+        this.workType = workType;
     }
 }
