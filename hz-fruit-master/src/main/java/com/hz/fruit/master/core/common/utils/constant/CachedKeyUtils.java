@@ -15,7 +15,7 @@ public class CachedKeyUtils {
      */
     public static String getCacheKey(Object... objects) {
         int size = objects.length;
-        StringBuffer key = new StringBuffer(SystemKeysEnum.FINE.getName());
+        StringBuffer key = new StringBuffer(SystemKeysEnum.FRUIT.getName());
         int i = 0;
         for (Object object : objects) {
             if (object != null) {

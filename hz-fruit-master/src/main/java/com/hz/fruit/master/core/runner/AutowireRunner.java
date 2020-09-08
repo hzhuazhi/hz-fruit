@@ -4,7 +4,6 @@ import com.hz.fruit.master.core.common.redis.RedisIdService;
 import com.hz.fruit.master.core.common.redis.RedisService;
 import com.hz.fruit.master.core.common.utils.constant.LoadConstant;
 import com.hz.fruit.master.core.service.*;
-import com.hz.fruit.master.core.service.task.TaskMobileCardService;
 import com.hz.fruit.master.util.ComponentUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,17 +43,10 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private StrategyService strategyService;
 
-    @Autowired
-    private MobileCardService mobileCardService;
-
-    @Autowired
-    private MobileCardDataService mobileCardDataService;
 
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private TaskMobileCardService taskMobileCardService;
 
     @Autowired
     private BankService bankService;
@@ -77,10 +69,7 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.loadConstant = loadConstant;
         ComponentUtil.regionService = regionService;
         ComponentUtil.strategyService = strategyService;
-        ComponentUtil.mobileCardService = mobileCardService;
-        ComponentUtil.mobileCardDataService = mobileCardDataService;
         ComponentUtil.orderService = orderService;
-        ComponentUtil.taskMobileCardService = taskMobileCardService;
 
         ComponentUtil.bankService = bankService;
         ComponentUtil.merchantBankService = merchantBankService;

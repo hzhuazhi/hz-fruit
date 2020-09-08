@@ -8,7 +8,7 @@ package com.hz.fruit.master.core.common.utils.constant;
  */
 public enum SystemKeysEnum {
 
-    FINE("FN", "美好"),
+    FRUIT("FR", "水果"),
 
 
     ;
