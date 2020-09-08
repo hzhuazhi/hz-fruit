@@ -43,13 +43,8 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private StrategyService strategyService;
 
-
     @Autowired
     private OrderService orderService;
-
-
-    @Autowired
-    private BankService bankService;
 
     @Autowired
     private MerchantBankService merchantBankService;
@@ -69,6 +64,15 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private MerchantDataService merchantDataService;
 
+    @Autowired
+    private BankTypeService bankTypeService;
+
+    @Autowired
+    private MyBankService myBankService;
+
+    @Autowired
+    private IssueService issueService;
+
 
 
 
@@ -86,13 +90,15 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.strategyService = strategyService;
         ComponentUtil.orderService = orderService;
 
-        ComponentUtil.bankService = bankService;
         ComponentUtil.merchantBankService = merchantBankService;
         ComponentUtil.merchantService = merchantService;
         ComponentUtil.merchantBankCollectionService = merchantBankCollectionService;
         ComponentUtil.merchantRechargeService = merchantRechargeService;
         ComponentUtil.merchantBankStrategyService = merchantBankStrategyService;
         ComponentUtil.merchantDataService = merchantDataService;
+        ComponentUtil.bankTypeService = bankTypeService;
+        ComponentUtil.myBankService = myBankService;
+        ComponentUtil.issueService = issueService;
 
         runThread = new RunThread();
         runThread.start();

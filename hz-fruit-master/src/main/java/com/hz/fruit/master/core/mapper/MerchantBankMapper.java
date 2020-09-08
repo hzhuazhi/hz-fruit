@@ -1,7 +1,7 @@
 package com.hz.fruit.master.core.mapper;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
-import com.hz.fruit.master.core.model.bank.BankModel;
+import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -20,5 +20,5 @@ public interface MerchantBankMapper<T> extends BaseDao<T> {
      * @author yoko
      * @date 2020/9/5 19:21
      */
-    public int updateUseStatus(BankModel model);
+    public int updateUseStatus(MerchantBankModel model);
 }

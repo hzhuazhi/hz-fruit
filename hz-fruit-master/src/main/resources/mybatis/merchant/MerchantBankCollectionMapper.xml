@@ -176,7 +176,9 @@
             </if>
             a.update_time = NOW(),
         </trim>
-        <include refid="Example_Where_Clause_id"/>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
     </update>
 
     <!-- 主要作用1.逻辑删除，2更新状态 -->

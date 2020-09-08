@@ -1,7 +1,7 @@
 package com.hz.fruit.master.core.service;
 
 import com.hz.fruit.master.core.common.service.BaseService;
-import com.hz.fruit.master.core.model.bank.BankModel;
+import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 
 /**
  * @Description 卡商银行/卡商银行卡的Service层
@@ -18,5 +18,5 @@ public interface MerchantBankService<T> extends BaseService<T> {
      * @author yoko
      * @date 2020/9/5 19:21
      */
-    public int updateUseStatus(BankModel model);
+    public int updateUseStatus(MerchantBankModel model);
 }

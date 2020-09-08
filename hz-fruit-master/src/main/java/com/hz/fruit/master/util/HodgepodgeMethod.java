@@ -4,7 +4,6 @@ import com.hz.fruit.master.core.common.exception.ServiceException;
 import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
-import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.protocol.request.bank.RequestBank;
@@ -133,31 +132,8 @@ public class HodgepodgeMethod {
         }
     }
 
-    /**
-     * @Description: 组装查询银行卡的查询条件
-     * @param sourceId - 源银行卡主键ID
-     * @return
-     * @author yoko
-     * @date 2020/9/6 15:54
-    */
-    public static BankModel assembleBankBySourceQuery(String sourceId){
-        BankModel resBean = new BankModel();
-        resBean.setSourceId(sourceId);
-        return resBean;
-    }
 
-    /**
-     * @Description: 校验银行数据是否不为空
-     * @param bankModel
-     * @return
-     * @author yoko
-     * @date 2020/9/5 19:55
-     */
-    public static void checkBankData(BankModel bankModel) throws Exception {
-        if (bankModel != null && bankModel.getId() != null && bankModel.getId() > 0) {
-            throw new ServiceException(ErrorCode.ENUM_ERROR.B00006.geteCode(), ErrorCode.ENUM_ERROR.B00006.geteDesc());
-        }
-    }
+
 
     /**
      * @Description: check校验新增银行数据是否成功
@@ -189,19 +165,6 @@ public class HodgepodgeMethod {
         }
         if (requestModel.useStatus == null || requestModel.useStatus <= 0){
             throw new ServiceException(ErrorCode.ENUM_ERROR.B00010.geteCode(), ErrorCode.ENUM_ERROR.B00010.geteDesc());
-        }
-    }
-
-    /**
-     * @Description: 校验银行数据是否为空
-     * @param bankModel
-     * @return
-     * @author yoko
-     * @date 2020/9/5 19:55
-     */
-    public static void checkBankIsNullData(BankModel bankModel) throws Exception {
-        if (bankModel == null || bankModel.getId() == null || bankModel.getId() <= 0) {
-            throw new ServiceException(ErrorCode.ENUM_ERROR.B00011.geteCode(), ErrorCode.ENUM_ERROR.B00011.geteDesc());
         }
     }
 

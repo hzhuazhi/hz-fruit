@@ -2,21 +2,19 @@ package com.hz.fruit.master.core.service.impl;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
-import com.hz.fruit.master.core.mapper.BankMapper;
-import com.hz.fruit.master.core.model.bank.BankModel;
-import com.hz.fruit.master.core.service.BankService;
+import com.hz.fruit.master.core.mapper.BankTypeMapper;
+import com.hz.fruit.master.core.service.BankTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
- * @Description 银行的Service层的实现层
+ * @Description 银行卡类型的Service层的实现层
  * @Author yoko
- * @Date 2020/5/18 19:08
+ * @Date 2020/9/8 19:51
  * @Version 1.0
  */
 @Service
-public class BankServiceImpl<T> extends BaseServiceImpl<T> implements BankService<T> {
+public class BankTypeServiceImpl<T> extends BaseServiceImpl<T> implements BankTypeService<T> {
     /**
      * 5分钟.
      */
@@ -37,15 +35,9 @@ public class BankServiceImpl<T> extends BaseServiceImpl<T> implements BankServic
 
 
     @Autowired
-    private BankMapper bankMapper;
+    private BankTypeMapper bankTypeMapper;
 
     public BaseDao<T> getDao() {
-        return bankMapper;
-    }
-
-
-    @Override
-    public int updateUseStatus(BankModel model) {
-        return bankMapper.updateUseStatus(model);
+        return bankTypeMapper;
     }
 }

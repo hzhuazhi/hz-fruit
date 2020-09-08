@@ -1,17 +1,20 @@
-package com.hz.fruit.master.core.model.merchant;
+package com.hz.fruit.master.core.model.issue;
 
 import com.hz.fruit.master.core.protocol.page.BasePage;
 
 import java.io.Serializable;
 
 /**
- * @Description 卡商充值记录的实体属性Bean
+ * @Description 下发的实体属性Bean
+ * <p>
+ *     下发：商户申请提现
+ * </p>
  * @Author yoko
- * @Date 2020/9/8 17:38
+ * @Date 2020/9/8 19:26
  * @Version 1.0
  */
-public class MerchantRechargeModel extends BasePage implements Serializable {
-    private static final long   serialVersionUID = 1203223201104L;
+public class IssueModel extends BasePage implements Serializable {
+    private static final long   serialVersionUID = 1203223201109L;
 
     /**
      * 主键ID
@@ -19,14 +22,14 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Long id;
 
     /**
+     * 归属商户ID：对应表tb_fr_channel的主键ID
+     */
+    private Long channelId;
+
+    /**
      * 订单归属的卡商ID：对应表tb_fr_merchant的主键ID
      */
     private Long merchantId;
-
-    /**
-     * 我方银行卡的主键ID：对应表tb_fr_my_bank的主键ID
-     */
-    private Long myBankId;
 
     /**
      * 订单号
@@ -44,22 +47,32 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer orderStatus;
 
     /**
-     * 银行名称/归属开户行
+     * 下发类型：1卡商，2我方归集卡
+     */
+    private Integer issueType;
+
+    /**
+     * 我方银行卡信息备注
+     */
+    private String myBankInfo;
+
+    /**
+     * 下发的银行名称/归属开户行
      */
     private String bankName;
 
     /**
-     * 银行卡账号/银行卡号
+     * 下发的银行卡账号/银行卡号
      */
     private String bankCard;
 
     /**
-     * 开户名
+     * 下发的开户名
      */
     private String accountName;
 
     /**
-     * 银行卡转账图片凭证
+     * 下发成功的银行卡转账图片凭证
      */
     private String pictureAds;
 
@@ -119,20 +132,20 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.id = id;
     }
 
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
     public Long getMerchantId() {
         return merchantId;
     }
 
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
-    }
-
-    public Long getMyBankId() {
-        return myBankId;
-    }
-
-    public void setMyBankId(Long myBankId) {
-        this.myBankId = myBankId;
     }
 
     public String getOrderNo() {
@@ -157,6 +170,22 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Integer getIssueType() {
+        return issueType;
+    }
+
+    public void setIssueType(Integer issueType) {
+        this.issueType = issueType;
+    }
+
+    public String getMyBankInfo() {
+        return myBankInfo;
+    }
+
+    public void setMyBankInfo(String myBankInfo) {
+        this.myBankInfo = myBankInfo;
     }
 
     public String getBankName() {

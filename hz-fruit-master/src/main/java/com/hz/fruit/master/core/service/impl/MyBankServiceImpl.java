@@ -2,20 +2,19 @@ package com.hz.fruit.master.core.service.impl;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
-import com.hz.fruit.master.core.mapper.MerchantBankMapper;
-import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
-import com.hz.fruit.master.core.service.MerchantBankService;
+import com.hz.fruit.master.core.mapper.MyBankMapper;
+import com.hz.fruit.master.core.service.MyBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @Description 卡商银行/卡商银行卡的Service层的实现层
+ * @Description 我方银行的Service层的实现层
  * @Author yoko
- * @Date 2020/9/8 15:14
+ * @Date 2020/9/8 19:51
  * @Version 1.0
  */
 @Service
-public class MerchantBankServiceImpl<T> extends BaseServiceImpl<T> implements MerchantBankService<T> {
+public class MyBankServiceImpl<T> extends BaseServiceImpl<T> implements MyBankService<T> {
     /**
      * 5分钟.
      */
@@ -36,15 +35,9 @@ public class MerchantBankServiceImpl<T> extends BaseServiceImpl<T> implements Me
 
 
     @Autowired
-    private MerchantBankMapper merchantBankMapper;
+    private MyBankMapper myBankMapper;
 
     public BaseDao<T> getDao() {
-        return merchantBankMapper;
-    }
-
-
-    @Override
-    public int updateUseStatus(MerchantBankModel model) {
-        return merchantBankMapper.updateUseStatus(model);
+        return myBankMapper;
     }
 }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hz.fruit.master.core.mapper.MerchantDataMapper">
+<mapper namespace="com.hz.fruit.master.core.mapper.IssueMapper">
 
 
 
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.bank_card,a.order_no,a.order_money,a.order_status,a.collection_time,a.replenish_type,a.is_matching,a.matching_info,
+        a.id,a.channel_id,a.merchant_id,a.order_no,a.order_money,a.order_status,a.issue_type,a.my_bank_info,
+        a.bank_name,a.bank_card,a.account_name,a.picture_ads,
         a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
         a.create_time,a.update_time,a.yn
     </sql>
@@ -19,20 +20,26 @@
             <if test="id != null and id != '' " >
                 and a.id = #{id}
             </if>
-            <if test="bankCard != null and bankCard != '' " >
-                and a.bank_card = #{bankCard}
+            <if test="channelId != null and channelId != '' " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="merchantId != null and merchantId != '' " >
+                and a.merchant_id = #{merchantId}
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 and a.order_no = #{orderNo}
             </if>
-            <if test="orderStatus != null and orderStatus != '' " >
-                and a.order_status = #{orderStatus}
+            <if test="issueType != null and issueType != '' " >
+                and a.issue_type = #{issueType}
             </if>
-            <if test="replenishType != null and replenishType != '' " >
-                and a.replenish_type = #{replenishType}
+            <if test="bankName != null and bankName != '' " >
+                and a.bank_name = #{bankName}
             </if>
-            <if test="isMatching != null and isMatching != '' " >
-                and a.is_matching = #{isMatching}
+            <if test="bankCard != null and bankCard != '' " >
+                and a.bank_card = #{bankCard}
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                and a.account_name = #{accountName}
             </if>
             and a.yn = 0
         </trim>
@@ -57,35 +64,35 @@
 
 
     <!-- 显示所有数据 -->
-    <select id="findAll" resultType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
+    <select id="findAll" resultType="com.hz.fruit.master.core.model.issue.IssueModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause"/>
     </select>
 
     <!-- 查询列表 -->
-    <select id="findByCondition" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
+    <select id="findByCondition" parameterType="Object" resultType="com.hz.fruit.master.core.model.issue.IssueModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause"/>
     </select>
 
     <!-- 根据条件查询信息-->
-    <select id="findByObject" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
+    <select id="findByObject" parameterType="Object" resultType="com.hz.fruit.master.core.model.issue.IssueModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
 
     <!-- 根据id查询信息-->
-    <select id="findById" parameterType="java.lang.Long" resultType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
+    <select id="findById" parameterType="java.lang.Long" resultType="com.hz.fruit.master.core.model.issue.IssueModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -93,15 +100,15 @@
     <!-- 查询总数-->
     <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
         select count(1)
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause"/>
     </select>
 
     <!-- 查询分页列表 -->
-    <select id="queryByList" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
+    <select id="queryByList" parameterType="Object" resultType="com.hz.fruit.master.core.model.issue.IssueModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant_data a
+        from tb_fr_issue a
         <include refid="Example_Where_Clause"/>
         <include refid="Example_Order_By"/>
         <if test="pageNumber != null and pageNumber != ''" >
@@ -111,14 +118,17 @@
 
 
     <!-- 添加基本信息 -->
-    <insert id="add" parameterType="com.hz.fruit.master.core.model.merchant.MerchantDataModel" >
+    <insert id="add" parameterType="com.hz.fruit.master.core.model.issue.IssueModel" >
         <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
         <!--SELECT LAST_INSERT_ID() as id-->
         <!--</selectKey>-->
-        insert into tb_fr_merchant_data
+        insert into tb_fr_issue
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="bankCard != null and bankCard != '' " >
-                bank_card,
+            <if test="channelId != null and channelId != '' " >
+                channel_id,
+            </if>
+            <if test="merchantId != null and merchantId != '' " >
+                merchant_id,
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 order_no,
@@ -129,17 +139,23 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 order_status,
             </if>
-            <if test="collectionTime != null and collectionTime != '' " >
-                collection_time,
+            <if test="issueType != null and issueType != '' " >
+                issue_type,
             </if>
-            <if test="replenishType != null and replenishType != '' " >
-                replenish_type,
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                my_bank_info,
             </if>
-            <if test="isMatching != null and isMatching != '' " >
-                is_matching,
+            <if test="bankName != null and bankName != '' " >
+                bank_name,
             </if>
-            <if test="matchingInfo != null and matchingInfo != '' " >
-                matching_info,
+            <if test="bankCard != null and bankCard != '' " >
+                bank_card,
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                account_name,
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                picture_ads,
             </if>
             <if test="remark != null and remark != '' " >
                 remark,
@@ -157,8 +173,11 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="bankCard != null and bankCard != '' " >
-                <![CDATA[  #{bankCard}, ]]>
+            <if test="channelId != null and channelId != '' " >
+                <![CDATA[  #{channelId}, ]]>
+            </if>
+            <if test="merchantId != null and merchantId != '' " >
+                <![CDATA[  #{merchantId}, ]]>
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 <![CDATA[  #{orderNo}, ]]>
@@ -169,17 +188,23 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 <![CDATA[  #{orderStatus}, ]]>
             </if>
-            <if test="collectionTime != null and collectionTime != '' " >
-                <![CDATA[  #{collectionTime}, ]]>
+            <if test="issueType != null and issueType != '' " >
+                <![CDATA[  #{issueType}, ]]>
             </if>
-            <if test="replenishType != null and replenishType != '' " >
-                <![CDATA[  #{replenish_type}, ]]>
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                <![CDATA[  #{myBankInfo}, ]]>
             </if>
-            <if test="isMatching != null and isMatching != '' " >
-                <![CDATA[  #{isMatching}, ]]>
+            <if test="bankName != null and bankName != '' " >
+                <![CDATA[  #{bankName}, ]]>
             </if>
-            <if test="matchingInfo != null and matchingInfo != '' " >
-                <![CDATA[  #{matchingInfo}, ]]>
+            <if test="bankCard != null and bankCard != '' " >
+                <![CDATA[  #{bankCard}, ]]>
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                <![CDATA[  #{accountName}, ]]>
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                <![CDATA[  #{pictureAds}, ]]>
             </if>
             <if test="remark != null and remark != '' " >
                 <![CDATA[  #{remark}, ]]>
@@ -198,11 +223,14 @@
     </insert>
 
     <!-- 更新基本信息 -->
-    <update id="update" parameterType="com.hz.fruit.master.core.model.merchant.MerchantDataModel">
-        UPDATE tb_fr_merchant_data a
+    <update id="update" parameterType="com.hz.fruit.master.core.model.issue.IssueModel">
+        UPDATE tb_fr_issue a
         <trim prefix="set" suffixOverrides=",">
-            <if test="bankCard != null and bankCard != '' " >
-                a.bank_card = #{bankCard},
+            <if test="channelId != null and channelId != '' " >
+                a.channel_id = #{channelId},
+            </if>
+            <if test="merchantId != null and merchantId != '' " >
+                a.merchant_id = #{merchantId},
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 a.order_no = #{orderNo},
@@ -213,17 +241,23 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 a.order_status = #{orderStatus},
             </if>
-            <if test="collectionTime != null and collectionTime != '' " >
-                a.collection_time = #{collectionTime},
+            <if test="issueType != null and issueType != '' " >
+                a.issue_type = #{issueType},
             </if>
-            <if test="replenishType != null and replenishType != '' " >
-                a.replenish_type = #{replenishType},
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                a.my_bank_info = #{myBankInfo},
             </if>
-            <if test="isMatching != null and isMatching != '' " >
-                a.is_matching = #{isMatching},
+            <if test="bankName != null and bankName != '' " >
+                a.bank_name = #{bankName},
             </if>
-            <if test="matchingInfo != null and matchingInfo != '' " >
-                a.matching_info = #{matchingInfo},
+            <if test="bankCard != null and bankCard != '' " >
+                a.bank_card = #{bankCard},
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                a.account_name = #{accountName},
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                a.picture_ads = #{pictureAds},
             </if>
             <if test="remark != null and remark != '' " >
                 a.remark = #{remark},
@@ -237,7 +271,7 @@
 
     <!-- 主要作用1.逻辑删除，2更新状态 -->
     <update id="manyOperation" parameterType="Object">
-        update tb_fr_merchant_data a
+        update tb_fr_issue a
         <trim prefix="set" suffixOverrides=",">
             <if test="yn != 0 and yn >0 " >
                 a.yn = #{yn},

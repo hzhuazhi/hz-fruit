@@ -8,7 +8,7 @@
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
         a.id,a.bank_id,a.alias,a.priority,a.open_time_slot,a.wx_in_day_money,a.wx_in_month_money,a.wx_in_day_num,a.zfb_in_day_money,a.zfb_in_month_money,
-        a.zfbInDayNum,a.cardInDayMoney,a.cardInMonthMoney,a.card_in_day_num,a.remark,a.use_status,
+        a.zfb_in_day_num,a.card_in_day_money,a.card_in_month_money,a.card_in_day_num,a.remark,a.use_status,
         a.create_time,a.update_time,a.yn
     </sql>
 
@@ -257,7 +257,9 @@
             </if>
             a.update_time = NOW(),
         </trim>
-        <include refid="Example_Where_Clause_id"/>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
     </update>
 
     <!-- 主要作用1.逻辑删除，2更新状态 -->
