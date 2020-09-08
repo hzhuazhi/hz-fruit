@@ -27,6 +27,8 @@ public class ComponentUtil {
     public static BankTypeService bankTypeService;
     public static MyBankService myBankService;
     public static IssueService issueService;
+    public static ChannelService channelService;
+    public static ChannelBankService channelBankService;
 
 
 
