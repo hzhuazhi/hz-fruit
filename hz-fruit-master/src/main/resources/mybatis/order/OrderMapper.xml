@@ -7,9 +7,11 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.order_no,a.order_money,a.bank_code,a.order_status,a.invalid_time,
-        a.bank_name,a.bank_card,a.account_name,
-        a.curday,a.create_time,a.update_time,a.yn
+        a.id,a.merchant_id,a.bank_id,a.order_no,a.order_type,a.order_money,a.qr_code,a.out_trade_no,a.order_status,
+        a.invalid_time,a.notify_url,a.bank_name,a.bank_card,a.account_name,a.bank_code,a.replenish_type,a.work_type,
+        a.data_explain,a.remark,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
+        a.create_time,a.update_time,a.yn
 
     </sql>
 
@@ -20,14 +22,32 @@
             <if test="id != null and id != '' " >
                 and a.id = #{id}
             </if>
+            <if test="merchantId != null and merchantId != '' " >
+                and a.merchant_id = #{merchantId}
+            </if>
+            <if test="bankId != null and bankId != '' " >
+                and a.bank_id = #{bankId}
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 and a.order_no = #{orderNo}
+            </if>
+            <if test="orderType != null and orderType != '' " >
+                and a.order_type = #{orderType}
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 and a.order_status = #{orderStatus}
             </if>
+            <if test="orderStatusStr != null and orderStatusStr != '' " >
+                and a.order_status >= 3
+            </if>
             <if test="invalidTime != null and invalidTime != '' " >
                 and a.invalid_time > now()
+            </if>
+            <if test="replenishType != null and replenishType != '' " >
+                and a.replenish_type = #{replenishType}
+            </if>
+            <if test="workType != null and workType != '' " >
+                and a.work_type = #{workType}
             </if>
             and a.yn = 0
         </trim>
@@ -55,7 +75,7 @@
     <select id="findAll" resultType="com.hz.fruit.master.core.model.order.OrderModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -63,7 +83,7 @@
     <select id="findByCondition" parameterType="Object" resultType="com.hz.fruit.master.core.model.order.OrderModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -71,7 +91,7 @@
     <select id="findByObject" parameterType="Object" resultType="com.hz.fruit.master.core.model.order.OrderModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
@@ -80,7 +100,7 @@
     <select id="findById" parameterType="java.lang.Long" resultType="com.hz.fruit.master.core.model.order.OrderModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -88,7 +108,7 @@
     <!-- 查询总数-->
     <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
         select count(1)
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -96,7 +116,7 @@
     <select id="queryByList" parameterType="Object" resultType="com.hz.fruit.master.core.model.order.OrderModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a
+        from tb_fr_order a
         <include refid="Example_Where_Clause"/>
         <include refid="Example_Order_By"/>
         <if test="pageNumber != null and pageNumber != ''" >
@@ -110,19 +130,37 @@
         <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
         <!--SELECT LAST_INSERT_ID() as id-->
         <!--</selectKey>-->
-        insert into tb_fn_order
+        insert into tb_fr_order
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="merchantId != null and merchantId != '' " >
+                merchant_id,
+            </if>
+            <if test="bankId != null and bankId != '' " >
+                bank_id,
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 order_no,
             </if>
+            <if test="orderType != null and orderType != '' " >
+                order_type,
+            </if>
             <if test="orderMoney != null and orderMoney != '' " >
                 order_money,
+            </if>
+            <if test="qrCode != null and qrCode != '' " >
+                qr_code,
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                out_trade_no,
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 order_status,
             </if>
             <if test="invalidTime != null and invalidTime != '' " >
                 invalid_time,
+            </if>
+            <if test="notifyUrl != null and notifyUrl != '' " >
+                notify_url,
             </if>
             <if test="bankName != null and bankName != '' " >
                 bank_name,
@@ -136,24 +174,60 @@
             <if test="bankCode != null and bankCode != '' " >
                 bank_code,
             </if>
+            <if test="replenishType != null and replenishType != '' " >
+                replenish_type,
+            </if>
+            <if test="workType != null and workType != '' " >
+                work_type,
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                data_explain,
+            </if>
+            <if test="remark != null and remark != '' " >
+                remark,
+            </if>
             <if test="curday != null and curday != '' " >
                 curday,
+            </if>
+            <if test="curhour != null and curhour != '' " >
+                curhour,
+            </if>
+            <if test="curminute != null and curminute != '' " >
+                curminute,
             </if>
             create_time,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="merchantId != null and merchantId != '' " >
+                <![CDATA[  #{merchantId}, ]]>
+            </if>
+            <if test="bankId != null and bankId != '' " >
+                <![CDATA[  #{bankId}, ]]>
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 <![CDATA[  #{orderNo}, ]]>
             </if>
+            <if test="orderType != null and orderType != '' " >
+                <![CDATA[  #{orderType}, ]]>
+            </if>
             <if test="orderMoney != null and orderMoney != '' " >
                 <![CDATA[  #{orderMoney}, ]]>
+            </if>
+            <if test="qrCode != null and qrCode != '' " >
+                <![CDATA[  #{qrCode}, ]]>
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                <![CDATA[  #{outTradeNo}, ]]>
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 <![CDATA[  #{orderStatus}, ]]>
             </if>
             <if test="invalidTime != null and invalidTime != '' " >
                 <![CDATA[  #{invalidTime}, ]]>
+            </if>
+            <if test="notifyUrl != null and notifyUrl != '' " >
+                <![CDATA[  #{notifyUrl}, ]]>
             </if>
             <if test="bankName != null and bankName != '' " >
                 <![CDATA[  #{bankName}, ]]>
@@ -167,8 +241,26 @@
             <if test="bankCode != null and bankCode != '' " >
                 <![CDATA[  #{bankCode}, ]]>
             </if>
+            <if test="replenishType != null and replenishType != '' " >
+                <![CDATA[  #{replenishType}, ]]>
+            </if>
+            <if test="workType != null and workType != '' " >
+                <![CDATA[  #{workType}, ]]>
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                <![CDATA[  #{dataExplain}, ]]>
+            </if>
+            <if test="remark != null and remark != '' " >
+                <![CDATA[  #{remark}, ]]>
+            </if>
             <if test="curday != null and curday != '' " >
                 <![CDATA[  #{curday}, ]]>
+            </if>
+            <if test="curhour != null and curhour != '' " >
+                <![CDATA[  #{curhour}, ]]>
+            </if>
+            <if test="curminute != null and curminute != '' " >
+                <![CDATA[  #{curminute}, ]]>
             </if>
             NOW(),
         </trim>
@@ -176,19 +268,72 @@
 
     <!-- 更新基本信息 -->
     <update id="update" parameterType="com.hz.fruit.master.core.model.order.OrderModel">
-        UPDATE tb_fn_order a
+        UPDATE tb_fr_order a
         <trim prefix="set" suffixOverrides=",">
+            <if test="merchantId != null and merchantId != '' " >
+                a.merchant_id = #{orderStatus},
+            </if>
+            <if test="bankId != null and bankId != '' " >
+                a.bank_id = #{orderStatus},
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                a.order_no = #{orderStatus},
+            </if>
+            <if test="orderType != null and orderType != '' " >
+                a.order_type = #{orderStatus},
+            </if>
+            <if test="orderMoney != null and orderMoney != '' " >
+                a.order_money = #{orderStatus},
+            </if>
+            <if test="qrCode != null and qrCode != '' " >
+                a.qr_code = #{orderStatus},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                a.out_trade_no = #{orderStatus},
+            </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 a.order_status = #{orderStatus},
             </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                a.invalid_time = #{orderStatus},
+            </if>
+            <if test="notifyUrl != null and notifyUrl != '' " >
+                a.notify_url = #{orderStatus},
+            </if>
+            <if test="bankName != null and bankName != '' " >
+                a.bank_name = #{orderStatus},
+            </if>
+            <if test="bankCard != null and bankCard != '' " >
+                a.bank_card = #{orderStatus},
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                a.account_name = #{orderStatus},
+            </if>
+            <if test="bankCode != null and bankCode != '' " >
+                a.bank_code = #{orderStatus},
+            </if>
+            <if test="replenishType != null and replenishType != '' " >
+                a.replenish_type = #{orderStatus},
+            </if>
+            <if test="workType != null and workType != '' " >
+                a.work_type = #{orderStatus},
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                a.data_explain = #{orderStatus},
+            </if>
+            <if test="remark != null and remark != '' " >
+                a.remark = #{orderStatus},
+            </if>
             a.update_time = NOW(),
         </trim>
-        <include refid="Example_Where_Clause_id"/>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
     </update>
 
     <!-- 主要作用1.逻辑删除，2更新状态 -->
     <update id="manyOperation" parameterType="Object">
-        update tb_fn_order a
+        update tb_fr_order a
         <trim prefix="set" suffixOverrides=",">
             <if test="yn != 0 and yn >0 " >
                 a.yn = #{yn},

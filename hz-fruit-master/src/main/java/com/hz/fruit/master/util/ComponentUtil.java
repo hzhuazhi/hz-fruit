@@ -30,6 +30,7 @@ public class ComponentUtil {
     public static ChannelService channelService;
     public static ChannelBankService channelBankService;
     public static StatisticsClickPayService statisticsClickPayService;
+    public static ShortChainService shortChainService;
 
 
 

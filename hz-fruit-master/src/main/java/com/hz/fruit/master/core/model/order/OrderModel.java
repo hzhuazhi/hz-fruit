@@ -21,14 +21,39 @@ public class OrderModel extends BasePage implements Serializable {
     private Long id;
 
     /**
+     * 订单归属的卡商ID：对应表tb_fr_merchant的主键ID
+     */
+    private Long merchantId;
+
+    /**
+     * 归属卡商银行卡ID：对应表tb_fr_merchant_bank的主键ID
+     */
+    private Long bankId;
+
+    /**
      * 订单号
      */
     private String orderNo;
 
     /**
+     * 订单类型：1支付宝转卡，2卡转卡
+     */
+    private Integer orderType;
+
+    /**
      * 订单金额
      */
     private String orderMoney;
+
+    /**
+     * 收款的二维码地址：转码之后的二维码
+     */
+    private String qrCode;
+
+    /**
+     * 商家订单号
+     */
+    private String outTradeNo;
 
     /**
      * 订单状态：1初始化，2超时/失败，3有质疑，4成功
@@ -39,6 +64,12 @@ public class OrderModel extends BasePage implements Serializable {
      * 失效时间
      */
     private String invalidTime;
+
+    /**
+     * 同步的接口地址:我方的同步地址
+     */
+    private String notifyUrl;
+
 
     /**
      * 银行名称/归属开户行
@@ -61,9 +92,50 @@ public class OrderModel extends BasePage implements Serializable {
     private String bankCode;
 
     /**
+     * 是否是补单：1初始化不是补单，2是补单
+     */
+    private Integer replenishType;
+
+    /**
+     * 补充数据的类型：1初始化，2补充数据失败（其它原因等..），3补充数据成功
+     */
+    private Integer workType;
+
+    /**
+     * 数据说明：做解说用的
+     */
+    private String dataExplain;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 创建日期：存的日期格式20160530
      */
     private Integer curday;
+
+    /**
+     * 创建所属小时：24小时制
+     */
+    private Integer curhour;
+
+    /**
+     * 创建所属分钟：60分钟制
+     */
+    private Integer curminute;
+
+    /**
+     *发送次数
+     */
+    private Integer sendNum;
+
+    /**
+     * 发送状态：0初始化，1锁定，2计算失败，3计算成功
+     */
+    private Integer sendStatus;
+
 
     /**
      * 创建时间
@@ -90,12 +162,34 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private Integer invalidSecond;
 
+    /**
+     * 订单状态
+     */
+    private String orderStatusStr;
+
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public Long getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Long bankId) {
+        this.bankId = bankId;
     }
 
     public String getOrderNo() {
@@ -106,12 +200,36 @@ public class OrderModel extends BasePage implements Serializable {
         this.orderNo = orderNo;
     }
 
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+
     public String getOrderMoney() {
         return orderMoney;
     }
 
     public void setOrderMoney(String orderMoney) {
         this.orderMoney = orderMoney;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
     }
 
     public Integer getOrderStatus() {
@@ -128,6 +246,14 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setInvalidTime(String invalidTime) {
         this.invalidTime = invalidTime;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 
     public String getBankName() {
@@ -154,12 +280,84 @@ public class OrderModel extends BasePage implements Serializable {
         this.accountName = accountName;
     }
 
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public Integer getReplenishType() {
+        return replenishType;
+    }
+
+    public void setReplenishType(Integer replenishType) {
+        this.replenishType = replenishType;
+    }
+
+    public Integer getWorkType() {
+        return workType;
+    }
+
+    public void setWorkType(Integer workType) {
+        this.workType = workType;
+    }
+
+    public String getDataExplain() {
+        return dataExplain;
+    }
+
+    public void setDataExplain(String dataExplain) {
+        this.dataExplain = dataExplain;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public Integer getCurday() {
         return curday;
     }
 
     public void setCurday(Integer curday) {
         this.curday = curday;
+    }
+
+    public Integer getCurhour() {
+        return curhour;
+    }
+
+    public void setCurhour(Integer curhour) {
+        this.curhour = curhour;
+    }
+
+    public Integer getCurminute() {
+        return curminute;
+    }
+
+    public void setCurminute(Integer curminute) {
+        this.curminute = curminute;
+    }
+
+    public Integer getSendNum() {
+        return sendNum;
+    }
+
+    public void setSendNum(Integer sendNum) {
+        this.sendNum = sendNum;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
     }
 
     public String getCreateTime() {
@@ -194,19 +392,19 @@ public class OrderModel extends BasePage implements Serializable {
         this.isInvalid = isInvalid;
     }
 
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
     public Integer getInvalidSecond() {
         return invalidSecond;
     }
 
     public void setInvalidSecond(Integer invalidSecond) {
         this.invalidSecond = invalidSecond;
+    }
+
+    public String getOrderStatusStr() {
+        return orderStatusStr;
+    }
+
+    public void setOrderStatusStr(String orderStatusStr) {
+        this.orderStatusStr = orderStatusStr;
     }
 }

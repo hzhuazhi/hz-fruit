@@ -82,6 +82,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private StatisticsClickPayService statisticsClickPayService;
 
+    @Autowired
+    private ShortChainService shortChainService;
+
 
 
 
@@ -111,6 +114,7 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.channelService = channelService;
         ComponentUtil.channelBankService = channelBankService;
         ComponentUtil.statisticsClickPayService = statisticsClickPayService;
+        ComponentUtil.shortChainService = shortChainService;
 
         runThread = new RunThread();
         runThread.start();
