@@ -21,7 +21,10 @@ public class ComponentUtil {
     public static BankService bankService;
     public static MerchantBankService merchantBankService;
     public static MerchantService merchantService;
-
+    public static MerchantBankCollectionService merchantBankCollectionService;
+    public static MerchantRechargeService merchantRechargeService;
+    public static MerchantBankStrategyService merchantBankStrategyService;
+    public static MerchantDataService merchantDataService;
 
 
 
