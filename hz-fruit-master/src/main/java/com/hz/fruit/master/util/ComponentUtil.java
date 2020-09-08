@@ -29,6 +29,7 @@ public class ComponentUtil {
     public static IssueService issueService;
     public static ChannelService channelService;
     public static ChannelBankService channelBankService;
+    public static StatisticsClickPayService statisticsClickPayService;
 
 
 

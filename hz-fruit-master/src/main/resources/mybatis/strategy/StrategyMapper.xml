@@ -48,7 +48,7 @@
     <select id="findAll" resultType="com.hz.fruit.master.core.model.strategy.StrategyModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_strategy a
+        from tb_fr_strategy a
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -56,7 +56,7 @@
     <select id="findByCondition" parameterType="Object" resultType="com.hz.fruit.master.core.model.strategy.StrategyModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_strategy a
+        from tb_fr_strategy a
         <include refid="Example_Where_Clause"/>
         ORDER BY a.create_time DESC
     </select>
@@ -65,7 +65,7 @@
     <select id="findByObject" parameterType="Object" resultType="com.hz.fruit.master.core.model.strategy.StrategyModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_strategy a
+        from tb_fr_strategy a
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
@@ -74,7 +74,7 @@
     <select id="findById" parameterType="java.lang.Long" resultType="com.hz.fruit.master.core.model.strategy.StrategyModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_strategy a
+        from tb_fr_strategy a
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -84,7 +84,7 @@
         <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
         <!--SELECT LAST_INSERT_ID() as id-->
         <!--</selectKey>-->
-        insert into tb_fn_strategy
+        insert into tb_fr_strategy
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="stgName != null and stgName != '' " >
                 stg_name,
@@ -144,7 +144,7 @@
 
     <!-- 更新基本信息 -->
     <update id="update" parameterType="com.hz.fruit.master.core.model.strategy.StrategyModel">
-        UPDATE tb_fn_strategy a
+        UPDATE tb_fr_strategy a
         <trim prefix="set" suffixOverrides=",">
             <if test="stgName != null and stgName != '' " >
                 a.stg_name = #{stgName},
@@ -177,7 +177,7 @@
 
     <!-- 主要作用1.逻辑删除，2更新状态 -->
     <update id="manyOperation" parameterType="Object">
-        update tb_fn_strategy a
+        update tb_fr_strategy a
         <trim prefix="set" suffixOverrides=",">
             <if test="yn != 0 and yn >0 " >
                 a.yn = #{yn},
