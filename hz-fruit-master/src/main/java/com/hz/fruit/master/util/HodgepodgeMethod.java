@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.hz.fruit.master.core.common.exception.ServiceException;
 import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
+import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
+import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.statistics.StatisticsClickPayModel;
+import com.hz.fruit.master.core.model.strategy.StrategyModel;
 import com.hz.fruit.master.core.protocol.request.bank.RequestBank;
+import com.hz.fruit.master.core.protocol.request.order.ProtocolOrder;
 import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
 import com.hz.fruit.master.core.protocol.request.statistics.RequestStatisticsClickPay;
 import com.hz.fruit.master.core.protocol.response.ResponseData;
@@ -16,7 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -136,6 +142,140 @@ public class HodgepodgeMethod {
         resBean.setCurhour(DateUtil.getHour(new Date()));
         resBean.setCurminute(DateUtil.getCurminute(new Date()));
         return resBean;
+    }
+
+
+    /**
+     * @Description: check校验数据当派发订单的时候
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkOrderAdd(ProtocolOrder requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00001.geteCode(), ErrorCode.ENUM_ERROR.OR00001.geteDesc());
+        }
+
+        // 校验金额是否为空
+        if (StringUtils.isBlank(requestModel.money)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00002.geteCode(), ErrorCode.ENUM_ERROR.OR00002.geteDesc());
+        }else {
+            // 金额是否有效
+            if (requestModel.money.indexOf(".") > -1){
+                boolean flag = StringUtil.isNumberByMoney(requestModel.money);
+                if (!flag){
+                    throw new ServiceException(ErrorCode.ENUM_ERROR.OR00006.geteCode(), ErrorCode.ENUM_ERROR.OR00006.geteDesc());
+                }
+            }else {
+                boolean flag = StringUtil.isNumer(requestModel.money);
+                if (!flag){
+                    throw new ServiceException(ErrorCode.ENUM_ERROR.OR00007.geteCode(), ErrorCode.ENUM_ERROR.OR00007.geteDesc());
+                }
+            }
+        }
+
+        // 校验支付类型为空
+        if (requestModel.payType == null || requestModel.payType == 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00003.geteCode(), ErrorCode.ENUM_ERROR.OR00003.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 组装查询策略数据条件的方法
+     * @return com.pf.play.rule.core.model.strategy.StrategyModel
+     * @author yoko
+     * @date 2020/5/19 17:12
+     */
+    public static StrategyModel assembleStrategyQuery(int stgType){
+        StrategyModel resBean = new StrategyModel();
+        resBean.setStgType(stgType);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 校验策略类型数据:出码开关-判断此时是否属于正常出码
+     * @return void
+     * @author yoko
+     * @date 2019/12/2 14:35
+     */
+    public static void checkStrategyByQrCodeSwitch(StrategyModel strategyModel) throws Exception{
+        if (strategyModel == null){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.S00001.geteCode(), ErrorCode.ENUM_ERROR.S00001.geteDesc());
+        }
+        if (strategyModel.getStgNumValue() == 1){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.S00002.geteCode(), ErrorCode.ENUM_ERROR.S00002.geteDesc());
+        }
+        if (strategyModel.getStgNumValue() == 2){
+            if (StringUtils.isBlank(strategyModel.getStgValue())){
+                throw new ServiceException(ErrorCode.ENUM_ERROR.S00003.geteCode(), ErrorCode.ENUM_ERROR.S00003.geteDesc());
+            }else{
+                String[] str = strategyModel.getStgValue().split("-");
+                boolean flag = DateUtil.isBelong(str[0], str[1]);
+                if (!flag){
+                    throw new ServiceException(ErrorCode.ENUM_ERROR.S00004.geteCode(), ErrorCode.ENUM_ERROR.S00004.geteDesc());
+                }
+            }
+        }
+    }
+
+
+    /**
+     * @Description: check订单是否在策略规定的范围内
+     * @param orderMoneyRange - 策略规定的订单金额范围
+     * @param orderMoney - 订单金额
+     * @return java.lang.String
+     * @author yoko
+     * @date 2020/6/6 11:48
+     */
+    public static void checkOrderMoney(String orderMoneyRange, String orderMoney) throws Exception{
+        String [] rule = orderMoneyRange.split("-");
+        double start = Double.parseDouble(rule[0]);
+        double end = Double.parseDouble(rule[1]);
+        double money = Double.parseDouble(orderMoney);
+        if (money < start || money > end){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.S00005.geteCode(), ErrorCode.ENUM_ERROR.S00005.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 组装查询卡商的查询方法
+     * @param id - 主键ID
+     * @param orderMoney - 订单金额
+     * @param useStatus - 使用状态
+     * @return com.hz.fruit.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/9 17:16
+     */
+    public static MerchantModel assembleMerchantQuery(long id, String orderMoney, int useStatus){
+        MerchantModel resBean = new MerchantModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(orderMoney)){
+            BigDecimal bd = new BigDecimal(orderMoney);
+            resBean.setMoney(bd);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: check卡商数据是否为空
+     * @param merchantList
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkMerchantIsNull(List<MerchantModel> merchantList) throws Exception{
+        if (merchantList == null || merchantList.size() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00008.geteCode(), ErrorCode.ENUM_ERROR.OR00008.geteDesc());
+        }
     }
 
 
