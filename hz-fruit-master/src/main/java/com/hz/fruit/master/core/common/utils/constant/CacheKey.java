@@ -13,9 +13,14 @@ public interface CacheKey {
     String STRATEGY = "-1";
 
     /**
+     * 短信的类型定位策略
+     */
+    String SHORT_MSG_STRATEGY = "-2";
+
+    /**
      * 商户：商户的秘钥
      */
-    String CHANNEL_SECRETKEY = "-2";
+    String CHANNEL_SECRETKEY = "-3";
 
 
 
