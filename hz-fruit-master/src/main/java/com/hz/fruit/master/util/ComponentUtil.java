@@ -33,6 +33,9 @@ public class ComponentUtil {
     public static ShortChainService shortChainService;
 
 
+    public static MobileCardService mobileCardService;
+    public static MobileCardShortMsgService mobileCardShortMsgService;
+
 
 
 }
