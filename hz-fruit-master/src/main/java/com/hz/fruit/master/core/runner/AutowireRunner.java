@@ -43,8 +43,7 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private StrategyService strategyService;
 
-    @Autowired
-    private OrderService orderService;
+
 
 
 
@@ -98,6 +97,12 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private MerchantRechargeService merchantRechargeService;
 
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderReplenishService orderReplenishService;
+
 
 
 
@@ -113,7 +118,7 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.loadConstant = loadConstant;
         ComponentUtil.regionService = regionService;
         ComponentUtil.strategyService = strategyService;
-        ComponentUtil.orderService = orderService;
+
 
 
 
@@ -136,6 +141,8 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.channelBankService = channelBankService;
         ComponentUtil.merchantService = merchantService;
         ComponentUtil.merchantRechargeService = merchantRechargeService;
+        ComponentUtil.orderService = orderService;
+        ComponentUtil.orderReplenishService = orderReplenishService;
 
         runThread = new RunThread();
         runThread.start();

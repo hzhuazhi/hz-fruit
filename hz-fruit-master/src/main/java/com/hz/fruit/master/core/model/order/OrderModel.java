@@ -143,6 +143,16 @@ public class OrderModel extends BasePage implements Serializable {
     private Integer curminute;
 
     /**
+     *运行计算次数
+     */
+    private Integer runNum;
+
+    /**
+     * 运行计算状态：0初始化，1锁定，2计算失败，3计算成功
+     */
+    private Integer runStatus;
+
+    /**
      *发送次数
      */
     private Integer sendNum;
@@ -445,5 +455,21 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setOrderStatusStr(String orderStatusStr) {
         this.orderStatusStr = orderStatusStr;
+    }
+
+    public Integer getRunNum() {
+        return runNum;
+    }
+
+    public void setRunNum(Integer runNum) {
+        this.runNum = runNum;
+    }
+
+    public Integer getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(Integer runStatus) {
+        this.runStatus = runStatus;
     }
 }

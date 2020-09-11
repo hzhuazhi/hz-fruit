@@ -15,7 +15,7 @@ public class ComponentUtil {
     public static LoadConstant loadConstant;
     public static RegionService regionService;
     public static StrategyService strategyService;
-    public static OrderService orderService;
+
 
 
 
@@ -38,6 +38,8 @@ public class ComponentUtil {
     public static ChannelBankService channelBankService;
     public static MerchantService merchantService;
     public static MerchantRechargeService merchantRechargeService;
+    public static OrderService orderService;
+    public static OrderReplenishService orderReplenishService;
 
 
 }
