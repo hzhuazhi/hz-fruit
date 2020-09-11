@@ -2,19 +2,19 @@ package com.hz.fruit.master.core.service.impl;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
-import com.hz.fruit.master.core.mapper.MerchantBankStrategyMapper;
-import com.hz.fruit.master.core.service.MerchantBankStrategyService;
+import com.hz.fruit.master.core.mapper.BankStrategyMapper;
+import com.hz.fruit.master.core.service.BankStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * @Description 银行卡放量策略的Service层的实现层
  * @Author yoko
- * @Date 2020/9/8 18:04
+ * @Date 2020/9/11 16:41
  * @Version 1.0
  */
 @Service
-public class MerchantBankStrategyServiceImpl<T> extends BaseServiceImpl<T> implements MerchantBankStrategyService<T> {
+public class BankStrategyServiceImpl<T> extends BaseServiceImpl<T> implements BankStrategyService<T> {
     /**
      * 5分钟.
      */
@@ -35,9 +35,9 @@ public class MerchantBankStrategyServiceImpl<T> extends BaseServiceImpl<T> imple
 
 
     @Autowired
-    private MerchantBankStrategyMapper merchantBankStrategyMapper;
+    private BankStrategyMapper bankStrategyMapper;
 
     public BaseDao<T> getDao() {
-        return merchantBankStrategyMapper;
+        return bankStrategyMapper;
     }
 }

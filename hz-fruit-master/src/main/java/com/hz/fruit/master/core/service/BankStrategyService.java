@@ -5,8 +5,8 @@ import com.hz.fruit.master.core.common.service.BaseService;
 /**
  * @Description 银行卡放量策略的Service层
  * @Author yoko
- * @Date 2020/9/8 18:02
+ * @Date 2020/9/11 16:40
  * @Version 1.0
  */
-public interface MerchantBankStrategyService<T> extends BaseService<T> {
+public interface BankStrategyService<T> extends BaseService<T> {
 }

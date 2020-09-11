@@ -1,4 +1,4 @@
-package com.hz.fruit.master.core.model.merchant;
+package com.hz.fruit.master.core.model.bank;
 
 import com.hz.fruit.master.core.protocol.page.BasePage;
 
@@ -7,10 +7,10 @@ import java.io.Serializable;
 /**
  * @Description 银行卡放量策略的实体属性Bean
  * @Author yoko
- * @Date 2020/9/8 17:38
+ * @Date 2020/9/11 16:39
  * @Version 1.0
  */
-public class MerchantBankStrategyModel extends BasePage implements Serializable {
+public class BankStrategyModel extends BasePage implements Serializable {
     private static final long   serialVersionUID = 1203223201105L;
 
     /**
