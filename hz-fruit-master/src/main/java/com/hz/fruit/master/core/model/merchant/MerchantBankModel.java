@@ -129,6 +129,96 @@ public class MerchantBankModel extends BasePage implements Serializable {
      */
     private Integer yn;
 
+
+    /**
+     * 银行放量策略ID
+     */
+    private Long bankStrategyId;
+
+    /**
+     * 归属银行卡ID：对应表tb_fr_merchant_bank的主键ID
+     */
+    private Long bankId;
+
+    /**
+     * 银行卡放量策略的名称/别名
+     */
+    private String strategyAlias;
+
+    /**
+     * 优先级：就是填入数字，数字越小的优先级越靠前
+     */
+    private Integer priority;
+
+    /**
+     * 放量时间段：支持多个时间段，以#号分割
+     */
+    private String openTimeSlot;
+
+    /**
+     * 微信日收款限量金额
+     */
+    private String wxInDayMoney;
+
+    /**
+     * 微信月收款限量金额
+     */
+    private String wxInMonthMoney;
+
+    /**
+     * 微信日收款限量次数
+     */
+    private Integer wxInDayNum;
+
+    /**
+     * 支付宝日收款限量金额
+     */
+    private String zfbInDayMoney;
+
+    /**
+     * 支付宝月收款限量金额
+     */
+    private String zfbInMonthMoney;
+
+    /**
+     * 支付宝日收款限量次数
+     */
+    private Integer zfbInDayNum;
+
+    /**
+     * 卡日收款限量金额
+     */
+    private String cardInDayMoney;
+
+    /**
+     * 卡月收款限量金额
+     */
+    private String cardInMonthMoney;
+
+    /**
+     * 卡日收款限量次数
+     */
+    private Integer cardInDayNum;
+
+    /**
+     * 卡商ID的集合-SQL
+     */
+    private List<Long> merchantIdList;
+
+    /**
+     * 银行卡ID集合-SQL
+     * <p>in的sql条件</p>
+     */
+    private List<Long> yesBankIdList;
+
+    /**
+     * 银行卡ID集合-SQL
+     * <p>not in的sql条件</p>
+     */
+    private List<Long> noBankIdList;
+
+
+
     public Long getId() {
         return id;
     }
@@ -311,5 +401,142 @@ public class MerchantBankModel extends BasePage implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Long getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Long bankId) {
+        this.bankId = bankId;
+    }
+
+    public String getStrategyAlias() {
+        return strategyAlias;
+    }
+
+    public void setStrategyAlias(String strategyAlias) {
+        this.strategyAlias = strategyAlias;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public String getOpenTimeSlot() {
+        return openTimeSlot;
+    }
+
+    public void setOpenTimeSlot(String openTimeSlot) {
+        this.openTimeSlot = openTimeSlot;
+    }
+
+    public String getWxInDayMoney() {
+        return wxInDayMoney;
+    }
+
+    public void setWxInDayMoney(String wxInDayMoney) {
+        this.wxInDayMoney = wxInDayMoney;
+    }
+
+    public String getWxInMonthMoney() {
+        return wxInMonthMoney;
+    }
+
+    public void setWxInMonthMoney(String wxInMonthMoney) {
+        this.wxInMonthMoney = wxInMonthMoney;
+    }
+
+    public Integer getWxInDayNum() {
+        return wxInDayNum;
+    }
+
+    public void setWxInDayNum(Integer wxInDayNum) {
+        this.wxInDayNum = wxInDayNum;
+    }
+
+    public String getZfbInDayMoney() {
+        return zfbInDayMoney;
+    }
+
+    public void setZfbInDayMoney(String zfbInDayMoney) {
+        this.zfbInDayMoney = zfbInDayMoney;
+    }
+
+    public String getZfbInMonthMoney() {
+        return zfbInMonthMoney;
+    }
+
+    public void setZfbInMonthMoney(String zfbInMonthMoney) {
+        this.zfbInMonthMoney = zfbInMonthMoney;
+    }
+
+    public Integer getZfbInDayNum() {
+        return zfbInDayNum;
+    }
+
+    public void setZfbInDayNum(Integer zfbInDayNum) {
+        this.zfbInDayNum = zfbInDayNum;
+    }
+
+    public String getCardInDayMoney() {
+        return cardInDayMoney;
+    }
+
+    public void setCardInDayMoney(String cardInDayMoney) {
+        this.cardInDayMoney = cardInDayMoney;
+    }
+
+    public String getCardInMonthMoney() {
+        return cardInMonthMoney;
+    }
+
+    public void setCardInMonthMoney(String cardInMonthMoney) {
+        this.cardInMonthMoney = cardInMonthMoney;
+    }
+
+    public Integer getCardInDayNum() {
+        return cardInDayNum;
+    }
+
+    public void setCardInDayNum(Integer cardInDayNum) {
+        this.cardInDayNum = cardInDayNum;
+    }
+
+
+    public Long getBankStrategyId() {
+        return bankStrategyId;
+    }
+
+    public void setBankStrategyId(Long bankStrategyId) {
+        this.bankStrategyId = bankStrategyId;
+    }
+
+    public List<Long> getMerchantIdList() {
+        return merchantIdList;
+    }
+
+    public void setMerchantIdList(List<Long> merchantIdList) {
+        this.merchantIdList = merchantIdList;
+    }
+
+    public List<Long> getYesBankIdList() {
+        return yesBankIdList;
+    }
+
+    public void setYesBankIdList(List<Long> yesBankIdList) {
+        this.yesBankIdList = yesBankIdList;
+    }
+
+    public List<Long> getNoBankIdList() {
+        return noBankIdList;
+    }
+
+    public void setNoBankIdList(List<Long> noBankIdList) {
+        this.noBankIdList = noBankIdList;
     }
 }

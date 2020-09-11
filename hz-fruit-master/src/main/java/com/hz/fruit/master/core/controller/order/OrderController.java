@@ -8,6 +8,9 @@ import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.model.RequestEncryptionJson;
 import com.hz.fruit.master.core.model.ResponseEncryptionJson;
+import com.hz.fruit.master.core.model.channel.ChannelBankModel;
+import com.hz.fruit.master.core.model.channel.ChannelModel;
+import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
@@ -29,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description 任务订单（平台派发订单）的Controller层
@@ -129,12 +133,29 @@ public class OrderController {
             StrategyModel strategyOrderMoneyRangeModel = ComponentUtil.strategyService.getStrategyModel(strategyOrderMoneyRangeQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
             HodgepodgeMethod.checkOrderMoney(strategyOrderMoneyRangeModel.getStgValue(), requestModel.money);
 
+            // 根据秘钥获取商户信息
+            ChannelModel channelQuery = HodgepodgeMethod.assembleChannelQuery(0, requestModel.secretKey, 1);
+            ChannelModel channelModel = ComponentUtil.channelService.getChannel(channelQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+            HodgepodgeMethod.checkChannelIsNull(channelModel);
+
             // 获取卡商集合：卡商的余额必须大于订单金额
             MerchantModel merchantQuery = HodgepodgeMethod.assembleMerchantQuery(0, requestModel.money, 1);
             List<MerchantModel> merchantList = ComponentUtil.merchantService.findByCondition(merchantQuery);
             HodgepodgeMethod.checkMerchantIsNull(merchantList);
 
-            // 获取银行卡信息
+            // 获取卡商的主键ID集合
+            List<Long> merchantIdList = merchantList.stream().map(MerchantModel::getId).collect(Collectors.toList());
+
+            // 获取商户与银行卡绑定关系的集合
+            ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0, channelModel.getId(),0, 1);
+            List<ChannelBankModel> channelBankList = ComponentUtil.channelBankService.findByCondition(channelBankQuery);
+
+            // 获取银行卡以及银行卡的放量策略数据
+            MerchantBankModel merchantBankQuery = HodgepodgeMethod.assembleMerchantBankByOrderQuery(merchantIdList, 3, 1);
+            List<MerchantBankModel> merchantBankList = ComponentUtil.merchantBankService.getMerchantBankAndStrategy(merchantBankQuery);
+            HodgepodgeMethod.checkMerchantBankIsNull(merchantBankList);
+
+
 
 
 

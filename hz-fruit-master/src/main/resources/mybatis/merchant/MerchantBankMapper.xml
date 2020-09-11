@@ -12,6 +12,15 @@
         a.create_time,a.update_time,a.yn
     </sql>
 
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List_Two">
+        a.id,a.alias,a.merchant_id,a.bank_type_id,a.bank_name,a.bank_card,a.subbranch_name,a.account_name,a.bank_code,a.in_day_money,a.in_month_money,
+        a.out_day_money,a.out_month_money,a.province,a.city,a.check_status,a.check_info,a.work_type,a.remark,a.use_status,
+        a.create_time,a.update_time,a.yn,
+        b.id as bank_strategy_id,b.bank_id,b.alias,b.priority,b.open_time_slot,b.wx_in_day_money,b.wx_in_month_money,b.wx_in_day_num,b.zfb_in_day_money,b.zfb_in_month_money,
+        b.zfb_in_day_num,b.card_in_day_money,b.card_in_month_money,b.card_in_day_num
+    </sql>
+
     <!-- 查询条件 -->
     <sql id="Example_Where_Clause">
         where 1=1
@@ -42,6 +51,40 @@
     </sql>
 
 
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause_Two">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="merchantIdList != null and merchantIdList.size()>0">
+                and a.merchant_id in
+                <foreach item="item" index="index" collection="merchantIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="yesBankIdList != null and yesBankIdList.size()>0">
+                and a.id in
+                <foreach item="item" index="index" collection="yesBankIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="noBankIdList != null and noBankIdList.size()>0">
+                and a.id not in
+                <foreach item="item" index="index" collection="noBankIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="workType != null and workType != '' " >
+                and a.work_type = #{workType}
+            </if>
+            <if test="useStatus != null and useStatus != '' " >
+                and a.use_status = #{useStatus}
+            </if>
+            and b.id is not null
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
     <!-- 查询条件_id -->
     <sql id="Example_Where_Clause_id">
         where 1=1
@@ -56,6 +99,11 @@
     <!-- 排序条件 -->
     <sql id="Example_Order_By">
         order by a.create_time desc
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By_Two">
+        order by b.priority asc
     </sql>
 
 
@@ -332,6 +380,16 @@
         where 1=1
         and a.bank_card = #{bankCard}
     </update>
+
+
+    <!-- 获取银行卡以及银行卡策略 -->
+    <select id="getMerchantBankAndStrategy" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantBankModel">
+        select
+        <include refid="Base_Column_List_Two" />
+        from tb_fr_merchant_bank a left join tb_fr_merchant_bank_strategy b on a.id = b.bank_id and b.use_status =1 and b.yn=0
+        <include refid="Example_Where_Clause_Two"/>
+        <include refid="Example_Order_By_Two"/>
+    </select>
 
 
 </mapper>

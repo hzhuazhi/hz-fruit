@@ -6,6 +6,9 @@ import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
+import com.hz.fruit.master.core.model.channel.ChannelBankModel;
+import com.hz.fruit.master.core.model.channel.ChannelModel;
+import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
@@ -180,6 +183,10 @@ public class HodgepodgeMethod {
         if (requestModel.payType == null || requestModel.payType == 0){
             throw new ServiceException(ErrorCode.ENUM_ERROR.OR00003.geteCode(), ErrorCode.ENUM_ERROR.OR00003.geteDesc());
         }
+
+        if (StringUtils.isBlank(requestModel.secretKey)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00008.geteCode(), ErrorCode.ENUM_ERROR.OR00008.geteDesc());
+        }
     }
 
     /**
@@ -265,6 +272,43 @@ public class HodgepodgeMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 组装查询商户的查询方法
+     * @param id - 主键ID
+     * @param secretKey - 秘钥
+     * @param useStatus - 使用状态
+     * @return com.hz.fruit.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/9 17:16
+     */
+    public static ChannelModel assembleChannelQuery(long id, String secretKey, int useStatus){
+        ChannelModel resBean = new ChannelModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(secretKey)){
+            resBean.setSecretKey(secretKey);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: check商户数据是否为空
+     * @param channelModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkChannelIsNull(ChannelModel channelModel) throws Exception{
+        if (channelModel == null || channelModel.getId() == null || channelModel.getId() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00009.geteCode(), ErrorCode.ENUM_ERROR.OR00009.geteDesc());
+        }
+    }
+
     /**
      * @Description: check卡商数据是否为空
      * @param merchantList
@@ -274,7 +318,72 @@ public class HodgepodgeMethod {
      */
     public static void checkMerchantIsNull(List<MerchantModel> merchantList) throws Exception{
         if (merchantList == null || merchantList.size() <= 0){
-            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00008.geteCode(), ErrorCode.ENUM_ERROR.OR00008.geteDesc());
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00010.geteCode(), ErrorCode.ENUM_ERROR.OR00010.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 组装查询商户与银行卡绑定关系的查询方法
+     * @param id - 主键ID
+     * @param channelId - 商户ID
+     * @param bankId - 银行卡ID
+     * @param useStatus - 使用状态
+     * @return com.hz.fruit.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/9 17:16
+     */
+    public static ChannelBankModel assembleChannelBankQuery(long id, long channelId, long bankId, int useStatus){
+        ChannelBankModel resBean = new ChannelBankModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (channelId > 0){
+            resBean.setChannelId(channelId);
+        }
+        if (bankId > 0){
+            resBean.setBankId(bankId);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询卡商银行卡以及银行放量策略的查询方法
+     * @param merchantIdList - 卡商ID集合
+     * @param workType - 是否补充数据完毕
+     * @param useStatus - 使用状态
+     * @return com.hz.fruit.master.core.model.merchant.MerchantBankModel
+     * @author yoko
+     * @date 2020/9/9 20:59
+     */
+    public static MerchantBankModel assembleMerchantBankByOrderQuery(List<Long> merchantIdList, int workType, int useStatus){
+        MerchantBankModel resBean = new MerchantBankModel();
+        if (merchantIdList != null && merchantIdList.size() > 0){
+            resBean.setMerchantIdList(merchantIdList);
+        }
+        if (workType > 0){
+            resBean.setWorkType(workType);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: check卡商银行卡以及银行卡策略数据是否为空
+     * @param merchantBankList
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkMerchantBankIsNull(List<MerchantBankModel> merchantBankList) throws Exception{
+        if (merchantBankList == null || merchantBankList.size() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00011.geteCode(), ErrorCode.ENUM_ERROR.OR00011.geteDesc());
         }
     }
 

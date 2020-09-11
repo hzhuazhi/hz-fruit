@@ -8,6 +8,8 @@ import com.hz.fruit.master.core.service.MerchantBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Description 卡商银行/卡商银行卡的Service层的实现层
  * @Author yoko
@@ -46,5 +48,10 @@ public class MerchantBankServiceImpl<T> extends BaseServiceImpl<T> implements Me
     @Override
     public int updateUseStatus(MerchantBankModel model) {
         return merchantBankMapper.updateUseStatus(model);
+    }
+
+    @Override
+    public List<MerchantBankModel> getMerchantBankAndStrategy(MerchantBankModel model) {
+        return merchantBankMapper.getMerchantBankAndStrategy(model);
     }
 }
