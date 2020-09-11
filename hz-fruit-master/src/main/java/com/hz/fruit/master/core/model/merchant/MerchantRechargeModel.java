@@ -19,14 +19,9 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Long id;
 
     /**
-     * 订单归属的卡商ID：对应表tb_fr_merchant的主键ID
+     * 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
      */
-    private Long merchantId;
-
-    /**
-     * 我方银行卡的主键ID：对应表tb_fr_my_bank的主键ID
-     */
-    private Long myBankId;
+    private Long accountId;
 
     /**
      * 订单号
@@ -42,6 +37,16 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      * 订单状态：1初始化，2超时/失败，3成功
      */
     private Integer orderStatus;
+
+    /**
+     * 支付类型：1卡商支付，2我方支付
+     */
+    private Integer payType;
+
+    /**
+     * 我方银行卡信息备注:假如我方卡进行支付，则填写我方银行卡信息
+     */
+    private String myBankInfo;
 
     /**
      * 银行名称/归属开户行
@@ -62,6 +67,11 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      * 银行卡转账图片凭证
      */
     private String pictureAds;
+
+    /**
+     * 数据说明：做解说用的
+     */
+    private String dataExplain;
 
     /**
      * 备注
@@ -119,20 +129,12 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.id = id;
     }
 
-    public Long getMerchantId() {
-        return merchantId;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public Long getMyBankId() {
-        return myBankId;
-    }
-
-    public void setMyBankId(Long myBankId) {
-        this.myBankId = myBankId;
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public String getOrderNo() {
@@ -157,6 +159,22 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Integer getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Integer payType) {
+        this.payType = payType;
+    }
+
+    public String getMyBankInfo() {
+        return myBankInfo;
+    }
+
+    public void setMyBankInfo(String myBankInfo) {
+        this.myBankInfo = myBankInfo;
     }
 
     public String getBankName() {
@@ -189,6 +207,14 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setPictureAds(String pictureAds) {
         this.pictureAds = pictureAds;
+    }
+
+    public String getDataExplain() {
+        return dataExplain;
+    }
+
+    public void setDataExplain(String dataExplain) {
+        this.dataExplain = dataExplain;
     }
 
     public String getRemark() {

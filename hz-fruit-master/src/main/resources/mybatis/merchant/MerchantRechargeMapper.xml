@@ -7,7 +7,8 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.merchant_id,a.my_bank_id,a.order_no,a.order_money,a.order_status,a.bank_name,a.bank_card,a.account_name,a.picture_ads,
+        a.id,a.account_id,a.order_no,a.order_money,a.order_status,a.pay_type,a.my_bank_info,
+        a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.data_explain,
         a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
         a.create_time,a.update_time,a.yn
     </sql>
@@ -19,14 +20,17 @@
             <if test="id != null and id != '' " >
                 and a.id = #{id}
             </if>
-            <if test="merchantId != null and merchantId != '' " >
-                and a.merchant_id = #{merchantId}
-            </if>
-            <if test="myBankId != null and myBankId != '' " >
-                and a.my_bank_id = #{myBankId}
+            <if test="accountId != null and accountId != '' " >
+                and a.account_id = #{accountId}
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 and a.order_no = #{orderNo}
+            </if>
+            <if test="orderStatus != null and orderStatus != '' " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="payType != null and payType != '' " >
+                and a.pay_type = #{payType}
             </if>
             <if test="bankName != null and bankName != '' " >
                 and a.bank_name = #{bankName}
@@ -120,11 +124,8 @@
         <!--</selectKey>-->
         insert into tb_fr_merchant_recharge
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="merchantId != null and merchantId != '' " >
-                merchant_id,
-            </if>
-            <if test="myBankId != null and myBankId != '' " >
-                my_bank_id,
+            <if test="accountId != null and accountId != '' " >
+                account_id,
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 order_no,
@@ -134,6 +135,12 @@
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 order_status,
+            </if>
+            <if test="payType != null and payType != '' " >
+                pay_type,
+            </if>
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                my_bank_info,
             </if>
             <if test="bankName != null and bankName != '' " >
                 bank_name,
@@ -146,6 +153,9 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 picture_ads,
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                data_explain,
             </if>
             <if test="remark != null and remark != '' " >
                 remark,
@@ -163,11 +173,8 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="merchantId != null and merchantId != '' " >
-                <![CDATA[  #{merchantId}, ]]>
-            </if>
-            <if test="myBankId != null and myBankId != '' " >
-                <![CDATA[  #{myBankId}, ]]>
+            <if test="accountId != null and accountId != '' " >
+                <![CDATA[  #{accountId}, ]]>
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 <![CDATA[  #{orderNo}, ]]>
@@ -177,6 +184,12 @@
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 <![CDATA[  #{orderStatus}, ]]>
+            </if>
+            <if test="payType != null and payType != '' " >
+                <![CDATA[  #{payType}, ]]>
+            </if>
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                <![CDATA[  #{myBankInfo}, ]]>
             </if>
             <if test="bankName != null and bankName != '' " >
                 <![CDATA[  #{bankName}, ]]>
@@ -189,6 +202,9 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 <![CDATA[  #{pictureAds}, ]]>
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                <![CDATA[  #{dataExplain}, ]]>
             </if>
             <if test="remark != null and remark != '' " >
                 <![CDATA[  #{remark}, ]]>
@@ -210,11 +226,8 @@
     <update id="update" parameterType="com.hz.fruit.master.core.model.merchant.MerchantRechargeModel">
         UPDATE tb_fr_merchant_recharge a
         <trim prefix="set" suffixOverrides=",">
-            <if test="merchantId != null and merchantId != '' " >
-                a.merchant_id = #{merchantId},
-            </if>
-            <if test="myBankId != null and myBankId != '' " >
-                a.my_bank_id = #{myBankId},
+            <if test="accountId != null and accountId != '' " >
+                a.account_id = #{accountId},
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 a.order_no = #{orderNo},
@@ -225,8 +238,14 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 a.order_status = #{orderStatus},
             </if>
-            <if test="bankName != null and bankName != '' " >
-                a.bank_name = #{bankName},
+            <if test="payType != null and payType != '' " >
+                a.pay_type = #{payType},
+            </if>
+            <if test="payType != null and payType != '' " >
+                a.pay_type = #{payType},
+            </if>
+            <if test="myBankInfo != null and myBankInfo != '' " >
+                a.my_bank_info = #{myBankInfo},
             </if>
             <if test="bankCard != null and bankCard != '' " >
                 a.bank_card = #{bankCard},
@@ -236,6 +255,9 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 a.picture_ads = #{pictureAds},
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                a.data_explain = #{dataExplain},
             </if>
             <if test="remark != null and remark != '' " >
                 a.remark = #{remark},
