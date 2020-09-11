@@ -18,14 +18,12 @@ public class ComponentUtil {
     public static OrderService orderService;
 
 
-    public static MerchantBankService merchantBankService;
     public static MerchantService merchantService;
     public static MerchantBankCollectionService merchantBankCollectionService;
     public static MerchantRechargeService merchantRechargeService;
     public static MerchantBankStrategyService merchantBankStrategyService;
     public static MerchantDataService merchantDataService;
     public static BankTypeService bankTypeService;
-    public static MyBankService myBankService;
     public static IssueService issueService;
     public static ChannelService channelService;
     public static ChannelBankService channelBankService;

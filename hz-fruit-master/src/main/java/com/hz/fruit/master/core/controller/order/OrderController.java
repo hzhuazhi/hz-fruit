@@ -10,7 +10,6 @@ import com.hz.fruit.master.core.model.RequestEncryptionJson;
 import com.hz.fruit.master.core.model.ResponseEncryptionJson;
 import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
-import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -151,9 +149,9 @@ public class OrderController {
             List<ChannelBankModel> channelBankList = ComponentUtil.channelBankService.findByCondition(channelBankQuery);
 
             // 获取银行卡以及银行卡的放量策略数据
-            MerchantBankModel merchantBankQuery = HodgepodgeMethod.assembleMerchantBankByOrderQuery(merchantIdList, 3, 1);
-            List<MerchantBankModel> merchantBankList = ComponentUtil.merchantBankService.getMerchantBankAndStrategy(merchantBankQuery);
-            HodgepodgeMethod.checkMerchantBankIsNull(merchantBankList);
+//            MerchantBankModel merchantBankQuery = HodgepodgeMethod.assembleMerchantBankByOrderQuery(merchantIdList, 3, 1);
+//            List<MerchantBankModel> merchantBankList = ComponentUtil.merchantBankService.getMerchantBankAndStrategy(merchantBankQuery);
+//            HodgepodgeMethod.checkMerchantBankIsNull(merchantBankList);
 
 
 

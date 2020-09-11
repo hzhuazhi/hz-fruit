@@ -8,15 +8,11 @@ import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
 import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
-import com.hz.fruit.master.core.model.merchant.MerchantBankModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
-import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.statistics.StatisticsClickPayModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
-import com.hz.fruit.master.core.protocol.request.bank.RequestBank;
 import com.hz.fruit.master.core.protocol.request.order.ProtocolOrder;
-import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
 import com.hz.fruit.master.core.protocol.request.statistics.RequestStatisticsClickPay;
 import com.hz.fruit.master.core.protocol.response.ResponseData;
 import org.apache.commons.lang.StringUtils;
@@ -351,41 +347,6 @@ public class HodgepodgeMethod {
     }
 
 
-    /**
-     * @Description: 组装查询卡商银行卡以及银行放量策略的查询方法
-     * @param merchantIdList - 卡商ID集合
-     * @param workType - 是否补充数据完毕
-     * @param useStatus - 使用状态
-     * @return com.hz.fruit.master.core.model.merchant.MerchantBankModel
-     * @author yoko
-     * @date 2020/9/9 20:59
-     */
-    public static MerchantBankModel assembleMerchantBankByOrderQuery(List<Long> merchantIdList, int workType, int useStatus){
-        MerchantBankModel resBean = new MerchantBankModel();
-        if (merchantIdList != null && merchantIdList.size() > 0){
-            resBean.setMerchantIdList(merchantIdList);
-        }
-        if (workType > 0){
-            resBean.setWorkType(workType);
-        }
-        if (useStatus > 0){
-            resBean.setUseStatus(useStatus);
-        }
-        return resBean;
-    }
-
-    /**
-     * @Description: check卡商银行卡以及银行卡策略数据是否为空
-     * @param merchantBankList
-     * @return
-     * @author yoko
-     * @date 2020/05/14 15:57
-     */
-    public static void checkMerchantBankIsNull(List<MerchantBankModel> merchantBankList) throws Exception{
-        if (merchantBankList == null || merchantBankList.size() <= 0){
-            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00011.geteCode(), ErrorCode.ENUM_ERROR.OR00011.geteDesc());
-        }
-    }
 
 
 
