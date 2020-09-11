@@ -18,13 +18,10 @@ public class ComponentUtil {
     public static OrderService orderService;
 
 
-    public static MerchantService merchantService;
+
     public static MerchantRechargeService merchantRechargeService;
     public static MerchantDataService merchantDataService;
-    public static BankTypeService bankTypeService;
     public static IssueService issueService;
-    public static ChannelService channelService;
-    public static ChannelBankService channelBankService;
     public static StatisticsClickPayService statisticsClickPayService;
     public static ShortChainService shortChainService;
 
@@ -33,11 +30,15 @@ public class ComponentUtil {
     public static MobileCardShortMsgService mobileCardShortMsgService;
     public static ShortMsgStrategyService shortMsgStrategyService;
     public static ShortMsgArrearsService shortMsgArrearsService;
+    public static BankTypeService bankTypeService;
     public static BankService bankService;
     public static BankCollectionService bankCollectionService;
     public static BankStrategyService bankStrategyService;
     public static BankShortMsgStrategyService bankShortMsgStrategyService;
     public static BankShortMsgService bankShortMsgService;
+    public static ChannelService channelService;
+    public static ChannelBankService channelBankService;
+    public static MerchantService merchantService;
 
 
 }

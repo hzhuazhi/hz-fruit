@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @Description 卡商的实体属性Bean
+ * @Description 卡商扩充数据的实体属性Bean
  * @Author yoko
  * @Date 2020/9/8 17:03
  * @Version 1.0
@@ -18,6 +18,11 @@ public class MerchantModel extends BasePage implements Serializable {
      * 主键ID
      */
     private Long id;
+
+    /**
+     * 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
+     */
+    private Long accountId;
 
     /**
      * 名称/别名
@@ -34,6 +39,11 @@ public class MerchantModel extends BasePage implements Serializable {
      * 保底金额
      */
     private String leastMoney;
+
+    /**
+     * 卡商类型：1我方卡商，2第三方卡商
+     */
+    private Integer merchantType;
 
     /**
      * 备注
@@ -64,6 +74,16 @@ public class MerchantModel extends BasePage implements Serializable {
      * 金额
      */
     private BigDecimal money;
+
+    /**
+     * 账号昵称
+     */
+    private String acName;
+
+    /**
+     * 账号联系人
+     */
+    private String acContacts;
 
     public Long getId() {
         return id;
@@ -143,5 +163,37 @@ public class MerchantModel extends BasePage implements Serializable {
 
     public void setMoney(BigDecimal money) {
         this.money = money;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public Integer getMerchantType() {
+        return merchantType;
+    }
+
+    public void setMerchantType(Integer merchantType) {
+        this.merchantType = merchantType;
+    }
+
+    public String getAcName() {
+        return acName;
+    }
+
+    public void setAcName(String acName) {
+        this.acName = acName;
+    }
+
+    public String getAcContacts() {
+        return acContacts;
+    }
+
+    public void setAcContacts(String acContacts) {
+        this.acContacts = acContacts;
     }
 }

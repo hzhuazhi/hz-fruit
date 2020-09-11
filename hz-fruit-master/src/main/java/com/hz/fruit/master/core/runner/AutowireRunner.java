@@ -46,8 +46,6 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private MerchantService merchantService;
 
     @Autowired
     private MerchantRechargeService merchantRechargeService;
@@ -57,16 +55,7 @@ public class AutowireRunner implements ApplicationRunner {
     private MerchantDataService merchantDataService;
 
     @Autowired
-    private BankTypeService bankTypeService;
-
-    @Autowired
     private IssueService issueService;
-
-    @Autowired
-    private ChannelService channelService;
-
-    @Autowired
-    private ChannelBankService channelBankService;
 
     @Autowired
     private StatisticsClickPayService statisticsClickPayService;
@@ -89,6 +78,9 @@ public class AutowireRunner implements ApplicationRunner {
     private ShortMsgArrearsService shortMsgArrearsService;
 
     @Autowired
+    private BankTypeService bankTypeService;
+
+    @Autowired
     private BankService bankService;
 
     @Autowired
@@ -102,6 +94,15 @@ public class AutowireRunner implements ApplicationRunner {
 
     @Autowired
     private BankShortMsgService bankShortMsgService;
+
+    @Autowired
+    private ChannelService channelService;
+
+    @Autowired
+    private ChannelBankService channelBankService;
+
+    @Autowired
+    private MerchantService merchantService;
 
 
 
@@ -120,13 +121,10 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.strategyService = strategyService;
         ComponentUtil.orderService = orderService;
 
-        ComponentUtil.merchantService = merchantService;
+
         ComponentUtil.merchantRechargeService = merchantRechargeService;
         ComponentUtil.merchantDataService = merchantDataService;
-        ComponentUtil.bankTypeService = bankTypeService;
         ComponentUtil.issueService = issueService;
-        ComponentUtil.channelService = channelService;
-        ComponentUtil.channelBankService = channelBankService;
         ComponentUtil.statisticsClickPayService = statisticsClickPayService;
         ComponentUtil.shortChainService = shortChainService;
 
@@ -136,11 +134,15 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.mobileCardShortMsgService = mobileCardShortMsgService;
         ComponentUtil.shortMsgStrategyService = shortMsgStrategyService;
         ComponentUtil.shortMsgArrearsService = shortMsgArrearsService;
+        ComponentUtil.bankTypeService = bankTypeService;
         ComponentUtil.bankService = bankService;
         ComponentUtil.bankCollectionService = bankCollectionService;
         ComponentUtil.bankStrategyService = bankStrategyService;
         ComponentUtil.bankShortMsgStrategyService = bankShortMsgStrategyService;
         ComponentUtil.bankShortMsgService = bankShortMsgService;
+        ComponentUtil.channelService = channelService;
+        ComponentUtil.channelBankService = channelBankService;
+        ComponentUtil.merchantService = merchantService;
 
         runThread = new RunThread();
         runThread.start();

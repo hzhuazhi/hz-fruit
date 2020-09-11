@@ -5,8 +5,10 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.alias,a.balance,a.least_money,a.remark,a.use_status,
-        a.create_time,a.update_time,a.yn
+        a.id,a.account_id,a.alias,a.balance,a.least_money,a.merchant_type,
+        a.remark,a.use_status,
+        a.create_time,a.update_time,a.yn,
+        b.ac_name,b.ac_contacts
     </sql>
 
     <!-- 查询条件 -->
@@ -16,13 +18,20 @@
             <if test="id != null and id != '' " >
                 and a.id = #{id}
             </if>
+            <if test="accountId != null and accountId != '' " >
+                and a.account_id = #{accountId}
+            </if>
             <if test="money != null and money != '' " >
                 and a.balance > #{money}
+            </if>
+            <if test="merchantType != null and merchantType != '' " >
+                and a.merchant_type = #{merchantType}
             </if>
             <if test="useStatus != null and useStatus != '' " >
                 and a.use_status = #{useStatus}
             </if>
             and a.yn = 0
+            and b.id is not null
         </trim>
     </sql>
 
@@ -48,7 +57,7 @@
     <select id="findAll" resultType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -56,7 +65,7 @@
     <select id="findByCondition" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -64,7 +73,7 @@
     <select id="findByObject" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
@@ -73,7 +82,7 @@
     <select id="findById" parameterType="java.lang.Long" resultType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -81,7 +90,7 @@
     <!-- 查询总数-->
     <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
         select count(1)
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -89,7 +98,7 @@
     <select id="queryByList" parameterType="Object" resultType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         select
         <include refid="Base_Column_List" />
-        from tb_fr_merchant a
+        from tb_fr_merchant a left join tb_hz_sys_account b on a.account_id = b.id and b.yn = 0
         <include refid="Example_Where_Clause"/>
         <include refid="Example_Order_By"/>
         <if test="pageNumber != null and pageNumber != ''" >
@@ -105,6 +114,9 @@
         <!--</selectKey>-->
         insert into tb_fr_merchant
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="accountId != null and accountId != '' " >
+                account_id,
+            </if>
             <if test="alias != null and alias != '' " >
                 alias,
             </if>
@@ -113,6 +125,9 @@
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 least_money,
+            </if>
+            <if test="merchantType != null and merchantType != '' " >
+                merchant_type,
             </if>
             <if test="remark != null and remark != '' " >
                 remark,
@@ -124,6 +139,9 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="accountId != null and accountId != '' " >
+                <![CDATA[  #{accountId}, ]]>
+            </if>
             <if test="alias != null and alias != '' " >
                 <![CDATA[  #{alias}, ]]>
             </if>
@@ -132,6 +150,9 @@
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 <![CDATA[  #{leastMoney}, ]]>
+            </if>
+            <if test="merchantType != null and merchantType != '' " >
+                <![CDATA[  #{merchantType}, ]]>
             </if>
             <if test="remark != null and remark != '' " >
                 <![CDATA[  #{remark}, ]]>
@@ -147,6 +168,9 @@
     <update id="update" parameterType="com.hz.fruit.master.core.model.merchant.MerchantModel">
         UPDATE tb_fr_merchant a
         <trim prefix="set" suffixOverrides=",">
+            <if test="accountId != null and accountId != '' " >
+                a.account_id = #{accountId},
+            </if>
             <if test="alias != null and alias != '' " >
                 a.alias = #{alias},
             </if>
@@ -155,6 +179,9 @@
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 a.least_money = #{leastMoney},
+            </if>
+            <if test="merchantType != null and merchantType != '' " >
+                a.merchant_type = #{merchantType},
             </if>
             <if test="remark != null and remark != '' " >
                 a.remark = #{remark},

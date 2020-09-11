@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @Description 卡商的Service层的实现层
+ * @Description 卡商扩充数据的Service层的实现层
  * @Author yoko
  * @Date 2020/9/8 17:06
  * @Version 1.0

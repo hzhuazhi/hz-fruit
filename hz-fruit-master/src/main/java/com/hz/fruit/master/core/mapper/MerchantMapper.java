@@ -5,7 +5,7 @@ import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @Description 卡商的Dao层
+ * @Description 卡商扩充数据的Dao层
  * @Author yoko
  * @Date 2020/9/8 17:05
  * @Version 1.0
