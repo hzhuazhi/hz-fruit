@@ -20,7 +20,6 @@ public class ComponentUtil {
 
 
 
-    public static IssueService issueService;
     public static StatisticsClickPayService statisticsClickPayService;
     public static ShortChainService shortChainService;
 

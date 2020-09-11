@@ -20,13 +20,9 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private Long id;
 
-    /**
-     * 订单归属的卡商ID：对应表tb_fr_merchant的主键ID
-     */
-    private Long merchantId;
 
     /**
-     * 归属卡商银行卡ID：对应表tb_fr_merchant_bank的主键ID
+     * 归属银行卡ID：对应表tb_fr_bank的主键ID
      */
     private Long bankId;
 
@@ -90,6 +86,26 @@ public class OrderModel extends BasePage implements Serializable {
      * 银行代码
      */
     private String bankCode;
+
+    /**
+     * 归属手机号ID：对应表tb_fn_mobile_card的主键ID
+     */
+    private Long mobileCardId;
+
+    /**
+     * 银行卡归属手机号
+     */
+    private String phoneNum;
+
+    /**
+     * 归属卡商的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
+     */
+    private Long accountId;
+
+    /**
+     * 银行归属卡商名称
+     */
+    private String merchantName;
 
     /**
      * 是否是补单：1初始化不是补单，2是补单
@@ -167,21 +183,12 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private String orderStatusStr;
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
     }
 
     public Long getBankId() {
@@ -286,6 +293,38 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public Long getMobileCardId() {
+        return mobileCardId;
+    }
+
+    public void setMobileCardId(Long mobileCardId) {
+        this.mobileCardId = mobileCardId;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public Integer getReplenishType() {

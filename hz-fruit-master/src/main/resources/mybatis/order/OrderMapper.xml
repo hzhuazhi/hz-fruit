@@ -7,8 +7,9 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.merchant_id,a.bank_id,a.order_no,a.order_type,a.order_money,a.qr_code,a.out_trade_no,a.order_status,
-        a.invalid_time,a.notify_url,a.bank_name,a.bank_card,a.account_name,a.bank_code,a.replenish_type,a.work_type,
+        a.id,a.bank_id,a.order_no,a.order_type,a.order_money,a.qr_code,a.out_trade_no,a.order_status,
+        a.invalid_time,a.notify_url,a.bank_name,a.bank_card,a.account_name,a.bank_code,a.mobile_card_id,
+        a.phone_num,a.account_id,a.merchant_name,a.replenish_type,a.work_type,
         a.data_explain,a.remark,
         a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
         a.create_time,a.update_time,a.yn
@@ -21,9 +22,6 @@
         <trim  suffixOverrides="," >
             <if test="id != null and id != '' " >
                 and a.id = #{id}
-            </if>
-            <if test="merchantId != null and merchantId != '' " >
-                and a.merchant_id = #{merchantId}
             </if>
             <if test="bankId != null and bankId != '' " >
                 and a.bank_id = #{bankId}
@@ -42,6 +40,12 @@
             </if>
             <if test="invalidTime != null and invalidTime != '' " >
                 and a.invalid_time > now()
+            </if>
+            <if test="mobileCardId != null and mobileCardId != '' " >
+                and a.mobile_card_id = #{mobileCardId}
+            </if>
+            <if test="accountId != null and accountId != '' " >
+                and a.account_id = #{accountId}
             </if>
             <if test="replenishType != null and replenishType != '' " >
                 and a.replenish_type = #{replenishType}
@@ -132,9 +136,6 @@
         <!--</selectKey>-->
         insert into tb_fr_order
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="merchantId != null and merchantId != '' " >
-                merchant_id,
-            </if>
             <if test="bankId != null and bankId != '' " >
                 bank_id,
             </if>
@@ -174,6 +175,18 @@
             <if test="bankCode != null and bankCode != '' " >
                 bank_code,
             </if>
+            <if test="mobileCardId != null and mobileCardId != '' " >
+                mobile_card_id,
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                phone_num,
+            </if>
+            <if test="accountId != null and accountId != '' " >
+                account_id,
+            </if>
+            <if test="merchantName != null and merchantName != '' " >
+                merchant_name,
+            </if>
             <if test="replenishType != null and replenishType != '' " >
                 replenish_type,
             </if>
@@ -199,9 +212,6 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="merchantId != null and merchantId != '' " >
-                <![CDATA[  #{merchantId}, ]]>
-            </if>
             <if test="bankId != null and bankId != '' " >
                 <![CDATA[  #{bankId}, ]]>
             </if>
@@ -241,6 +251,18 @@
             <if test="bankCode != null and bankCode != '' " >
                 <![CDATA[  #{bankCode}, ]]>
             </if>
+            <if test="mobileCardId != null and mobileCardId != '' " >
+                <![CDATA[  #{mobileCardId}, ]]>
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                <![CDATA[  #{phoneNum}, ]]>
+            </if>
+            <if test="accountId != null and accountId != '' " >
+                <![CDATA[  #{accountId}, ]]>
+            </if>
+            <if test="merchantName != null and merchantName != '' " >
+                <![CDATA[  #{merchantName}, ]]>
+            </if>
             <if test="replenishType != null and replenishType != '' " >
                 <![CDATA[  #{replenishType}, ]]>
             </if>
@@ -270,9 +292,6 @@
     <update id="update" parameterType="com.hz.fruit.master.core.model.order.OrderModel">
         UPDATE tb_fr_order a
         <trim prefix="set" suffixOverrides=",">
-            <if test="merchantId != null and merchantId != '' " >
-                a.merchant_id = #{orderStatus},
-            </if>
             <if test="bankId != null and bankId != '' " >
                 a.bank_id = #{orderStatus},
             </if>
@@ -311,6 +330,18 @@
             </if>
             <if test="bankCode != null and bankCode != '' " >
                 a.bank_code = #{orderStatus},
+            </if>
+            <if test="mobileCardId != null and mobileCardId != '' " >
+                a.mobile_card_id = #{mobileCardId},
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                a.phone_num = #{phoneNum},
+            </if>
+            <if test="accountId != null and accountId != '' " >
+                a.account_id = #{accountId},
+            </if>
+            <if test="merchantName != null and merchantName != '' " >
+                a.merchant_name = #{merchantName},
             </if>
             <if test="replenishType != null and replenishType != '' " >
                 a.replenish_type = #{orderStatus},
