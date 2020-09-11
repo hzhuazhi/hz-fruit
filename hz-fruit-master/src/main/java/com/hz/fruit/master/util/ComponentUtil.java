@@ -37,6 +37,7 @@ public class ComponentUtil {
     public static BankCollectionService bankCollectionService;
     public static BankStrategyService bankStrategyService;
     public static BankShortMsgStrategyService bankShortMsgStrategyService;
+    public static BankShortMsgService bankShortMsgService;
 
 
 }

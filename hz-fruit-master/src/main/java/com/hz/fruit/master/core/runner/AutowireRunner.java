@@ -100,6 +100,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private BankShortMsgStrategyService bankShortMsgStrategyService;
 
+    @Autowired
+    private BankShortMsgService bankShortMsgService;
+
 
 
 
@@ -137,6 +140,7 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.bankCollectionService = bankCollectionService;
         ComponentUtil.bankStrategyService = bankStrategyService;
         ComponentUtil.bankShortMsgStrategyService = bankShortMsgStrategyService;
+        ComponentUtil.bankShortMsgService = bankShortMsgService;
 
         runThread = new RunThread();
         runThread.start();
