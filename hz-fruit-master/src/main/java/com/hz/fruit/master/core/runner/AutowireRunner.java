@@ -93,6 +93,12 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private MobileCardShortMsgService mobileCardShortMsgService;
 
+    @Autowired
+    private ShortMsgStrategyService shortMsgStrategyService;
+
+    @Autowired
+    private ShortMsgArrearsService shortMsgArrearsService;
+
 
 
 
@@ -128,6 +134,8 @@ public class AutowireRunner implements ApplicationRunner {
 
         ComponentUtil.mobileCardService = mobileCardService;
         ComponentUtil.mobileCardShortMsgService = mobileCardShortMsgService;
+        ComponentUtil.shortMsgStrategyService = shortMsgStrategyService;
+        ComponentUtil.shortMsgArrearsService = shortMsgArrearsService;
 
         runThread = new RunThread();
         runThread.start();

@@ -35,7 +35,8 @@ public class ComponentUtil {
 
     public static MobileCardService mobileCardService;
     public static MobileCardShortMsgService mobileCardShortMsgService;
-
+    public static ShortMsgStrategyService shortMsgStrategyService;
+    public static ShortMsgArrearsService shortMsgArrearsService;
 
 
 }
