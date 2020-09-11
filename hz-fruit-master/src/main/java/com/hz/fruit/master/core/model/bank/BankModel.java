@@ -148,4 +148,221 @@ public class BankModel extends BasePage implements Serializable {
      * 是否有效：0有效，1无效/删除
      */
     private Integer yn;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public Long getMobileCardId() {
+        return mobileCardId;
+    }
+
+    public void setMobileCardId(Long mobileCardId) {
+        this.mobileCardId = mobileCardId;
+    }
+
+    public Long getBankTypeId() {
+        return bankTypeId;
+    }
+
+    public void setBankTypeId(Long bankTypeId) {
+        this.bankTypeId = bankTypeId;
+    }
+
+    public Long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(String bankCard) {
+        this.bankCard = bankCard;
+    }
+
+    public String getSubbranchName() {
+        return subbranchName;
+    }
+
+    public void setSubbranchName(String subbranchName) {
+        this.subbranchName = subbranchName;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getSmsNum() {
+        return smsNum;
+    }
+
+    public void setSmsNum(String smsNum) {
+        this.smsNum = smsNum;
+    }
+
+    public String getLastNum() {
+        return lastNum;
+    }
+
+    public void setLastNum(String lastNum) {
+        this.lastNum = lastNum;
+    }
+
+    public String getInDayMoney() {
+        return inDayMoney;
+    }
+
+    public void setInDayMoney(String inDayMoney) {
+        this.inDayMoney = inDayMoney;
+    }
+
+    public String getInMonthMoney() {
+        return inMonthMoney;
+    }
+
+    public void setInMonthMoney(String inMonthMoney) {
+        this.inMonthMoney = inMonthMoney;
+    }
+
+    public String getOutDayMoney() {
+        return outDayMoney;
+    }
+
+    public void setOutDayMoney(String outDayMoney) {
+        this.outDayMoney = outDayMoney;
+    }
+
+    public String getOutMonthMoney() {
+        return outMonthMoney;
+    }
+
+    public void setOutMonthMoney(String outMonthMoney) {
+        this.outMonthMoney = outMonthMoney;
+    }
+
+    public Integer getIsArrears() {
+        return isArrears;
+    }
+
+    public void setIsArrears(Integer isArrears) {
+        this.isArrears = isArrears;
+    }
+
+    public Integer getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(Integer checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
+    public String getDataExplain() {
+        return dataExplain;
+    }
+
+    public void setDataExplain(String dataExplain) {
+        this.dataExplain = dataExplain;
+    }
+
+    public Integer getIsOk() {
+        return isOk;
+    }
+
+    public void setIsOk(Integer isOk) {
+        this.isOk = isOk;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getUseStatus() {
+        return useStatus;
+    }
+
+    public void setUseStatus(Integer useStatus) {
+        this.useStatus = useStatus;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getYn() {
+        return yn;
+    }
+
+    public void setYn(Integer yn) {
+        this.yn = yn;
+    }
 }

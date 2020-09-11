@@ -9,5 +9,5 @@ import com.hz.fruit.master.core.common.service.BaseService;
  * @Date 2020/5/21 17:01
  * @Version 1.0
  */
-public interface MerchantBankCollectionService<T> extends BaseService<T> {
+public interface BankCollectionService<T> extends BaseService<T> {
 }

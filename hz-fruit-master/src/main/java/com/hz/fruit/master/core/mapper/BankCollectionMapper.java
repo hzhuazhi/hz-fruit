@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @Version 1.0
  */
 @Mapper
-public interface MerchantBankCollectionMapper<T> extends BaseDao<T> {
+public interface BankCollectionMapper<T> extends BaseDao<T> {
 }

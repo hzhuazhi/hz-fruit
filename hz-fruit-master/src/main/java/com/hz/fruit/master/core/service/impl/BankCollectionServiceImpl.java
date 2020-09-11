@@ -2,8 +2,8 @@ package com.hz.fruit.master.core.service.impl;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
-import com.hz.fruit.master.core.mapper.MerchantBankCollectionMapper;
-import com.hz.fruit.master.core.service.MerchantBankCollectionService;
+import com.hz.fruit.master.core.mapper.BankCollectionMapper;
+import com.hz.fruit.master.core.service.BankCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-public class MerchantBankCollectionServiceImpl<T> extends BaseServiceImpl<T> implements MerchantBankCollectionService<T> {
+public class BankCollectionServiceImpl<T> extends BaseServiceImpl<T> implements BankCollectionService<T> {
     /**
      * 5分钟.
      */
@@ -23,9 +23,9 @@ public class MerchantBankCollectionServiceImpl<T> extends BaseServiceImpl<T> imp
     public long TWO_HOUR = 2;
 
     @Autowired
-    private MerchantBankCollectionMapper merchantBankCollectionMapper;
+    private BankCollectionMapper bankCollectionMapper;
 
     public BaseDao<T> getDao() {
-        return merchantBankCollectionMapper;
+        return bankCollectionMapper;
     }
 }

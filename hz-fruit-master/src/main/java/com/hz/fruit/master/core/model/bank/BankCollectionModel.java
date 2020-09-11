@@ -1,4 +1,4 @@
-package com.hz.fruit.master.core.model.merchant;
+package com.hz.fruit.master.core.model.bank;
 
 
 import com.hz.fruit.master.core.protocol.page.BasePage;
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @Date 2020/5/21 16:57
  * @Version 1.0
  */
-public class MerchantBankCollectionModel extends BasePage implements Serializable {
+public class BankCollectionModel extends BasePage implements Serializable {
     private static final long   serialVersionUID = 1203223201106L;
 
     /**
@@ -23,14 +23,16 @@ public class MerchantBankCollectionModel extends BasePage implements Serializabl
     private Long id;
 
     /**
-     * 归属银行卡ID：对应表tb_fr_merchant_bank的主键ID
+     * 归属银行卡ID：对应表tb_fn_bank的主键ID
      */
     private Long bankId;
 
     /**
-     * 订单号：这里订单号可能为空值，因为不一定匹配到订单
+     * 订单号：对应表tb_fn_did_recharge里面的订单号：后续补充进来的
      */
     private String orderNo;
+
+
 
     /**
      * 收款金额
