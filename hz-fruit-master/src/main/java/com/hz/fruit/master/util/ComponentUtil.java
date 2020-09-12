@@ -17,13 +17,6 @@ public class ComponentUtil {
     public static StrategyService strategyService;
 
 
-
-
-
-    public static StatisticsClickPayService statisticsClickPayService;
-    public static ShortChainService shortChainService;
-
-
     public static MobileCardService mobileCardService;
     public static MobileCardShortMsgService mobileCardShortMsgService;
     public static ShortMsgStrategyService shortMsgStrategyService;
@@ -40,6 +33,8 @@ public class ComponentUtil {
     public static MerchantRechargeService merchantRechargeService;
     public static OrderService orderService;
     public static OrderReplenishService orderReplenishService;
+    public static StatisticsClickPayService statisticsClickPayService;
+    public static ShortChainService shortChainService;
 
 
 }

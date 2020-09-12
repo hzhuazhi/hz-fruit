@@ -46,15 +46,6 @@ public class AutowireRunner implements ApplicationRunner {
 
 
 
-
-    @Autowired
-    private StatisticsClickPayService statisticsClickPayService;
-
-    @Autowired
-    private ShortChainService shortChainService;
-
-
-
     @Autowired
     private MobileCardService mobileCardService;
 
@@ -103,6 +94,12 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private OrderReplenishService orderReplenishService;
 
+    @Autowired
+    private StatisticsClickPayService statisticsClickPayService;
+
+    @Autowired
+    private ShortChainService shortChainService;
+
 
 
 
@@ -118,12 +115,6 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.loadConstant = loadConstant;
         ComponentUtil.regionService = regionService;
         ComponentUtil.strategyService = strategyService;
-
-
-
-
-        ComponentUtil.statisticsClickPayService = statisticsClickPayService;
-        ComponentUtil.shortChainService = shortChainService;
 
 
 
@@ -143,6 +134,8 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.merchantRechargeService = merchantRechargeService;
         ComponentUtil.orderService = orderService;
         ComponentUtil.orderReplenishService = orderReplenishService;
+        ComponentUtil.statisticsClickPayService = statisticsClickPayService;
+        ComponentUtil.shortChainService = shortChainService;
 
         runThread = new RunThread();
         runThread.start();
