@@ -19,7 +19,7 @@ public class BankStrategyModel extends BasePage implements Serializable {
     private Long id;
 
     /**
-     * 归属银行卡ID：对应表tb_fr_merchant_bank的主键ID
+     * 归属银行卡ID：对应表tb_fr_bank的主键ID
      */
     private Long bankId;
 

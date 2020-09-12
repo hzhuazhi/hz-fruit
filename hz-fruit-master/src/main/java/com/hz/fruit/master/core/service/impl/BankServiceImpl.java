@@ -3,9 +3,12 @@ package com.hz.fruit.master.core.service.impl;
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
 import com.hz.fruit.master.core.mapper.BankMapper;
+import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -43,5 +46,8 @@ public class BankServiceImpl<T> extends BaseServiceImpl<T> implements BankServic
     }
 
 
-
+    @Override
+    public List<BankModel> getBankAndStrategy(BankModel model) {
+        return bankMapper.getBankAndStrategy(model);
+    }
 }

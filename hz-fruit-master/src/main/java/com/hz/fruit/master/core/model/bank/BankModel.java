@@ -3,6 +3,8 @@ package com.hz.fruit.master.core.model.bank;
 import com.hz.fruit.master.core.protocol.page.BasePage;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description 银行/银行卡的实体属性Bean
@@ -26,7 +28,7 @@ public class BankModel extends BasePage implements Serializable {
     /**
      * 归属手机号ID：对应表tb_fn_mobile_card的主键ID
      */
-    private Long mobileCardId;
+    private Long accountId;
 
     /**
      * 银行卡归属类型：对应表tb_fr_bank_type的主键ID
@@ -150,6 +152,111 @@ public class BankModel extends BasePage implements Serializable {
     private Integer yn;
 
 
+
+
+
+
+
+
+
+    /**
+     * 归属银行卡ID：对应表tb_fr_bank的主键ID
+     */
+    private Long bankId;
+
+
+    /**
+     * 优先级：就是填入数字，数字越小的优先级越靠前
+     */
+    private Integer priority;
+
+    /**
+     * 放量时间段：支持多个时间段，以#号分割
+     */
+    private String openTimeSlot;
+
+    /**
+     * 微信日收款限量金额
+     */
+    private String wxInDayMoney;
+
+    /**
+     * 微信月收款限量金额
+     */
+    private String wxInMonthMoney;
+
+    /**
+     * 微信日收款限量次数
+     */
+    private Integer wxInDayNum;
+
+    /**
+     * 支付宝日收款限量金额
+     */
+    private String zfbInDayMoney;
+
+    /**
+     * 支付宝月收款限量金额
+     */
+    private String zfbInMonthMoney;
+
+    /**
+     * 支付宝日收款限量次数
+     */
+    private Integer zfbInDayNum;
+
+    /**
+     * 卡日收款限量金额
+     */
+    private String cardInDayMoney;
+
+    /**
+     * 卡月收款限量金额
+     */
+    private String cardInMonthMoney;
+
+    /**
+     * 卡日收款限量次数
+     */
+    private Integer cardInDayNum;
+
+
+    /**
+     * 卡商ID集合-SQL
+     */
+    private List<Long> accountIdList;
+
+    /**
+     * 手机卡ID集合-SQL
+     */
+    private List<Long> mobileCardIdList;
+
+    /**
+     * 商户与银行卡绑定关系的银行卡ID集合-SQL
+     */
+    private List<Long> yesBankIdList;
+
+    /**
+     * 商户与银行卡绑定关系的银行卡ID集合-not in -SQL
+     */
+    private List<Long> noBankIdList;
+
+    /**
+     * 账号昵称
+     */
+    private String acName;
+
+    /**
+     * 账号联系人
+     */
+    private String acContacts;
+
+    /**
+     * 金额
+     */
+    private BigDecimal money;
+
+
     public Long getId() {
         return id;
     }
@@ -166,12 +273,12 @@ public class BankModel extends BasePage implements Serializable {
         this.alias = alias;
     }
 
-    public Long getMobileCardId() {
-        return mobileCardId;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setMobileCardId(Long mobileCardId) {
-        this.mobileCardId = mobileCardId;
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public Long getBankTypeId() {
@@ -364,5 +471,157 @@ public class BankModel extends BasePage implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Long getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Long bankId) {
+        this.bankId = bankId;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public String getOpenTimeSlot() {
+        return openTimeSlot;
+    }
+
+    public void setOpenTimeSlot(String openTimeSlot) {
+        this.openTimeSlot = openTimeSlot;
+    }
+
+    public String getWxInDayMoney() {
+        return wxInDayMoney;
+    }
+
+    public void setWxInDayMoney(String wxInDayMoney) {
+        this.wxInDayMoney = wxInDayMoney;
+    }
+
+    public String getWxInMonthMoney() {
+        return wxInMonthMoney;
+    }
+
+    public void setWxInMonthMoney(String wxInMonthMoney) {
+        this.wxInMonthMoney = wxInMonthMoney;
+    }
+
+    public Integer getWxInDayNum() {
+        return wxInDayNum;
+    }
+
+    public void setWxInDayNum(Integer wxInDayNum) {
+        this.wxInDayNum = wxInDayNum;
+    }
+
+    public String getZfbInDayMoney() {
+        return zfbInDayMoney;
+    }
+
+    public void setZfbInDayMoney(String zfbInDayMoney) {
+        this.zfbInDayMoney = zfbInDayMoney;
+    }
+
+    public String getZfbInMonthMoney() {
+        return zfbInMonthMoney;
+    }
+
+    public void setZfbInMonthMoney(String zfbInMonthMoney) {
+        this.zfbInMonthMoney = zfbInMonthMoney;
+    }
+
+    public Integer getZfbInDayNum() {
+        return zfbInDayNum;
+    }
+
+    public void setZfbInDayNum(Integer zfbInDayNum) {
+        this.zfbInDayNum = zfbInDayNum;
+    }
+
+    public String getCardInDayMoney() {
+        return cardInDayMoney;
+    }
+
+    public void setCardInDayMoney(String cardInDayMoney) {
+        this.cardInDayMoney = cardInDayMoney;
+    }
+
+    public String getCardInMonthMoney() {
+        return cardInMonthMoney;
+    }
+
+    public void setCardInMonthMoney(String cardInMonthMoney) {
+        this.cardInMonthMoney = cardInMonthMoney;
+    }
+
+    public Integer getCardInDayNum() {
+        return cardInDayNum;
+    }
+
+    public void setCardInDayNum(Integer cardInDayNum) {
+        this.cardInDayNum = cardInDayNum;
+    }
+
+    public List<Long> getAccountIdList() {
+        return accountIdList;
+    }
+
+    public void setAccountIdList(List<Long> accountIdList) {
+        this.accountIdList = accountIdList;
+    }
+
+    public List<Long> getMobileCardIdList() {
+        return mobileCardIdList;
+    }
+
+    public void setMobileCardIdList(List<Long> mobileCardIdList) {
+        this.mobileCardIdList = mobileCardIdList;
+    }
+
+    public List<Long> getYesBankIdList() {
+        return yesBankIdList;
+    }
+
+    public void setYesBankIdList(List<Long> yesBankIdList) {
+        this.yesBankIdList = yesBankIdList;
+    }
+
+    public List<Long> getNoBankIdList() {
+        return noBankIdList;
+    }
+
+    public void setNoBankIdList(List<Long> noBankIdList) {
+        this.noBankIdList = noBankIdList;
+    }
+
+    public String getAcName() {
+        return acName;
+    }
+
+    public void setAcName(String acName) {
+        this.acName = acName;
+    }
+
+    public String getAcContacts() {
+        return acContacts;
+    }
+
+    public void setAcContacts(String acContacts) {
+        this.acContacts = acContacts;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 }

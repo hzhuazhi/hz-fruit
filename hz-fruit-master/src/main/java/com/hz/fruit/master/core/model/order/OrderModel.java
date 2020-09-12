@@ -108,6 +108,16 @@ public class OrderModel extends BasePage implements Serializable {
     private String merchantName;
 
     /**
+     * 归属的商户ID：对应表tb_fr_channel的主键ID
+     */
+    private Long channelId;
+
+    /**
+     * 商户名称
+     */
+    private String channelName;
+
+    /**
      * 是否是补单：1初始化不是补单，2是补单
      */
     private Integer replenishType;
@@ -471,5 +481,21 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setRunStatus(Integer runStatus) {
         this.runStatus = runStatus;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

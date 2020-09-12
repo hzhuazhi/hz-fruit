@@ -2,6 +2,9 @@ package com.hz.fruit.master.core.service;
 
 
 import com.hz.fruit.master.core.common.service.BaseService;
+import com.hz.fruit.master.core.model.bank.BankModel;
+
+import java.util.List;
 
 
 /**
@@ -11,5 +14,14 @@ import com.hz.fruit.master.core.common.service.BaseService;
  * @Version 1.0
  */
 public interface BankService<T> extends BaseService<T> {
+
+    /**
+     * @Description: 获取银行卡以及银行卡的放量策略数据
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/12 16:24
+     */
+    public List<BankModel> getBankAndStrategy(BankModel model);
 
 }

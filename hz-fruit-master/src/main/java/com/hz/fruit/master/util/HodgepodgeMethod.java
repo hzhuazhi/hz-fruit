@@ -6,9 +6,11 @@ import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
+import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
+import com.hz.fruit.master.core.model.mobilecard.MobileCardModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.statistics.StatisticsClickPayModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -318,6 +321,50 @@ public class HodgepodgeMethod {
         }
     }
 
+    /**
+     * @Description: 组装查询手机号的查询方法
+     * @param id - 主键ID
+     * @param phoneNum - 手机号
+     * @param isArrears - 是否欠费：1未欠费，2欠费
+     * @param heartbeatStatus - 心跳状态：1初始化异常，2正常
+     * @param useStatus - 使用状态:1初始化有效正常使用，2无效暂停使用
+     * @return com.hz.fruit.master.core.model.mobilecard.MobileCardModel
+     * @author yoko
+     * @date 2020/9/12 14:53
+     */
+    public static MobileCardModel assembleMobileCardQuery(long id, String phoneNum, int isArrears, int heartbeatStatus, int useStatus){
+        MobileCardModel resBean = new MobileCardModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(phoneNum)){
+            resBean.setPhoneNum(phoneNum);
+        }
+        if (isArrears > 0){
+            resBean.setIsArrears(isArrears);
+        }
+        if (heartbeatStatus > 0){
+            resBean.setHeartbeatStatus(heartbeatStatus);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: check校验手机卡数据是否为空
+     * @param mobileCardList
+     * @return
+     * @author yoko
+     * @date 2020/9/12 15:00
+    */
+    public static void checkmobileCardIsNull(List<MobileCardModel> mobileCardList) throws Exception{
+        if (mobileCardList == null || mobileCardList.size() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00011.geteCode(), ErrorCode.ENUM_ERROR.OR00011.geteDesc());
+        }
+    }
+
 
     /**
      * @Description: 组装查询商户与银行卡绑定关系的查询方法
@@ -344,6 +391,80 @@ public class HodgepodgeMethod {
             resBean.setUseStatus(useStatus);
         }
         return resBean;
+    }
+
+    /**
+     * @Description: 组装银行卡以及放量策略的查询条件
+     * @param orderMoney
+     * @return
+     * @author yoko
+     * @date 2020/9/12 20:15
+    */
+    public static BankModel assembleBankByOrderQuery(String orderMoney){
+        BankModel resBean = new BankModel();
+        if (!StringUtils.isBlank(orderMoney)){
+            BigDecimal bd = new BigDecimal(orderMoney);
+            resBean.setMoney(bd);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: check校验银行卡以及银行卡的放量策略数据是否为空
+     * @param bankList
+     * @return
+     * @author yoko
+     * @date 2020/9/12 20:19
+    */
+    public static void checkBankIsNull(List<BankModel> bankList) throws Exception{
+        if (bankList == null || bankList.size() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00012.geteCode(), ErrorCode.ENUM_ERROR.OR00012.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 根据银行卡优先级排序银行卡集合
+     * <p>
+     *     商户与银行卡绑定关系的优先级排在集合的前面；
+     *     商户未与银行卡绑定关系的优先级排在集合的后面
+     * </p>
+     * @param bankList
+     * @param bankIdList
+     * @return java.util.List<com.hz.fruit.master.core.model.bank.BankModel>
+     * @author yoko
+     * @date 2020/9/12 20:26
+     */
+    public static List<BankModel> assembleBankByPriority(List<BankModel> bankList, List<Long> bankIdList){
+        List<BankModel> resList = new ArrayList<>();
+        if (bankIdList == null || bankIdList.size() <= 0){
+            resList = bankList;
+        }else {
+            List<BankModel> yesList = new ArrayList<>();
+            List<BankModel> noList = new ArrayList<>();
+            for (BankModel bankModel : bankList){
+                int num = 0;
+                for (long bankId : bankIdList){
+                    if (bankModel.getId() == bankId){
+                        num = 1;
+                        break;
+                    }
+                }
+                if (num != 0){
+                    yesList.add(bankModel);
+                }else {
+                    noList.add(bankModel);
+                }
+            }
+
+            if (yesList != null && yesList.size() > 0){
+                resList.addAll(yesList);
+            }
+            if (noList != null && noList.size() > 0){
+                resList.addAll(noList);
+            }
+
+        }
+        return resList;
     }
 
 
