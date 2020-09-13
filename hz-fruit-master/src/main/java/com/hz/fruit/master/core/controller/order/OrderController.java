@@ -83,17 +83,17 @@ public class OrderController {
      * @date 2019/11/25 22:58
      * local:http://localhost:8089/fruit/order/qrCode
      * 请求的属性类:RequestOrder
-     * 必填字段:{"money":"1111","payType":1,"outTradeNo":"outTradeNo1","notifyUrl":"notify_url","returnUrl":"http://www.baidu.com","secretKey":"秘钥_7"}
-     * 加密字段:{"jsonData":"eyJtb25leSI6IjExMTEiLCJwYXlUeXBlIjoyLCJvdXRUcmFkZU5vIjoib3V0VHJhZGVObzEiLCJub3RpZnlVcmwiOiJub3RpZnlfdXJsIiwicmV0dXJuVXJsIjoiaHR0cDovL3d3dy5iYWlkdS5jb20iLCJhZ3RWZXIiOjEsImNsaWVudFZlciI6MSwiY2xpZW50VHlwZSI6MSwiY3RpbWUiOjIwMTkxMTA3MTgwMjk1OSwiY2N0aW1lIjoyMDE5MTEwNzE4MDI5NTksInNpZ24iOiJhYmNkZWZnIiwidG9rZW4iOiIxMTExMTEifQ=="}
+     * 必填字段:{"money":"1111","payType":2,"outTradeNo":"outTradeNo1","notifyUrl":"notify_url","returnUrl":"http://www.baidu.com","secretKey":"秘钥_7"}
+     * 加密字段:{"jsonData":"eyJtb25leSI6IjExMTEiLCJwYXlUeXBlIjoyLCJvdXRUcmFkZU5vIjoib3V0VHJhZGVObzEiLCJub3RpZnlVcmwiOiJub3RpZnlfdXJsIiwicmV0dXJuVXJsIjoiaHR0cDovL3d3dy5iYWlkdS5jb20iLCJzZWNyZXRLZXkiOiLnp5jpkqVfNyJ9"}
      * 客户端加密字段:ctime+cctime+秘钥=sign
      * 服务端加密字段:stime+秘钥=sign
      * result={
      *     "resultCode": "0",
      *     "message": "success",
      *     "data": {
-     *         "jsonData": "eyJvcmRlciI6eyJpbnZhbGlkU2Vjb25kIjoiMjk5IiwiaW52YWxpZFRpbWUiOiIyMDIwLTA3LTIxIDE0OjE1OjU5Iiwib3JkZXJNb25leSI6IjEwMC4wMCIsIm9yZGVyTm8iOiIyMDIwMDcyMTE0MTA1ODAwMDAwMDEiLCJxckNvZGUiOiIiLCJxckNvZGVVcmwiOiJodHRwJTNBJTJGJTJGd3d3LnliemZtLmNvbSUzQTgwMDIlMkZ3eCUyRmluZGV4Lmh0bWwlM0ZvcmRlck5vJTNEMjAyMDA3MjExNDEwNTgwMDAwMDAxJTI2cmV0dXJuVXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5iYWlkdS5jb20ifSwic2lnbiI6IiIsInN0aW1lIjoxNTk1MzExODU5NTcxfQ=="
+     *         "jsonData": "eyJvcmRlciI6eyJhY2NvdW50TmFtZSI6IuW8gOaIt+S6ul83XzQiLCJiYW5rQ2FyZCI6IumTtuihjOWNoV83XzQiLCJiYW5rQ29kZSI6IueugOeggV83XzQiLCJiYW5rTmFtZSI6IumTtuihjOWQjeensF83XzQiLCJpbnZhbGlkU2Vjb25kIjoiODk2IiwiaW52YWxpZFRpbWUiOiIyMDIwLTA5LTEzIDE2OjUwOjU2Iiwib3JkZXJNb25leSI6IjExMTEuMDAiLCJvcmRlck5vIjoiMjAyMDA5MTMxNjM1NTUwMDAwMDAxIiwib3JkZXJTdGF0dXMiOjEsInFyQ29kZVVybCI6Imh0dHAlM0ElMkYlMkZ3d3cueWJ6Zm0uY29tJTNBODAwMiUyRnBheTEyMyUyRmg1cXJjb2RlLmh0bWwlM0ZvcmRlck5vJTNEMjAyMDA5MTMxNjM1NTUwMDAwMDAxJTI2cmV0dXJuVXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5iYWlkdS5jb20ifSwic2lnbiI6IiIsInN0aW1lIjoxNTk5OTg2MTU2MzU2fQ=="
      *     },
-     *     "sgid": "202007211410580000001",
+     *     "sgid": "202009131635550000001",
      *     "cgid": ""
      * }
      */
@@ -235,17 +235,15 @@ public class OrderController {
      * local:http://localhost:8089/fruit/order/getQrCode
      * 请求的属性类:RequestOrder
      * 必填字段:{"orderNo":"order_no_3"}
-     * 加密字段:{"jsonData":"eyJvcmRlck5vIjoib3JkZXJfbm9fMyIsImFndFZlciI6MSwiY2xpZW50VmVyIjoxLCJjbGllbnRUeXBlIjoxLCJjdGltZSI6MjAxOTExMDcxODAyOTU5LCJjY3RpbWUiOjIwMTkxMTA3MTgwMjk1OSwic2lnbiI6ImFiY2RlZmciLCJ0b2tlbiI6IjExMTExMSJ9"}
+     * 加密字段:{"jsonData":"eyJvcmRlck5vIjoiMjAyMDA5MTMxNjM1NTUwMDAwMDAxIn0="}
      * 客户端加密字段:id+ctime+cctime+秘钥=sign
      * 服务端加密字段:stime+秘钥=sign
      * result={
      *     "resultCode": "0",
      *     "message": "success",
      *     "data": {
-     *         "jsonData": "eyJvcmRlciI6eyJpbnZhbGlkVGltZSI6IjIwMjEtMDUtMjkgMTQ6MjI6MDciLCJvcmRlck1vbmV5IjoiMTAuMDEiLCJvcmRlck5vIjoib3JkZXJfbm9fMSIsInFyQ29kZSI6InFyX2NvZGVfMSJ9LCJzaWduIjoiOThiYTcxY2NhZjhhY2NiZDYyYWU3ZDUwMjRlZDY3MDEiLCJzdGltZSI6MTU5MTYxNzM2MjQwNH0="
-     *     },
-     *     "sgid": "202006081956000000001",
-     *     "cgid": ""
+     *         "jsonData": "eyJvcmRlciI6eyJhY2NvdW50TmFtZSI6IuW8gOaIt+S6ul83XzQiLCJiYW5rQ2FyZCI6IumTtuihjOWNoV83XzQiLCJiYW5rQ29kZSI6IueugOeggV83XzQiLCJiYW5rTmFtZSI6IumTtuihjOWQjeensF83XzQiLCJpbnZhbGlkU2Vjb25kIjoiMjQyIiwiaW52YWxpZFRpbWUiOiIyMDIwLTA5LTEzIDE2OjUwOjU2Iiwib3JkZXJNb25leSI6IjExMTEuMDAiLCJvcmRlck5vIjoiMjAyMDA5MTMxNjM1NTUwMDAwMDAxIiwic2hvcnRDaGFpbiI6Imh0dHA6Ly93ejIuaW4vMk8xVmJnIn0sInNpZ24iOiI3MzgzMzcwMmQzZDUzZmVjNDdjYzAyOGIzMTg5ZjliZCIsInN0aW1lIjoxNTk5OTg2ODEzMjcwfQ=="
+     *     }
      * }
      */
     @RequestMapping(value = "/getQrCode", method = {RequestMethod.POST})
@@ -305,18 +303,16 @@ public class OrderController {
      * @date 2019/11/25 22:58
      * local:http://localhost:8089/fruit/order/getOrderStatus
      * 请求的属性类:RequestOrder
-     * 必填字段:{"orderNo":"order_no_3"}
-     * 加密字段:{"jsonData":"eyJvcmRlck5vIjoiMjAyMDA3MDcxMDM2MDUwMDAwMDAxIn0="}
+     * 必填字段:{"orderNo":"202009131631330000001"}
+     * 加密字段:{"jsonData":"eyJvcmRlck5vIjoiMjAyMDA5MTMxNjM1NTUwMDAwMDAxIn0="}
      * 客户端加密字段:id+ctime+cctime+秘钥=sign
      * 服务端加密字段:stime+秘钥=sign
      * result={
      *     "resultCode": "0",
      *     "message": "success",
      *     "data": {
-     *         "jsonData": "eyJkYXRhTW9kZWwiOnsiYWNOYW1lIjoiYWNOYW1lMyIsImNvbGxlY3Rpb25UeXBlIjoxLCJjcmVhdGVUaW1lIjoiMjAyMC0wNS0yOSAxNDoyMjowNyIsIm9yZGVyTW9uZXkiOiIzMC4wMyIsIm9yZGVyTm8iOiJvcmRlcl9ub18zIiwib3JkZXJTdGF0dXMiOjR9LCJzaWduIjoiZTdiMzNlZTJiNWU5ZTVhNGVkOWQ4ZDU4NmEzZGM5YTUiLCJzdGltZSI6MTU5MDc0NTc5OTQzMX0="
-     *     },
-     *     "sgid": "202005291749570000001",
-     *     "cgid": ""
+     *         "jsonData": "eyJvcmRlclN0YXR1cyI6MX0="
+     *     }
      * }
      */
     @RequestMapping(value = "/getOrderStatus", method = {RequestMethod.POST})

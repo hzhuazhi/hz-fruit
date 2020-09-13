@@ -18,7 +18,7 @@ public class ShortChainUtil {
             String url1 = "https://www.alipay.com/?appId=09999988&actionType=toCard&sourceId=bill&cardNo="+ bankModel.getBankCard() + "&bankAccount=" + bankModel.getAccountName() + "&money=0&amount=0&bankMark=" + bankModel.getBankCode() + "&bankName=" + bankModel.getBankName();
             url1 = URLEncoder.encode(url1,"UTF-8");
 //            String url = "http://api.6du.in/urls/add?secretkey=555098a19f6ae3b0ICAgICA0c782c0757f395fdgNjA2Mg&lurl="+url1;
-            String url = shortChainApi + "&" + url1;
+            String url = shortChainApi + "&lurl=" + url1;
             return str1 = HttpGetUtil.sendGetUrl(url);
         }catch (Exception e){
             e.printStackTrace();
