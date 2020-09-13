@@ -12,7 +12,7 @@ import java.net.URLEncoder;
  */
 public class ShortChainUtil {
 
-    public static String getH5Url(BankModel bankModel, String shortChainApi){
+    public static String getShortChainUrl(BankModel bankModel, String shortChainApi){
         String str1 = "";
         try{
             String url1 = "https://www.alipay.com/?appId=09999988&actionType=toCard&sourceId=bill&cardNo="+ bankModel.getBankCard() + "&bankAccount=" + bankModel.getAccountName() + "&money=0&amount=0&bankMark=" + bankModel.getBankCode() + "&bankName=" + bankModel.getBankName();
@@ -44,7 +44,7 @@ public class ShortChainUtil {
         bankModel.setAccountName("孟宪宏");
         bankModel.setBankCode("CEB");
         bankModel.setBankName("光大银行");
-        String sb = getH5Url(bankModel, api);
+        String sb = getShortChainUrl(bankModel, api);
         System.out.println("sb:" + sb);
     }
 }

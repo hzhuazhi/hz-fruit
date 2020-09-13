@@ -15,6 +15,10 @@ import java.util.List;
 public class BankModel extends BasePage implements Serializable {
     private static final long   serialVersionUID = 1203223201121L;
 
+    public BankModel(){
+
+    }
+
     /**
      * 主键ID
      */

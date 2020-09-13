@@ -3,6 +3,7 @@ package com.hz.fruit.master.core.service;
 
 import com.hz.fruit.master.core.common.service.BaseService;
 import com.hz.fruit.master.core.model.bank.BankModel;
+import com.hz.fruit.master.core.model.order.OrderModel;
 
 import java.util.List;
 
@@ -25,4 +26,14 @@ public interface OrderService<T> extends BaseService<T> {
      * @date 2020/9/12 20:49
     */
     public BankModel screenBank(List<BankModel> bankList, String orderMoney, int payType, int orderMoneyLockTime);
+
+
+    /**
+     * @Description: 根据订单号查询订单状态
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/6/8 20:00
+     */
+    public int getOrderStatus(OrderModel model);
 }

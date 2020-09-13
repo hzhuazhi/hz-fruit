@@ -203,6 +203,10 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private String orderStatusStr;
 
+    public OrderModel(){
+
+    }
+
     public Long getId() {
         return id;
     }

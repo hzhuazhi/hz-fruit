@@ -1,9 +1,17 @@
 package com.hz.fruit.master.core.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
+import com.hz.fruit.master.core.common.utils.constant.CacheKey;
+import com.hz.fruit.master.core.common.utils.constant.CachedKeyUtils;
+import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.mapper.ShortChainMapper;
+import com.hz.fruit.master.core.model.shortchain.ShortChainModel;
 import com.hz.fruit.master.core.service.ShortChainService;
+import com.hz.fruit.master.util.ComponentUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +47,30 @@ public class ShortChainServiceImpl<T> extends BaseServiceImpl<T> implements Shor
 
     public BaseDao<T> getDao() {
         return shortChainMapper;
+    }
+
+    @Override
+    public ShortChainModel getShortChain(ShortChainModel model, int isCache) throws Exception {
+        ShortChainModel dataModel = null;
+        if (isCache == ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.SHORT_CHAIN);
+            String strCache = (String) ComponentUtil.redisService.get(strKeyCache);
+            if (!StringUtils.isBlank(strCache)) {
+                // 从缓存里面获取数据
+                dataModel = JSON.parseObject(strCache, ShortChainModel.class);
+            } else {
+                //查询数据库
+                dataModel = (ShortChainModel) shortChainMapper.findByObject(model);
+                if (dataModel != null && dataModel.getId() != ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO) {
+                    // 把数据存入缓存
+                    ComponentUtil.redisService.set(strKeyCache, JSON.toJSONString(dataModel, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty), FIVE_MIN);
+                }
+            }
+        }else {
+            // 直接查数据库
+            // 查询数据库
+            dataModel = (ShortChainModel) shortChainMapper.findByObject(model);
+        }
+        return dataModel;
     }
 }

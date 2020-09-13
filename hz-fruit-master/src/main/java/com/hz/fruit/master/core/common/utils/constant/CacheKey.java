@@ -88,6 +88,11 @@ public interface CacheKey {
      */
     String CARD_IN_DAY_NUM = "-14";
 
+    /**
+     * 短代API
+     */
+    String SHORT_CHAIN = "-15";
+
 
 
 }

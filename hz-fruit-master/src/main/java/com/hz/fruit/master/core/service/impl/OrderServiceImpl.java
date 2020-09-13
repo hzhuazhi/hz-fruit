@@ -6,6 +6,7 @@ import com.hz.fruit.master.core.common.utils.constant.CacheKey;
 import com.hz.fruit.master.core.common.utils.constant.CachedKeyUtils;
 import com.hz.fruit.master.core.mapper.OrderMapper;
 import com.hz.fruit.master.core.model.bank.BankModel;
+import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.service.OrderService;
 import com.hz.fruit.master.util.ComponentUtil;
 import org.apache.commons.lang.StringUtils;
@@ -60,6 +61,11 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
             }
         }
         return null;
+    }
+
+    @Override
+    public int getOrderStatus(OrderModel model) {
+        return orderMapper.getOrderStatus(model);
     }
 
     /**

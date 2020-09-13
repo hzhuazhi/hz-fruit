@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.hz.fruit.master.core.common.exception.ServiceException;
 import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
+import com.hz.fruit.master.core.common.utils.ShortChainUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
 import com.hz.fruit.master.core.model.bank.BankModel;
@@ -676,6 +677,50 @@ public class HodgepodgeMethod {
         }
         dataModel.setStime(stime);
         dataModel.setSign(sign);
+        return JSON.toJSONString(dataModel);
+    }
+
+
+    /**
+     * @Description: 调用短链的公共方法，生成短链
+     * @param orderModel - 订单信息
+     * @param interfaceAds - 短链的API
+     * @return
+     * @author yoko
+     * @date 2020/9/13 16:18
+    */
+    public static String getShortChain(OrderModel orderModel, String interfaceAds){
+        String str = null;
+        if (orderModel != null && orderModel.getId() != null && orderModel.getId() > 0){
+            if (orderModel.getOrderType() == 2){
+                // 支付宝转卡
+                BankModel bankModel = BeanUtils.copy(orderModel, BankModel.class);
+                if (bankModel != null && !StringUtils.isBlank(bankModel.getBankCard())){
+                    // 生成短链
+                    str = ShortChainUtil.getShortChainUrl(bankModel, interfaceAds);
+                }
+            }
+        }
+        return str;
+    }
+
+
+    /**
+     * @Description: 查询派单成功的订单状态数据组装返回客户端的方法
+     * @param stime - 服务器的时间
+     * @param sign - 签名
+     * @param orderStatus - 不等于0表示成功
+     * @return java.lang.String
+     * @author yoko
+     * @date 2019/11/25 22:45
+     */
+    public static String assembleOrderStatusResult(long stime, String sign, int orderStatus){
+        ResponseOrder resBean = new ResponseOrder();
+        Order dataModel = new Order();
+        dataModel.orderStatus = orderStatus;
+        resBean.order = dataModel;
+        resBean.setStime(stime);
+        resBean.setSign(sign);
         return JSON.toJSONString(dataModel);
     }
 

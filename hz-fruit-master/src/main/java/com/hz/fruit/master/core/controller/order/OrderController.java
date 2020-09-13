@@ -250,8 +250,6 @@ public class OrderController {
      */
     @RequestMapping(value = "/getQrCode", method = {RequestMethod.POST})
     public JsonResult<Object> getQrCode(HttpServletRequest request, HttpServletResponse response, @RequestBody RequestEncryptionJson requestData) throws Exception{
-        String cgid = "";
-        String ip = StringUtil.getIpAddress(request);
         String data = "";
 
         RequestOrder requestModel = new RequestOrder();
@@ -264,15 +262,16 @@ public class OrderController {
             HodgepodgeMethod.checkOrderByQrCodeData(requestModel);
 
             // 获取短链数据
-            ShortChainModel shortChainModel = (ShortChainModel)ComponentUtil.shortChainService.findByObject(new ShortChainModel());
-
+            ShortChainModel shortChainModel = ComponentUtil.shortChainService.getShortChain(new ShortChainModel(), ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+            HodgepodgeMethod.checkShortChainIsNull(shortChainModel);
 
             // 收款账号详情数据
             OrderModel orderQuery = HodgepodgeMethod.assembleOrderByOrderNoQuery(requestModel.orderNo, 1);
             OrderModel orderData = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
 
             // 生成短链
-            String shortChain = "";
+            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds());
+
             // 组装返回客户端的数据
             long stime = System.currentTimeMillis();
             String sign = SignUtil.getSgin(stime, secretKeySign); // stime+秘钥=sign
@@ -289,6 +288,73 @@ public class OrderController {
             log.error(String.format("this OrderController.getQrCode() is error , the data=%s!", data));
             if (!StringUtils.isBlank(map.get("dbCode"))){
                 log.error(String.format("this OrderController.getQrCode() is error codeInfo, the dbCode=%s and dbMessage=%s !", map.get("dbCode"), map.get("dbMessage")));
+            }
+            e.printStackTrace();
+            return JsonResult.failedResult(map.get("message"), map.get("code"));
+        }
+    }
+
+
+
+    /**
+     * @Description: 获取派单的订单状态
+     * @param request
+     * @param response
+     * @return com.gd.chain.common.utils.JsonResult<java.lang.Object>
+     * @author yoko
+     * @date 2019/11/25 22:58
+     * local:http://localhost:8089/fruit/order/getOrderStatus
+     * 请求的属性类:RequestOrder
+     * 必填字段:{"orderNo":"order_no_3"}
+     * 加密字段:{"jsonData":"eyJvcmRlck5vIjoiMjAyMDA3MDcxMDM2MDUwMDAwMDAxIn0="}
+     * 客户端加密字段:id+ctime+cctime+秘钥=sign
+     * 服务端加密字段:stime+秘钥=sign
+     * result={
+     *     "resultCode": "0",
+     *     "message": "success",
+     *     "data": {
+     *         "jsonData": "eyJkYXRhTW9kZWwiOnsiYWNOYW1lIjoiYWNOYW1lMyIsImNvbGxlY3Rpb25UeXBlIjoxLCJjcmVhdGVUaW1lIjoiMjAyMC0wNS0yOSAxNDoyMjowNyIsIm9yZGVyTW9uZXkiOiIzMC4wMyIsIm9yZGVyTm8iOiJvcmRlcl9ub18zIiwib3JkZXJTdGF0dXMiOjR9LCJzaWduIjoiZTdiMzNlZTJiNWU5ZTVhNGVkOWQ4ZDU4NmEzZGM5YTUiLCJzdGltZSI6MTU5MDc0NTc5OTQzMX0="
+     *     },
+     *     "sgid": "202005291749570000001",
+     *     "cgid": ""
+     * }
+     */
+    @RequestMapping(value = "/getOrderStatus", method = {RequestMethod.POST})
+    public JsonResult<Object> getOrderStatus(HttpServletRequest request, HttpServletResponse response, @RequestBody RequestEncryptionJson requestData) throws Exception{
+        String data = "";
+
+        RequestOrder requestModel = new RequestOrder();
+        try{
+            // 解密
+            data = StringUtil.decoderBase64(requestData.jsonData);
+            requestModel  = JSON.parseObject(data, RequestOrder.class);
+
+            // check校验请求的数据
+            HodgepodgeMethod.checkOrderByQrCodeData(requestModel);
+
+            // 收款账号详情数据
+            OrderModel orderQuery = HodgepodgeMethod.assembleOrderByOrderNoQuery(requestModel.orderNo, 4);
+            int orderStatus = ComponentUtil.orderService.getOrderStatus(orderQuery);
+            if (orderStatus != 0){
+                orderStatus = 1;
+            }
+            // 组装返回客户端的数据
+            long stime = System.currentTimeMillis();
+            String sign = SignUtil.getSgin(stime, secretKeySign); // stime+秘钥=sign
+            String strData = HodgepodgeMethod.assembleOrderStatusResult(stime, sign, orderStatus);
+            // 数据加密
+            String encryptionData = StringUtil.mergeCodeBase64(strData);
+            ResponseEncryptionJson resultDataModel = new ResponseEncryptionJson();
+            resultDataModel.jsonData = encryptionData;
+
+            // 返回数据给客户端
+            return JsonResult.successResult(resultDataModel);
+        }catch (Exception e){
+            Map<String,String> map = ExceptionMethod.getException(e, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_TWO);
+            // 添加异常
+            log.error(String.format("this OrderController.getOrderStatus() is error , the data=%s!", data));
+            if (!StringUtils.isBlank(map.get("dbCode"))){
+                log.error(String.format("this OrderController.getOrderStatus() is error codeInfo, the dbCode=%s and dbMessage=%s !", map.get("dbCode"), map.get("dbMessage")));
             }
             e.printStackTrace();
             return JsonResult.failedResult(map.get("message"), map.get("code"));

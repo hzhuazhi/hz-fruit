@@ -1,6 +1,7 @@
 package com.hz.fruit.master.core.mapper;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
+import com.hz.fruit.master.core.model.order.OrderModel;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -13,6 +14,13 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OrderMapper<T> extends BaseDao<T> {
 
-
+    /**
+     * @Description: 根据订单号查询订单状态
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/6/8 20:00
+     */
+    public int getOrderStatus(OrderModel model);
 
 }

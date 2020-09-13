@@ -394,6 +394,16 @@
         <include refid="Example_Where_Clause_id"/>
     </update>
 
+    <!-- 根据订单号查询订单状态-->
+    <select id="getOrderStatus" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_order a
+        where 1=1
+        and a.order_no = #{orderNo}
+        and a.order_status = #{orderStatus}
+        and a.yn = 0
+    </select>
+
 
 
 
