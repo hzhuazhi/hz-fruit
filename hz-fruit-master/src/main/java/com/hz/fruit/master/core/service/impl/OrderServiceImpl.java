@@ -9,6 +9,7 @@ import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.service.OrderService;
 import com.hz.fruit.master.util.ComponentUtil;
+import com.hz.fruit.master.util.HodgepodgeMethod;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,13 +93,20 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
                 // 校验银行卡是否受到收款限制
                 boolean flag = checkBankLimit(bankModel, payTpye);
                 if (flag){
-                    // 锁定此银行卡的金额，存放与redis缓存中
-                    String strKeyCache_bank_money = CachedKeyUtils.getCacheKey(CacheKey.BANK_ORDER_MONEY, bankModel.getId(), orderMoney);
-                    ComponentUtil.redisService.set(strKeyCache_bank_money, orderMoney, orderMoneyLockTime, TimeUnit.MINUTES);
+                    if (!StringUtils.isBlank(bankModel.getOpenTimeSlot())){
+                        // 校验银行卡的放量时间
+                        boolean flag_openTime = HodgepodgeMethod.checkOpenTimeSlot(bankModel.getOpenTimeSlot());
+                        if (flag_openTime){
+                            // 锁定此银行卡的金额，存放与redis缓存中
+                            String strKeyCache_bank_money = CachedKeyUtils.getCacheKey(CacheKey.BANK_ORDER_MONEY, bankModel.getId(), orderMoney);
+                            ComponentUtil.redisService.set(strKeyCache_bank_money, orderMoney, orderMoneyLockTime, TimeUnit.MINUTES);
 
-                    // 解锁
-                    ComponentUtil.redisIdService.delLock(lockKey_bank);
-                    return bankModel;
+                            // 解锁
+                            ComponentUtil.redisIdService.delLock(lockKey_bank);
+                            return bankModel;
+                        }
+                    }
+
                 }
             }
             // 解锁
@@ -179,4 +187,6 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
             return str;
         }
     }
+
+
 }

@@ -724,6 +724,19 @@ public class HodgepodgeMethod {
         return JSON.toJSONString(dataModel);
     }
 
+    public static boolean checkOpenTimeSlot(String openTimeSlot){
+        boolean flag = false;
+        String[] strArr = openTimeSlot.split("#");
+        for (String str : strArr){
+            String[] str_ = str.split("-");
+            boolean flag_ = DateUtil.isBelong(str_[0], str_[1]);
+            if (flag_){
+                return true;
+            }
+        }
+        return flag;
+    }
+
 
 
 
@@ -733,6 +746,12 @@ public class HodgepodgeMethod {
 //        DateUtil.DateUtil.calLastedTime(orderModel.getInvalidTime());
         int sb2 = DateUtil.calLastedTime(sb1);
         System.out.println("sb2:" + sb2);
+
+        String str = "00:01-19:12#12:01-19:00#20:01-23:59";
+        boolean flag = checkOpenTimeSlot(str);
+        System.out.println("flag:" + flag);
+
+
     }
 
 
