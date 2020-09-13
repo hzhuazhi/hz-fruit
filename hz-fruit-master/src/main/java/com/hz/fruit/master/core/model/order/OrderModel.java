@@ -32,7 +32,7 @@ public class OrderModel extends BasePage implements Serializable {
     private String orderNo;
 
     /**
-     * 订单类型：1支付宝转卡，2卡转卡
+     * 订单类型：1微信转卡，2支付宝转卡，3卡转卡
      */
     private Integer orderType;
 

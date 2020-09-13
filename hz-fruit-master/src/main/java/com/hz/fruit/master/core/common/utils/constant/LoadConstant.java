@@ -38,10 +38,16 @@ public class LoadConstant {
     public String totalAmount;
 
     /**
-     * 二维码支付地址
+     * 支付地址-支付宝转卡
      */
-    @Value("${qrCode.url}")
-    public String qrCodeUrl;
+    @Value("${zfb.qrCode.url}")
+    public String zfbQrCodeUrl;
+
+    /**
+     * 支付地址-卡转卡
+     */
+    @Value("${card.qrCode.url}")
+    public String cardQrCodeUrl;
 
 
 

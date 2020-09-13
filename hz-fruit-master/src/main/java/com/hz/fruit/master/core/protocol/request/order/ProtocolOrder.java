@@ -3,7 +3,7 @@ package com.hz.fruit.master.core.protocol.request.order;
 import java.io.Serializable;
 
 /**
- * @Description 出码的协议
+ * @Description 出码的协议-第三方接口
  * @Author yoko
  * @Date 2020/9/9 10:54
  * @Version 1.0
@@ -17,7 +17,7 @@ public class ProtocolOrder implements Serializable {
     public String money;
 
     /**
-     * 支付类型：1支付宝转卡，2卡转卡
+     * 支付类型：1微信转卡，2支付宝转卡，3卡转卡
      */
     public Integer payType;
 

@@ -15,11 +15,7 @@ import java.util.List;
 public class ResponseOrder extends BaseResponse implements Serializable {
     private static final long   serialVersionUID = 1233023131150L;
 
-
-    public List<Order> dataList;
-    public Order dataModel;
-    public OrderDistribution order;// 正式派单成功的数据
-    public OrderNewest orderNewest;// 挂单的数据
+    public Order order;// 正式派单成功的数据
     public Integer rowCount;
 
 
@@ -28,20 +24,12 @@ public class ResponseOrder extends BaseResponse implements Serializable {
 
     }
 
-    public List<Order> getDataList() {
-        return dataList;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setDataList(List<Order> dataList) {
-        this.dataList = dataList;
-    }
-
-    public Order getDataModel() {
-        return dataModel;
-    }
-
-    public void setDataModel(Order dataModel) {
-        this.dataModel = dataModel;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override
@@ -52,21 +40,5 @@ public class ResponseOrder extends BaseResponse implements Serializable {
     @Override
     public void setRowCount(Integer rowCount) {
         this.rowCount = rowCount;
-    }
-
-    public OrderDistribution getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderDistribution order) {
-        this.order = order;
-    }
-
-    public OrderNewest getOrderNewest() {
-        return orderNewest;
-    }
-
-    public void setOrderNewest(OrderNewest orderNewest) {
-        this.orderNewest = orderNewest;
     }
 }

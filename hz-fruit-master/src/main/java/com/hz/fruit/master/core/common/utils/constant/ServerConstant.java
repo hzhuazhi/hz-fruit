@@ -85,6 +85,9 @@ public class ServerConstant {
     public enum StrategyEnum{
         QR_CODE_SWITCH(1,""),
         ORDER_MONEY_RANGE(2,""),
+        ORDER_MONEY_LOCK_TIME(3,""),
+        INVALID_TIME_NUM(4,""),
+
 
 
 

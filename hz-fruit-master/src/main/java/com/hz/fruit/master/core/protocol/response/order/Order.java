@@ -17,6 +17,11 @@ public class Order implements Serializable {
     public String orderNo;
 
     /**
+     * 支付二维码地址
+     */
+    public String qrCode;
+
+    /**
      * 订单金额
      */
     public String orderMoney;
@@ -50,6 +55,21 @@ public class Order implements Serializable {
      * 开户名
      */
     public String accountName;
+
+    /**
+     * 银行简码
+     */
+    public String bankCode;
+
+    /**
+     * 跳转的支付页
+     */
+    public String qrCodeUrl;
+
+    /**
+     * 短链
+     */
+    public String shortChain;
 
     public Order(){
 
@@ -117,5 +137,37 @@ public class Order implements Serializable {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
+    }
+
+    public String getShortChain() {
+        return shortChain;
+    }
+
+    public void setShortChain(String shortChain) {
+        this.shortChain = shortChain;
     }
 }

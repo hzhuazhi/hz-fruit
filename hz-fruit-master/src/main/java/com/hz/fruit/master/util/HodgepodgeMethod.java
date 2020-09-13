@@ -11,17 +11,23 @@ import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.mobilecard.MobileCardModel;
+import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
+import com.hz.fruit.master.core.model.shortchain.ShortChainModel;
 import com.hz.fruit.master.core.model.statistics.StatisticsClickPayModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
 import com.hz.fruit.master.core.protocol.request.order.ProtocolOrder;
+import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
 import com.hz.fruit.master.core.protocol.request.statistics.RequestStatisticsClickPay;
 import com.hz.fruit.master.core.protocol.response.ResponseData;
+import com.hz.fruit.master.core.protocol.response.order.Order;
+import com.hz.fruit.master.core.protocol.response.order.ResponseOrder;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -465,6 +471,212 @@ public class HodgepodgeMethod {
 
         }
         return resList;
+    }
+
+    /**
+     * @Description: check筛选的银行卡是否为空
+     * @param bankModel
+     * @return
+     * @author yoko
+     * @date 2020/9/13 14:41
+    */
+    public static void checkScreenBankIsNull(BankModel bankModel) throws Exception{
+        if (bankModel == null || bankModel.getId() == null || bankModel.getId() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00013.geteCode(), ErrorCode.ENUM_ERROR.OR00013.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 组装添加订单的方法
+     * @param bankModel - 筛选出的银行卡
+     * @param requestModel - 请求数据
+     * @param channelModel - 商户信息
+     * @param orderNo - 订单号
+     * @param invalidTimeNum - 策略中的失效时间
+     * @return com.hz.fruit.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/13 14:41
+     */
+    public static OrderModel assembleOrderAdd(BankModel bankModel, ProtocolOrder requestModel, ChannelModel channelModel, String orderNo, int invalidTimeNum){
+        OrderModel resBean = new OrderModel();
+        resBean.setOrderNo(orderNo);
+        resBean.setBankId(bankModel.getId());
+        resBean.setOrderType(requestModel.payType);
+        resBean.setOrderMoney(requestModel.money);
+        resBean.setOutTradeNo(requestModel.outTradeNo);
+        // 订单失效时间
+        String invalidTime = DateUtil.addDateMinute(invalidTimeNum);
+        resBean.setInvalidTime(invalidTime);
+        resBean.setNotifyUrl(requestModel.notifyUrl);
+        resBean.setBankName(bankModel.getBankName());
+        resBean.setBankCard(bankModel.getBankCard());
+        resBean.setAccountName(bankModel.getAccountName());
+        resBean.setBankCode(bankModel.getBankCode());
+        resBean.setMobileCardId(bankModel.getMobileCardId());
+        resBean.setPhoneNum(bankModel.getPhoneNum());
+        resBean.setAccountId(bankModel.getAccountId());
+        if (!StringUtils.isBlank(bankModel.getAcName())){
+            resBean.setMerchantName(bankModel.getAcName());
+        }
+        if (channelModel != null && channelModel.getId() != null && channelModel.getId() > 0){
+            resBean.setChannelId(channelModel.getId());
+            if (!StringUtils.isBlank(channelModel.getAlias())){
+                resBean.setChannelName(channelModel.getAlias());
+            }
+        }
+
+        resBean.setCurday(DateUtil.getDayNumber(new Date()));
+        resBean.setCurhour(DateUtil.getHour(new Date()));
+        resBean.setCurminute(DateUtil.getCurminute(new Date()));
+        return resBean;
+    }
+
+    /**
+     * @Description: check校验添加订单信息是否正常
+     * @param num
+     * @return
+     * @author yoko
+     * @date 2020/9/13 14:49
+    */
+    public static void checkAddOrderIsOk(int num) throws Exception{
+        if (num <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00014.geteCode(), ErrorCode.ENUM_ERROR.OR00014.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 用户派单成功的数据组装返回客户端的方法
+     * @param stime - 服务器的时间
+     * @param sign - 签名
+     * @param orderModel - 用户派单的详情
+     * @param returnUrl - 支付完成之后自动跳转的地址
+     * @param payQrCodeUrl - 生成的HTML页面的地址
+     * @param shortChain - 短链
+     * @return java.lang.String
+     * @author yoko
+     * @date 2019/11/25 22:45
+     */
+    public static String assembleOrderDataResult(long stime, String sign, OrderModel orderModel, String returnUrl, String payQrCodeUrl, String shortChain) throws Exception{
+        ResponseOrder dataModel = new ResponseOrder();
+        if (orderModel != null){
+            Order order = new Order();
+            order.orderNo = orderModel.getOrderNo();
+            if (!StringUtils.isBlank(orderModel.getQrCode())){
+                order.qrCode = orderModel.getQrCode();
+            }
+            order.orderMoney = orderModel.getOrderMoney();
+            order.orderStatus = 1;
+            order.invalidTime = orderModel.getInvalidTime();
+            int invalidSecond = DateUtil.calLastedTime(orderModel.getInvalidTime());
+            order.invalidSecond = String.valueOf(invalidSecond);
+            order.bankName = orderModel.getBankName();
+            order.bankCard = orderModel.getBankCard();
+            order.accountName = orderModel.getAccountName();
+            order.bankCode = orderModel.getBankCode();
+
+            String resQrCodeUrl = "";
+            if (!StringUtils.isBlank(returnUrl)){
+                resQrCodeUrl = payQrCodeUrl + "?" + "orderNo=" +  orderModel.getOrderNo() + "&" + "returnUrl=" + returnUrl;
+            }else {
+                resQrCodeUrl = payQrCodeUrl + "?" + "orderNo=" +  orderModel.getOrderNo() + "&" + "returnUrl=";
+            }
+            order.qrCodeUrl = URLEncoder.encode(resQrCodeUrl,"UTF-8");
+            if (!StringUtils.isBlank(shortChain)){
+                order.shortChain = shortChain;
+            }
+            dataModel.order = order;
+        }
+        dataModel.setStime(stime);
+        dataModel.setSign(sign);
+        return JSON.toJSONString(dataModel);
+    }
+
+
+    /**
+     * @Description: check校验数据获取派单数据-详情-返回码的接口时
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkOrderByQrCodeData(RequestOrder requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00015.geteCode(), ErrorCode.ENUM_ERROR.OR00015.geteDesc());
+        }
+
+        if (StringUtils.isBlank(requestModel.orderNo)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00016.geteCode(), ErrorCode.ENUM_ERROR.OR00016.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: check短链数据是否为空
+     * @param shortChainModel
+     * @return
+     * @author yoko
+     * @date 2020/9/13 15:48
+    */
+    public static void checkShortChainIsNull(ShortChainModel shortChainModel) throws Exception{
+        if (shortChainModel == null || shortChainModel.getId() == null || shortChainModel.getId() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00017.geteCode(), ErrorCode.ENUM_ERROR.OR00017.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 组装根据派单的订单号查询派单信息
+     * @param orderNo - 派单的订单号
+     * @return com.hz.fine.master.core.model.did.DidCollectionAccountModel
+     * @author yoko
+     * @date 2020/5/18 11:41
+     */
+    public static OrderModel assembleOrderByOrderNoQuery(String orderNo, int orderStatus){
+        OrderModel resBean = new OrderModel();
+        resBean.setOrderNo(orderNo);
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        return resBean;
+    }
+
+
+
+    /**
+     * @Description: 根据订单号查询的订单数据组装返回客户端的方法
+     * @param stime - 服务器的时间
+     * @param sign - 签名
+     * @param orderModel - 用户派单的详情
+     * @param shortChain - 短链
+     * @return java.lang.String
+     * @author yoko
+     * @date 2019/11/25 22:45
+     */
+    public static String assembleOrderByOrderNoDataResult(long stime, String sign, OrderModel orderModel, String shortChain) throws Exception{
+        ResponseOrder dataModel = new ResponseOrder();
+        if (orderModel != null){
+            Order order = new Order();
+            order.orderNo = orderModel.getOrderNo();
+            if (!StringUtils.isBlank(orderModel.getQrCode())){
+                order.qrCode = orderModel.getQrCode();
+            }
+            order.orderMoney = orderModel.getOrderMoney();
+            order.invalidTime = orderModel.getInvalidTime();
+            int invalidSecond = DateUtil.calLastedTime(orderModel.getInvalidTime());
+            order.invalidSecond = String.valueOf(invalidSecond);
+            order.bankName = orderModel.getBankName();
+            order.bankCard = orderModel.getBankCard();
+            order.accountName = orderModel.getAccountName();
+            order.bankCode = orderModel.getBankCode();
+            if (!StringUtils.isBlank(shortChain)){
+                order.shortChain = shortChain;
+            }
+            dataModel.order = order;
+        }
+        dataModel.setStime(stime);
+        dataModel.setSign(sign);
+        return JSON.toJSONString(dataModel);
     }
 
 

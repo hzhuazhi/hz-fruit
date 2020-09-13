@@ -28,7 +28,7 @@ public class BankModel extends BasePage implements Serializable {
     /**
      * 归属手机号ID：对应表tb_fn_mobile_card的主键ID
      */
-    private Long accountId;
+    private Long mobileCardId;
 
     /**
      * 银行卡归属类型：对应表tb_fr_bank_type的主键ID
@@ -38,7 +38,7 @@ public class BankModel extends BasePage implements Serializable {
     /**
      * 归属卡商ID：对应表tb_hz_sys_account的主键ID，并且角色是卡商
      */
-    private Long merchantId;
+    private Long accountId;
 
     /**
      * 银行名称/归属开户行
@@ -152,8 +152,10 @@ public class BankModel extends BasePage implements Serializable {
     private Integer yn;
 
 
-
-
+    /**
+     * 手机号
+     */
+    private String phoneNum;
 
 
 
@@ -289,13 +291,6 @@ public class BankModel extends BasePage implements Serializable {
         this.bankTypeId = bankTypeId;
     }
 
-    public Long getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
-    }
 
     public String getBankName() {
         return bankName;
@@ -623,5 +618,21 @@ public class BankModel extends BasePage implements Serializable {
 
     public void setMoney(BigDecimal money) {
         this.money = money;
+    }
+
+    public Long getMobileCardId() {
+        return mobileCardId;
+    }
+
+    public void setMobileCardId(Long mobileCardId) {
+        this.mobileCardId = mobileCardId;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
