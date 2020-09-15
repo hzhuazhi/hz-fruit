@@ -73,13 +73,13 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
      * @Description: check校验被筛选的银行卡的使用状态
      * @param bankModel - 银行卡数据
      * @param orderMoney - 订单金额
-     * @param payTpye - 支付类型
+     * @param payType - 支付类型
      * @param orderMoneyLockTime - 银行卡金额的锁定时间
      * @return com.hz.fruit.master.core.model.bank.BankModel
      * @author yoko
      * @date 2020/9/12 21:02
      */
-    public BankModel getBankData(BankModel bankModel, String orderMoney, int payTpye, int orderMoneyLockTime){
+    public BankModel getBankData(BankModel bankModel, String orderMoney, int payType, int orderMoneyLockTime){
         // 判断此用户是否被锁住
         String lockKey_bank = CachedKeyUtils.getCacheKey(CacheKey.LOCK_BANK, bankModel.getId());
         boolean flagLock_bank = ComponentUtil.redisIdService.lock(lockKey_bank);
@@ -91,7 +91,7 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
                 // 表示没有相同金额的挂单
 
                 // 校验银行卡是否受到收款限制
-                boolean flag = checkBankLimit(bankModel, payTpye);
+                boolean flag = checkBankLimit(bankModel, payType);
                 if (flag){
                     if (!StringUtils.isBlank(bankModel.getOpenTimeSlot())){
                         // 校验银行卡的放量时间
@@ -118,14 +118,14 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
     /**
      * @Description: check校验银行卡限量
      * @param bankModel - 银行卡信息
-     * @param payTpye - 支付类型
+     * @param payType - 支付类型
      * @return
      * @author yoko
      * @date 2020/9/12 21:19
     */
-    public boolean checkBankLimit(BankModel bankModel, int payTpye){
+    public boolean checkBankLimit(BankModel bankModel, int payType){
         boolean flag = true;
-        if (payTpye == 1){
+        if (payType == 1){
             String dayMoney = getRedisDataByKey(CacheKey.WX_IN_DAY_MONEY, bankModel.getId());
             if (!StringUtils.isBlank(dayMoney)){
                 return false;
@@ -138,7 +138,7 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
             if (!StringUtils.isBlank(dayNum)){
                 return false;
             }
-        }else if (payTpye == 2){
+        }else if (payType == 2){
             String dayMoney = getRedisDataByKey(CacheKey.ZFB_IN_DAY_MONEY, bankModel.getId());
             if (!StringUtils.isBlank(dayMoney)){
                 return false;
@@ -151,7 +151,7 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
             if (!StringUtils.isBlank(dayNum)){
                 return false;
             }
-        }else if (payTpye == 3){
+        }else if (payType == 3){
             String dayMoney = getRedisDataByKey(CacheKey.CARD_IN_DAY_MONEY, bankModel.getId());
             if (!StringUtils.isBlank(dayMoney)){
                 return false;

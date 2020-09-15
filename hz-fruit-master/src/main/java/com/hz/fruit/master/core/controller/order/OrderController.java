@@ -136,7 +136,7 @@ public class OrderController {
             StrategyModel strategyOrderMoneyLockTimeModel = ComponentUtil.strategyService.getStrategyModel(strategyOrderMoneyLockTimeQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
             orderMoneyLockTime = strategyOrderMoneyLockTimeModel.getStgNumValue();
 
-            // 策略数据：出码后银行卡金额的锁定时间
+            // 策略数据：出码后订单的支付时间
             int invalidTimeNum = 0;
             StrategyModel strategyInvalidTimeNumQuery = HodgepodgeMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.INVALID_TIME_NUM.getStgType());
             StrategyModel strategyInvalidTimeNumModel = ComponentUtil.strategyService.getStrategyModel(strategyInvalidTimeNumQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
