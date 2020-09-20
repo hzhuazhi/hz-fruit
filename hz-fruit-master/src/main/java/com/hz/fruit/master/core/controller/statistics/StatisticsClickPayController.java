@@ -68,7 +68,7 @@ public class StatisticsClickPayController {
      * @return com.gd.chain.common.utils.JsonResult<java.lang.Object>
      * @author yoko
      * @date 2019/11/25 22:58
-     * local:http://localhost:8086/fruit/statistics/click_pay/add
+     * local:http://localhost:8089/fruit/statistics/click_pay/add
      * 请求的属性类:RequestStatisticsClickPay
      * 必填字段:{"identif":"identif1","dataType":1,"dataValue":"dataValue1","agtVer":1,"clientVer":1,"clientType":1,"ctime":201911071802959,"cctime":201911071802959,"sign":"abcdefg","token":"111111"}
      * 加密字段:{"jsonData":"eyJpZGVudGlmIjoiaWRlbnRpZjEiLCJkYXRhVHlwZSI6MSwiZGF0YVZhbHVlIjoiZGF0YVZhbHVlMSIsImFndFZlciI6MSwiY2xpZW50VmVyIjoxLCJjbGllbnRUeXBlIjoxLCJjdGltZSI6MjAxOTExMDcxODAyOTU5LCJjY3RpbWUiOjIwMTkxMTA3MTgwMjk1OSwic2lnbiI6ImFiY2RlZmciLCJ0b2tlbiI6IjExMTExMSJ9"}
