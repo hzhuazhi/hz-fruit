@@ -259,16 +259,23 @@ public class OrderController {
             // check校验请求的数据
             HodgepodgeMethod.checkOrderByQrCodeData(requestModel);
 
+            // 策略数据：短链金额配置
+            int shortChainMoney = 0;
+            StrategyModel strategyQuery = HodgepodgeMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.SHORT_CHAIN_MONEY.getStgType());
+            StrategyModel strategyModel = ComponentUtil.strategyService.getStrategyModel(strategyQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+            shortChainMoney = strategyModel.getStgNumValue();
+
             // 获取短链数据
             ShortChainModel shortChainModel = ComponentUtil.shortChainService.getShortChain(new ShortChainModel(), ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
             HodgepodgeMethod.checkShortChainIsNull(shortChainModel);
+
 
             // 收款账号详情数据
             OrderModel orderQuery = HodgepodgeMethod.assembleOrderByOrderNoQuery(requestModel.orderNo, 1);
             OrderModel orderData = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
 
             // 生成短链
-            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds());
+            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds(), shortChainMoney);
 
             // 组装返回客户端的数据
             long stime = System.currentTimeMillis();

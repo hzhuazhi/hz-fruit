@@ -685,11 +685,12 @@ public class HodgepodgeMethod {
      * @Description: 调用短链的公共方法，生成短链
      * @param orderModel - 订单信息
      * @param interfaceAds - 短链的API
+     * @param shortChainMoney  -  短链生成是否带金额的参数：1不带金额参数，2带金额参数。
      * @return
      * @author yoko
      * @date 2020/9/13 16:18
     */
-    public static String getShortChain(OrderModel orderModel, String interfaceAds){
+    public static String getShortChain(OrderModel orderModel, String interfaceAds, int shortChainMoney){
         String str = null;
         if (orderModel != null && orderModel.getId() != null && orderModel.getId() > 0){
             if (orderModel.getOrderType() == 2){
@@ -697,7 +698,7 @@ public class HodgepodgeMethod {
                 BankModel bankModel = BeanUtils.copy(orderModel, BankModel.class);
                 if (bankModel != null && !StringUtils.isBlank(bankModel.getBankCard())){
                     // 生成短链
-                    str = ShortChainUtil.getShortChainUrl(bankModel, interfaceAds);
+                    str = ShortChainUtil.getShortChainUrl(bankModel, interfaceAds, shortChainMoney, orderModel.getOrderMoney());
                 }
             }
         }

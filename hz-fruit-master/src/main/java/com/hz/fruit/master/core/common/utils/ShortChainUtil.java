@@ -1,6 +1,7 @@
 package com.hz.fruit.master.core.common.utils;
 
 import com.hz.fruit.master.core.model.bank.BankModel;
+import org.apache.commons.lang.StringUtils;
 
 import java.net.URLEncoder;
 
@@ -12,10 +13,16 @@ import java.net.URLEncoder;
  */
 public class ShortChainUtil {
 
-    public static String getShortChainUrl(BankModel bankModel, String shortChainApi){
+    public static String getShortChainUrl(BankModel bankModel, String shortChainApi, int shortChainMoney, String money){
         String str1 = "";
         try{
-            String url1 = "https://www.alipay.com/?appId=09999988&actionType=toCard&sourceId=bill&cardNo="+ bankModel.getBankCard() + "&bankAccount=" + bankModel.getAccountName() + "&money=0&amount=0&bankMark=" + bankModel.getBankCode() + "&bankName=" + bankModel.getBankName();
+            String amount = "0";
+            if (shortChainMoney == 2){
+                if (!StringUtils.isBlank(money)){
+                    amount = money;
+                }
+            }
+            String url1 = "https://www.alipay.com/?appId=09999988&actionType=toCard&sourceId=bill&cardNo="+ bankModel.getBankCard() + "&bankAccount=" + bankModel.getAccountName() + "&money=" + amount + "&amount=" + amount + "&bankMark=" + bankModel.getBankCode() + "&bankName=" + bankModel.getBankName();
             url1 = URLEncoder.encode(url1,"UTF-8");
 //            String url = "http://api.6du.in/urls/add?secretkey=555098a19f6ae3b0ICAgICA0c782c0757f395fdgNjA2Mg&lurl="+url1;
             String url = shortChainApi + "&lurl=" + url1;
@@ -44,7 +51,7 @@ public class ShortChainUtil {
         bankModel.setAccountName("孟宪宏");
         bankModel.setBankCode("CEB");
         bankModel.setBankName("光大银行");
-        String sb = getShortChainUrl(bankModel, api);
+        String sb = getShortChainUrl(bankModel, api, 2, "100.00");
         System.out.println("sb:" + sb);
     }
 }
