@@ -35,6 +35,7 @@ public class ComponentUtil {
     public static OrderReplenishService orderReplenishService;
     public static StatisticsClickPayService statisticsClickPayService;
     public static ShortChainService shortChainService;
+    public static MobileCardHeartbeatService mobileCardHeartbeatService;
 
 
 }
