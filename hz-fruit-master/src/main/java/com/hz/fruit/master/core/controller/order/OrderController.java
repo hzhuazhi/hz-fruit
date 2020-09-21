@@ -72,7 +72,7 @@ public class OrderController {
 
 
     /**
-     * @Description: 派发订单-微信群接口
+     * @Description: 派发订单-银行卡接口
      * <p>
      *
      * </p>
