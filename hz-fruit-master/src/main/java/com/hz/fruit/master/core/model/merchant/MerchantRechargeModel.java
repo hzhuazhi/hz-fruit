@@ -24,9 +24,24 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Long accountId;
 
     /**
+     * 银行卡归属卡站点ID：对应表tb_hz_sys_account的主键ID，并且角色是卡站点
+     */
+    private Long cardSiteId;
+
+    /**
      * 订单号
      */
     private String orderNo;
+
+    /**
+     * 订单类型：1预付款订单，2平台发起订单，3下发订单
+     */
+    private Integer orderType;
+
+    /**
+     * 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
+     */
+    private String issueOrderNo;
 
     /**
      * 订单金额
@@ -34,19 +49,9 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private String orderMoney;
 
     /**
-     * 订单状态：1初始化，2超时/失败，3成功
+     * 订单状态：1初始化，2超时/失败/审核驳回，3成功
      */
     private Integer orderStatus;
-
-    /**
-     * 支付类型：1卡商支付，2我方支付
-     */
-    private Integer payType;
-
-    /**
-     * 我方银行卡信息备注:假如我方卡进行支付，则填写我方银行卡信息
-     */
-    private String myBankInfo;
 
     /**
      * 银行名称/归属开户行
@@ -67,6 +72,31 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      * 银行卡转账图片凭证
      */
     private String pictureAds;
+
+    /**
+     * 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
+     */
+    private Integer operateStatus;
+
+    /**
+     * 是否需要数据同步：1不需要同步，2需要同步
+     */
+    private Integer isSynchro;
+
+    /**
+     * 审核状态：1初始化，2审核收款失败，3审核收款成功
+     */
+    private Integer checkStatus;
+
+    /**
+     * 审核失败缘由，审核失败的原因
+     */
+    private String checkInfo;
+
+    /**
+     * 系统运行自动放弃的时间：订单分配完毕之后，订单类型是：下发分配订单，如果卡商在超过这个时间没有进行放弃或者锁定这样的操作，则自动修改成放弃。
+     */
+    private String invalidTime;
 
     /**
      * 数据说明：做解说用的
@@ -104,6 +134,16 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer runStatus;
 
     /**
+     *发送次数
+     */
+    private Integer sendNum;
+
+    /**
+     * 发送状态：0初始化，1锁定，2计算失败，3计算成功
+     */
+    private Integer sendStatus;
+
+    /**
      * 创建时间
      */
     private String createTime;
@@ -121,6 +161,11 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer curdayStart;
     private Integer curdayEnd;
 
+    /**
+     * SQL查询条件
+     */
+    private String invalidTimeStr;
+
     public Long getId() {
         return id;
     }
@@ -137,12 +182,36 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.accountId = accountId;
     }
 
+    public Long getCardSiteId() {
+        return cardSiteId;
+    }
+
+    public void setCardSiteId(Long cardSiteId) {
+        this.cardSiteId = cardSiteId;
+    }
+
     public String getOrderNo() {
         return orderNo;
     }
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getIssueOrderNo() {
+        return issueOrderNo;
+    }
+
+    public void setIssueOrderNo(String issueOrderNo) {
+        this.issueOrderNo = issueOrderNo;
     }
 
     public String getOrderMoney() {
@@ -159,22 +228,6 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
-    }
-
-    public Integer getPayType() {
-        return payType;
-    }
-
-    public void setPayType(Integer payType) {
-        this.payType = payType;
-    }
-
-    public String getMyBankInfo() {
-        return myBankInfo;
-    }
-
-    public void setMyBankInfo(String myBankInfo) {
-        this.myBankInfo = myBankInfo;
     }
 
     public String getBankName() {
@@ -207,6 +260,46 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setPictureAds(String pictureAds) {
         this.pictureAds = pictureAds;
+    }
+
+    public Integer getOperateStatus() {
+        return operateStatus;
+    }
+
+    public void setOperateStatus(Integer operateStatus) {
+        this.operateStatus = operateStatus;
+    }
+
+    public Integer getIsSynchro() {
+        return isSynchro;
+    }
+
+    public void setIsSynchro(Integer isSynchro) {
+        this.isSynchro = isSynchro;
+    }
+
+    public Integer getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(Integer checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
+    public String getCheckInfo() {
+        return checkInfo;
+    }
+
+    public void setCheckInfo(String checkInfo) {
+        this.checkInfo = checkInfo;
+    }
+
+    public String getInvalidTime() {
+        return invalidTime;
+    }
+
+    public void setInvalidTime(String invalidTime) {
+        this.invalidTime = invalidTime;
     }
 
     public String getDataExplain() {
@@ -265,6 +358,22 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.runStatus = runStatus;
     }
 
+    public Integer getSendNum() {
+        return sendNum;
+    }
+
+    public void setSendNum(Integer sendNum) {
+        this.sendNum = sendNum;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -303,5 +412,13 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setCurdayEnd(Integer curdayEnd) {
         this.curdayEnd = curdayEnd;
+    }
+
+    public String getInvalidTimeStr() {
+        return invalidTimeStr;
+    }
+
+    public void setInvalidTimeStr(String invalidTimeStr) {
+        this.invalidTimeStr = invalidTimeStr;
     }
 }

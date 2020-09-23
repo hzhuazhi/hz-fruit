@@ -13,6 +13,7 @@ import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
 import com.hz.fruit.master.core.model.issue.IssueModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
+import com.hz.fruit.master.core.model.merchant.MerchantRechargeModel;
 import com.hz.fruit.master.core.model.mobilecard.MobileCardModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
@@ -1029,6 +1030,22 @@ public class HodgepodgeMethod {
         }
     }
 
+    /**
+     * @Description: check下发数据中，此订单的分配状态是否是已分配完毕状态
+     * <p>
+     *     只有分配完毕，才能执行后续操作的
+     * </p>
+     * @param isDistribution
+     * @return
+     * @author yoko
+     * @date 2020/9/23 15:46
+     */
+    public static void checkIssueIsDistribution(int isDistribution) throws Exception{
+        if (isDistribution == 1){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00017.geteCode(), ErrorCode.ENUM_ERROR.I00017.geteDesc());
+        }
+    }
+
 
     /**
      * @Description: 组装查询下发的更新方法
@@ -1091,6 +1108,112 @@ public class HodgepodgeMethod {
         }
         if (whereCheckStatus > 0){
             resBean.setWhereCheckStatus(whereCheckStatus);
+        }
+        return resBean;
+    }
+
+
+
+    /**
+     * @Description: 组装查询卡商充值的信息
+     * @param id - 主键ID
+     * @param accountId - 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
+     * @param orderNo - 订单号
+     * @param orderType - 订单类型：1预付款订单，2平台发起订单，3下发订单
+     * @param issueOrderNo - 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param operateStatus - 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
+     * @param isSynchro - 是否需要数据同步：1不需要同步，2需要同步
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param checkInfo - 审核失败缘由，审核失败的原因
+    * @param invalidTime
+     * @return com.hz.fruit.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/23 17:16
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeQuery(long id, long accountId, String orderNo, int orderType, String issueOrderNo,
+                                                                      int orderStatus, int operateStatus,
+                                                                       int isSynchro, int checkStatus, String checkInfo, String invalidTime){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (accountId > 0){
+            resBean.setAccountId(accountId);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (!StringUtils.isBlank(issueOrderNo)){
+            resBean.setIssueOrderNo(issueOrderNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (operateStatus > 0){
+            resBean.setOperateStatus(operateStatus);
+        }
+        if (isSynchro > 0){
+            resBean.setIsSynchro(isSynchro);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(checkInfo)){
+            resBean.setCheckInfo(checkInfo);
+        }
+        if (!StringUtils.isBlank(invalidTime)){
+            resBean.setInvalidTime(invalidTime);
+        }
+        return resBean;
+    }
+
+
+
+    /**
+     * @Description: 组装更新卡商充值的信息
+     * @param id - 主键ID
+     * @param issueOrderNo - 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param pictureAds - 充值记录银行卡转账图片凭证
+     * @param operateStatus - 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
+     * @param isSynchro - 是否需要数据同步：1不需要同步，2需要同步
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param checkInfo - 审核失败缘由，审核失败的原因
+    * @param invalidTime
+     * @return com.hz.fruit.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/23 17:16
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeUpdate(long id, String issueOrderNo, int orderStatus, String pictureAds, int operateStatus,
+                                                                       int isSynchro, int checkStatus, String checkInfo, String invalidTime){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(issueOrderNo)){
+            resBean.setIssueOrderNo(issueOrderNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (!StringUtils.isBlank(pictureAds)){
+            resBean.setPictureAds(pictureAds);
+        }
+        if (isSynchro > 0){
+            resBean.setIsSynchro(isSynchro);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(checkInfo)){
+            resBean.setCheckInfo(checkInfo);
+        }
+        if (!StringUtils.isBlank(invalidTime)){
+            resBean.setInvalidTime(invalidTime);
         }
         return resBean;
     }

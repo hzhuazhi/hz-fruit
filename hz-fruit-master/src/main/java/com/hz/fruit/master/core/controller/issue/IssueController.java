@@ -10,6 +10,7 @@ import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.model.RequestEncryptionJson;
 import com.hz.fruit.master.core.model.ResponseEncryptionJson;
 import com.hz.fruit.master.core.model.issue.IssueModel;
+import com.hz.fruit.master.core.model.merchant.MerchantRechargeModel;
 import com.hz.fruit.master.core.protocol.request.issue.RequestIssue;
 import com.hz.fruit.master.util.ComponentUtil;
 import com.hz.fruit.master.util.HodgepodgeMethod;
@@ -290,29 +291,37 @@ public class IssueController {
             HodgepodgeMethod.checkIssueOrderStatus(issueModel.getOrderStatus());
             // check审核状态
             HodgepodgeMethod.checkIssueCheckStatus(issueModel.getCheckStatus());
+            // check是否分配完毕
+            HodgepodgeMethod.checkIssueIsDistribution(issueModel.getIsDistribution());
+
+            int orderStatus = 0;
+            if (requestModel.checkStatus == 2){
+                orderStatus = 2;
+            }
 
             // 更新下发表的审核状态
-            IssueModel issueUpdate = HodgepodgeMethod.assembleIssueUpdate(issueModel.getId(), null,null,0,null,
+            IssueModel issueUpdate = HodgepodgeMethod.assembleIssueUpdate(issueModel.getId(), null,null,orderStatus,null,
                     null,0,0,0, requestModel.checkStatus, requestModel.checkInfo, null, 0);
             ComponentUtil.issueService.update(issueUpdate);
 
-            // 更新卡商充值表的审核状态
+            // 订单分配给卡商，才更新卡商充值表中的审核状态
+            if (issueModel.getAscriptionType() == 1){
+                MerchantRechargeModel merchantRechargeQuery = HodgepodgeMethod.assembleMerchantRechargeQuery(0,0,null, 3, issueModel.getOrderNo(),
+                        3, 4, 0,0,null,null);
+                MerchantRechargeModel merchantRechargeModel = (MerchantRechargeModel)ComponentUtil.merchantRechargeService.findByObject(merchantRechargeQuery);
+                if (merchantRechargeModel != null && merchantRechargeModel.getId() != null && merchantRechargeModel.getId() > 0){
+                    // 更新卡商充值表的审核状态
+                    MerchantRechargeModel merchantRechargeUpdate = HodgepodgeMethod.assembleMerchantRechargeUpdate(merchantRechargeModel.getId(),null, orderStatus,null,0,0,                            requestModel.checkStatus, requestModel.checkInfo, null);
+                    ComponentUtil.merchantRechargeService.update(merchantRechargeUpdate);
+                }
 
-
-
-            // 添加上报的下发数据
-            IssueModel issueAdd = HodgepodgeMethod.assembleIssueAdd(requestModel, sgid);
-            int num = ComponentUtil.issueService.add(issueAdd);
-            String resStr = "";
-            if (num > 0){
-                resStr = "ok";
-            }else {
-                resStr = "no";
             }
+
+
 
             // 返回数据给客户端
             PrintWriter out = response.getWriter();
-            out.print(resStr);
+            out.print("ok");
             out.flush();
             out.close();
         }catch (Exception e){

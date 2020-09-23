@@ -7,9 +7,10 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.account_id,a.order_no,a.order_money,a.order_status,a.pay_type,a.my_bank_info,
-        a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.data_explain,
-        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.id,a.account_id,a.card_site_id,a.order_no,a.order_type,a.issue_order_no,a.order_money,a.order_status,
+        a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.operate_status,a.is_synchro,a.check_status,a.check_info,
+        a.invalid_time,a.data_explain,
+        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
         a.create_time,a.update_time,a.yn
     </sql>
 
@@ -26,11 +27,14 @@
             <if test="orderNo != null and orderNo != '' " >
                 and a.order_no = #{orderNo}
             </if>
+            <if test="orderType != null and orderType != '' " >
+                and a.order_type = #{orderType}
+            </if>
+            <if test="issueOrderNo != null and issueOrderNo != '' " >
+                and a.issue_order_no = #{issueOrderNo}
+            </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 and a.order_status = #{orderStatus}
-            </if>
-            <if test="payType != null and payType != '' " >
-                and a.pay_type = #{payType}
             </if>
             <if test="bankName != null and bankName != '' " >
                 and a.bank_name = #{bankName}
@@ -41,6 +45,19 @@
             <if test="accountName != null and accountName != '' " >
                 and a.account_name = #{accountName}
             </if>
+            <if test="operateStatus != null and operateStatus != '' " >
+                and a.operate_status = #{operateStatus}
+            </if>
+            <if test="isSynchro != null and isSynchro != '' " >
+                and a.is_synchro = #{isSynchro}
+            </if>
+            <if test="checkStatus != null and checkStatus != '' " >
+                and a.check_status = #{checkStatus}
+            </if>
+            <if test="invalidTimeStr != null and invalidTimeStr != '' " >
+                and a.invalid_time &lt;= now()
+            </if>
+
             and a.yn = 0
         </trim>
     </sql>
@@ -127,20 +144,23 @@
             <if test="accountId != null and accountId != '' " >
                 account_id,
             </if>
+            <if test="cardSiteId != null and cardSiteId != '' " >
+                card_site_id,
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 order_no,
+            </if>
+            <if test="orderType != null and orderType != '' " >
+                order_type,
+            </if>
+            <if test="issueOrderNo != null and issueOrderNo != '' " >
+                issue_order_no,
             </if>
             <if test="orderMoney != null and orderMoney != '' " >
                 order_money,
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 order_status,
-            </if>
-            <if test="payType != null and payType != '' " >
-                pay_type,
-            </if>
-            <if test="myBankInfo != null and myBankInfo != '' " >
-                my_bank_info,
             </if>
             <if test="bankName != null and bankName != '' " >
                 bank_name,
@@ -153,6 +173,21 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 picture_ads,
+            </if>
+            <if test="operateStatus != null and operateStatus != '' " >
+                operate_status,
+            </if>
+            <if test="isSynchro != null and isSynchro != '' " >
+                is_synchro,
+            </if>
+            <if test="checkStatus != null and checkStatus != '' " >
+                check_status,
+            </if>
+            <if test="checkInfo != null and checkInfo != '' " >
+                check_info,
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                invalid_time,
             </if>
             <if test="dataExplain != null and dataExplain != '' " >
                 data_explain,
@@ -176,20 +211,23 @@
             <if test="accountId != null and accountId != '' " >
                 <![CDATA[  #{accountId}, ]]>
             </if>
+            <if test="cardSiteId != null and cardSiteId != '' " >
+                <![CDATA[  #{cardSiteId}, ]]>
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 <![CDATA[  #{orderNo}, ]]>
+            </if>
+            <if test="orderType != null and orderType != '' " >
+                <![CDATA[  #{orderType}, ]]>
+            </if>
+            <if test="issueOrderNo != null and issueOrderNo != '' " >
+                <![CDATA[  #{issueOrderNo}, ]]>
             </if>
             <if test="orderMoney != null and orderMoney != '' " >
                 <![CDATA[  #{orderMoney}, ]]>
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 <![CDATA[  #{orderStatus}, ]]>
-            </if>
-            <if test="payType != null and payType != '' " >
-                <![CDATA[  #{payType}, ]]>
-            </if>
-            <if test="myBankInfo != null and myBankInfo != '' " >
-                <![CDATA[  #{myBankInfo}, ]]>
             </if>
             <if test="bankName != null and bankName != '' " >
                 <![CDATA[  #{bankName}, ]]>
@@ -202,6 +240,21 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 <![CDATA[  #{pictureAds}, ]]>
+            </if>
+            <if test="operateStatus != null and operateStatus != '' " >
+                <![CDATA[  #{operateStatus}, ]]>
+            </if>
+            <if test="isSynchro != null and isSynchro != '' " >
+                <![CDATA[  #{isSynchro}, ]]>
+            </if>
+            <if test="checkStatus != null and checkStatus != '' " >
+                <![CDATA[  #{checkStatus}, ]]>
+            </if>
+            <if test="checkInfo != null and checkInfo != '' " >
+                <![CDATA[  #{checkInfo}, ]]>
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                <![CDATA[  #{invalidTime}, ]]>
             </if>
             <if test="dataExplain != null and dataExplain != '' " >
                 <![CDATA[  #{dataExplain}, ]]>
@@ -229,8 +282,17 @@
             <if test="accountId != null and accountId != '' " >
                 a.account_id = #{accountId},
             </if>
+            <if test="cardSiteId != null and cardSiteId != '' " >
+                a.card_site_id = #{cardSiteId},
+            </if>
             <if test="orderNo != null and orderNo != '' " >
                 a.order_no = #{orderNo},
+            </if>
+            <if test="orderType != null and orderType != '' " >
+                a.order_type = #{orderType},
+            </if>
+            <if test="issueOrderNo != null and issueOrderNo != '' " >
+                a.issue_order_no = #{issueOrderNo},
             </if>
             <if test="orderMoney != null and orderMoney != '' " >
                 a.order_money = #{orderMoney},
@@ -238,14 +300,8 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 a.order_status = #{orderStatus},
             </if>
-            <if test="payType != null and payType != '' " >
-                a.pay_type = #{payType},
-            </if>
-            <if test="payType != null and payType != '' " >
-                a.pay_type = #{payType},
-            </if>
-            <if test="myBankInfo != null and myBankInfo != '' " >
-                a.my_bank_info = #{myBankInfo},
+            <if test="bankName != null and bankName != '' " >
+                a.bank_name = #{bankName},
             </if>
             <if test="bankCard != null and bankCard != '' " >
                 a.bank_card = #{bankCard},
@@ -255,6 +311,21 @@
             </if>
             <if test="pictureAds != null and pictureAds != '' " >
                 a.picture_ads = #{pictureAds},
+            </if>
+            <if test="operateStatus != null and operateStatus != '' " >
+                a.operate_status = #{operateStatus},
+            </if>
+            <if test="isSynchro != null and isSynchro != '' " >
+                a.is_synchro = #{isSynchro},
+            </if>
+            <if test="checkStatus != null and checkStatus != '' " >
+                a.check_status = #{checkStatus},
+            </if>
+            <if test="checkInfo != null and checkInfo != '' " >
+                a.check_info = #{checkInfo},
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                a.invalid_time = #{invalidTime},
             </if>
             <if test="dataExplain != null and dataExplain != '' " >
                 a.data_explain = #{dataExplain},
