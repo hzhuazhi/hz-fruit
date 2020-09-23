@@ -36,6 +36,7 @@ public class ComponentUtil {
     public static StatisticsClickPayService statisticsClickPayService;
     public static ShortChainService shortChainService;
     public static MobileCardHeartbeatService mobileCardHeartbeatService;
+    public static IssueService issueService;
 
 
 }
