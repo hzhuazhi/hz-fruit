@@ -7,9 +7,11 @@ import com.hz.fruit.master.core.common.utils.DateUtil;
 import com.hz.fruit.master.core.common.utils.ShortChainUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
+import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.model.channel.ChannelModel;
+import com.hz.fruit.master.core.model.issue.IssueModel;
 import com.hz.fruit.master.core.model.merchant.MerchantModel;
 import com.hz.fruit.master.core.model.mobilecard.MobileCardModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
@@ -17,10 +19,13 @@ import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.shortchain.ShortChainModel;
 import com.hz.fruit.master.core.model.statistics.StatisticsClickPayModel;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
+import com.hz.fruit.master.core.protocol.request.issue.RequestIssue;
 import com.hz.fruit.master.core.protocol.request.order.ProtocolOrder;
 import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
 import com.hz.fruit.master.core.protocol.request.statistics.RequestStatisticsClickPay;
 import com.hz.fruit.master.core.protocol.response.ResponseData;
+import com.hz.fruit.master.core.protocol.response.issue.Issue;
+import com.hz.fruit.master.core.protocol.response.issue.ResponseIssue;
 import com.hz.fruit.master.core.protocol.response.order.Order;
 import com.hz.fruit.master.core.protocol.response.order.ResponseOrder;
 import org.apache.commons.lang.StringUtils;
@@ -725,6 +730,13 @@ public class HodgepodgeMethod {
         return JSON.toJSONString(dataModel);
     }
 
+    /**
+     * @Description: 判断时间是否是在当前时间范围内
+     * @param openTimeSlot
+     * @return
+     * @author yoko
+     * @date 2020/9/23 14:15
+    */
     public static boolean checkOpenTimeSlot(String openTimeSlot){
         boolean flag = false;
         String[] strArr = openTimeSlot.split("#");
@@ -737,6 +749,214 @@ public class HodgepodgeMethod {
         }
         return flag;
     }
+
+    /**
+     * @Description: check校验数据下发数据-集合
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkIssueGetDataList(RequestIssue requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00001.geteCode(), ErrorCode.ENUM_ERROR.I00001.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 下发集合的数据组装返回客户端的方法
+     * @param stime - 服务器的时间
+     * @param sign - 签名
+     * @param issueList - 下发集合
+     * @param rowCount - 总行数
+     * @return java.lang.String
+     * @author yoko
+     * @date 2019/11/25 22:45
+     */
+    public static String assembleIssueListResult(long stime, String sign, List<IssueModel> issueList, Integer rowCount){
+        ResponseIssue dataModel = new ResponseIssue();
+        if (issueList != null && issueList.size() > ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            List<Issue> dataList = BeanUtils.copyList(issueList, Issue.class);
+            dataModel.dataList = dataList;
+        }
+        if (rowCount != null){
+            dataModel.rowCount = rowCount;
+        }
+        dataModel.setStime(stime);
+        dataModel.setSign(sign);
+        return JSON.toJSONString(dataModel);
+    }
+
+
+    /**
+     * @Description: check校验数据下发数据-详情
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkIssueGetData(RequestIssue requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00002.geteCode(), ErrorCode.ENUM_ERROR.I00002.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 下发集合的数据组装返回客户端的方法
+     * @param stime - 服务器的时间
+     * @param sign - 签名
+     * @param issueModel - 下发详情
+     * @return java.lang.String
+     * @author yoko
+     * @date 2019/11/25 22:45
+     */
+    public static String assembleIssueResult(long stime, String sign, IssueModel issueModel){
+        ResponseIssue dataModel = new ResponseIssue();
+        if (issueModel != null){
+            Issue data = BeanUtils.copy(issueModel, Issue.class);
+            dataModel.dataModel = data;
+        }
+        dataModel.setStime(stime);
+        dataModel.setSign(sign);
+        return JSON.toJSONString(dataModel);
+    }
+
+
+    /**
+     * @Description: check校验数据下发数据-新增
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkIssueAdd(RequestIssue requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00003.geteCode(), ErrorCode.ENUM_ERROR.I00003.geteDesc());
+        }
+
+        // 校验支付平台的订单号
+        if (StringUtils.isBlank(requestModel.outTradeNo)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00003.geteCode(), ErrorCode.ENUM_ERROR.I00003.geteDesc());
+        }
+
+        // 校验支付平台的订单金额
+        if (StringUtils.isBlank(requestModel.orderMoney)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00004.geteCode(), ErrorCode.ENUM_ERROR.I00004.geteDesc());
+        }else {
+            // 金额是否有效
+            if (requestModel.orderMoney.indexOf(".") > -1){
+                boolean flag = StringUtil.isNumberByMoney(requestModel.orderMoney);
+                if (!flag){
+                    throw new ServiceException(ErrorCode.ENUM_ERROR.I00005.geteCode(), ErrorCode.ENUM_ERROR.I00005.geteDesc());
+                }
+            }else {
+                boolean flag = StringUtil.isNumer(requestModel.orderMoney);
+                if (!flag){
+                    throw new ServiceException(ErrorCode.ENUM_ERROR.I00006.geteCode(), ErrorCode.ENUM_ERROR.I00006.geteDesc());
+                }
+            }
+        }
+
+        // 校验银行名称
+        if (StringUtils.isBlank(requestModel.bankName)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00007.geteCode(), ErrorCode.ENUM_ERROR.I00007.geteDesc());
+        }
+
+        // 校验银行卡卡号
+        if (StringUtils.isBlank(requestModel.bankCard)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00008.geteCode(), ErrorCode.ENUM_ERROR.I00008.geteDesc());
+        }
+
+        // 校验银行卡开户人
+        if (StringUtils.isBlank(requestModel.accountName)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00009.geteCode(), ErrorCode.ENUM_ERROR.I00009.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 组装查询下发的查询条件
+     * @param id - 主键ID
+     * @param orderNo - 订单号
+     * @param outTradeNo - 支付平台订单号：下游上报的订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param ascriptionType - 订单分配归属类型：1归属卡商，2归属平台
+     * @param isDistribution - 是否已分配完毕归属：1初始化/未分配，2已分配
+     * @param isComplete - 是否已归集完毕：1初始化/未归集完毕，2已归集完毕；此状态：是归属类型属于平台方，平台方需要向卡商发布充值订单，发布完毕，如果卡商都已经充值完毕到我方卡，则修改此状态，修改成归集完毕的状态
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param whereCheckStatus - SQL查询条件 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @return com.hz.fruit.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/23 15:03
+     */
+    public static IssueModel assembleIssueQuery(long id, String orderNo, String outTradeNo, int orderStatus, int ascriptionType, int isDistribution, int isComplete, int checkStatus, int whereCheckStatus){
+        IssueModel resBean = new IssueModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (!StringUtils.isBlank(outTradeNo)){
+            resBean.setOutTradeNo(outTradeNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (ascriptionType > 0){
+            resBean.setAscriptionType(ascriptionType);
+        }
+        if (isDistribution > 0){
+            resBean.setIsDistribution(isDistribution);
+        }
+        if (isComplete > 0){
+            resBean.setIsComplete(isComplete);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (whereCheckStatus > 0){
+            resBean.setWhereCheckStatus(whereCheckStatus);
+        }
+        return resBean;
+    }
+
+
+    /**
+     * @Description: check下发新增：数据是否有重复录入
+     * @param issueModel
+     * @return
+     * @author yoko
+     * @date 2020/9/23 15:10
+    */
+    public static void checkIssueIsNotNull(IssueModel issueModel) throws Exception{
+        if (issueModel != null){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00010.geteCode(), ErrorCode.ENUM_ERROR.I00010.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: 组装生成要添加的下发数据
+     * @param requestModel - 支付平台请求的数据
+     * @param orderNo - 订单号
+     * @return com.hz.fruit.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/23 15:13
+     */
+    public static IssueModel assembleIssueAdd(RequestIssue requestModel, String orderNo){
+        IssueModel resBean = BeanUtils.copy(requestModel, IssueModel.class);
+        resBean.setOrderNo(orderNo);
+        resBean.setCurday(DateUtil.getDayNumber(new Date()));
+        resBean.setCurhour(DateUtil.getHour(new Date()));
+        resBean.setCurminute(DateUtil.getCurminute(new Date()));
+        return resBean;
+    }
+
 
 
 

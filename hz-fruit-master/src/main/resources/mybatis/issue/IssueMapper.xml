@@ -43,6 +43,9 @@
             <if test="checkStatus != null and checkStatus != '' " >
                 and a.check_status = #{checkStatus}
             </if>
+            <if test="whereCheckStatus != null and whereCheckStatus != '' " >
+                and a.check_status = #{whereCheckStatus}
+            </if>
             and a.yn = 0
         </trim>
     </sql>

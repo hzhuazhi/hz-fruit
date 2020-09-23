@@ -155,6 +155,11 @@ public class IssueModel extends BasePage implements Serializable {
      */
     private Integer yn;
 
+    /**
+     * SQL查询条件
+     */
+    private Integer whereCheckStatus;
+
     public Long getId() {
         return id;
     }
@@ -369,5 +374,13 @@ public class IssueModel extends BasePage implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getWhereCheckStatus() {
+        return whereCheckStatus;
+    }
+
+    public void setWhereCheckStatus(Integer whereCheckStatus) {
+        this.whereCheckStatus = whereCheckStatus;
     }
 }
