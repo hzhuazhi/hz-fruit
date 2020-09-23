@@ -958,6 +958,144 @@ public class HodgepodgeMethod {
     }
 
 
+    /**
+     * @Description: check校验数据下发数据-更新审核状态
+     * @param requestModel
+     * @return
+     * @author yoko
+     * @date 2020/05/14 15:57
+     */
+    public static void checkIssueUpdateCheck(RequestIssue requestModel) throws Exception{
+        // 1.校验所有数据
+        if (requestModel == null ){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00011.geteCode(), ErrorCode.ENUM_ERROR.I00011.geteDesc());
+        }
+
+        // 校验支付平台的订单号
+        if (StringUtils.isBlank(requestModel.outTradeNo)){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00012.geteCode(), ErrorCode.ENUM_ERROR.I00012.geteDesc());
+        }
+
+        // 校验审核状态
+        if (requestModel.checkStatus == null || requestModel.getCheckStatus() == 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00013.geteCode(), ErrorCode.ENUM_ERROR.I00013.geteDesc());
+        }
+
+
+    }
+
+    /**
+     * @Description: check下发审核状态更新：数据是否存在
+     * @param issueModel
+     * @return
+     * @author yoko
+     * @date 2020/9/23 15:10
+     */
+    public static void checkIssueIsNull(IssueModel issueModel) throws Exception{
+        if (issueModel == null || issueModel.getId() == null || issueModel.getId() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00014.geteCode(), ErrorCode.ENUM_ERROR.I00014.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: check下发数据中，此订单的状态是否是成功状态
+     * <p>
+     *     成功状态来由：由卡商在充值订单中更新了充值成功的状态
+     * </p>
+     * @param orderStatus
+     * @return
+     * @author yoko
+     * @date 2020/9/23 15:46
+    */
+    public static void checkIssueOrderStatus(int orderStatus) throws Exception{
+        if (orderStatus != 3){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00015.geteCode(), ErrorCode.ENUM_ERROR.I00015.geteDesc());
+        }
+    }
+
+    /**
+     * @Description: check下发数据中，此订单的状态是否是成功状态
+     * <p>
+     *     成功状态来由：由卡商在充值订单中更新了充值成功的状态
+     * </p>
+     * @param checkStatus
+     * @return
+     * @author yoko
+     * @date 2020/9/23 15:46
+     */
+    public static void checkIssueCheckStatus(int checkStatus) throws Exception{
+        if (checkStatus == 3){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.I00016.geteCode(), ErrorCode.ENUM_ERROR.I00016.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: 组装查询下发的更新方法
+     * @param id - 主键ID
+     * @param orderNo - 订单号
+     * @param outTradeNo - 支付平台订单号：下游上报的订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param pictureAds - 转账成功图片凭证
+     * @param myBankInfo - 我方银行卡信息备注：假如归属类型：我方/平台，填写我方银行卡的信息
+     * @param ascriptionType - 订单分配归属类型：1归属卡商，2归属平台
+     * @param isDistribution - 是否已分配完毕归属：1初始化/未分配，2已分配
+     * @param isComplete - 是否已归集完毕：1初始化/未归集完毕，2已归集完毕；此状态：是归属类型属于平台方，平台方需要向卡商发布充值订单，发布完毕，如果卡商都已经充值完毕到我方卡，则修改此状态，修改成归集完毕的状态
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param checkInfo -  审核失败缘由，审核失败的原因
+     * @param dataExplain - 数据说明：做解说用的
+     * @param whereCheckStatus - SQL查询条件 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @return com.hz.fruit.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/23 15:03
+     */
+    public static IssueModel assembleIssueUpdate(long id, String orderNo, String outTradeNo, int orderStatus, String pictureAds,
+                                                 String myBankInfo, int ascriptionType,int isDistribution, int isComplete, int checkStatus, String checkInfo,
+                                                 String dataExplain, int whereCheckStatus){
+        IssueModel resBean = new IssueModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (!StringUtils.isBlank(outTradeNo)){
+            resBean.setOutTradeNo(outTradeNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (!StringUtils.isBlank(pictureAds)){
+            resBean.setPictureAds(pictureAds);
+        }
+        if (!StringUtils.isBlank(myBankInfo)){
+            resBean.setMyBankInfo(myBankInfo);
+        }
+        if (ascriptionType > 0){
+            resBean.setAscriptionType(ascriptionType);
+        }
+        if (isDistribution > 0){
+            resBean.setIsDistribution(isDistribution);
+        }
+        if (isComplete > 0){
+            resBean.setIsComplete(isComplete);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(checkInfo)){
+            resBean.setCheckInfo(checkInfo);
+        }
+        if (!StringUtils.isBlank(dataExplain)){
+            resBean.setDataExplain(dataExplain);
+        }
+        if (whereCheckStatus > 0){
+            resBean.setWhereCheckStatus(whereCheckStatus);
+        }
+        return resBean;
+    }
+
+
 
 
 

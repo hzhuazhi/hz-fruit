@@ -254,4 +254,79 @@ public class IssueController {
     }
 
 
+    /**
+     * @Description: 支付平台更新提现的审核状态
+     * <p>
+     *     新增下发数据
+     * </p>
+     * @param request
+     * @param response
+     * @return com.gd.chain.common.utils.JsonResult<java.lang.Object>
+     * @author yoko
+     * @date 2019/11/25 22:58
+     * local:http://localhost:8089/fruit/issue/actionUpdateCheck
+     * 请求的属性类:RequestIssue
+     * 必填字段:{"outTradeNo":"outTradeNo1","checkStatus":2,"checkInfo":"checkInfo1"}
+     * 加密值:{"jsonData":"eyJvdXRUcmFkZU5vIjoib3V0VHJhZGVObzEiLCJvcmRlck1vbmV5IjoiNTAwMCIsImJhbmtOYW1lIjoiYmFua05hbWUxIiwiYmFua0NhcmQiOiJiYW5rQ2FyZDEiLCJhY2NvdW50TmFtZSI6ImFjY291bnROYW1lMSJ9"}
+     * result=ok/no
+     */
+    @RequestMapping(value = "/actionUpdateCheck", method = {RequestMethod.POST})
+    public void actionUpdateCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody RequestEncryptionJson requestData) throws Exception{
+        String sgid = ComponentUtil.redisIdService.getNewId();
+        String data = "";
+        RequestIssue requestModel = new RequestIssue();
+        try{
+            // 解密
+            data = StringUtil.decoderBase64(requestData.jsonData);
+            requestModel  = JSON.parseObject(data, RequestIssue.class);
+            HodgepodgeMethod.checkIssueUpdateCheck(requestModel);
+
+            // 判断上报订单号是否存在
+            IssueModel issueQuery = HodgepodgeMethod.assembleIssueQuery(0, null, requestModel.outTradeNo, 0, 0,0,0,0,0);
+            IssueModel issueModel = (IssueModel)ComponentUtil.issueService.findByObject(issueQuery);
+            // check是否有此订单
+            HodgepodgeMethod.checkIssueIsNull(issueModel);
+            // check是否此订单已是成功状态
+            HodgepodgeMethod.checkIssueOrderStatus(issueModel.getOrderStatus());
+            // check审核状态
+            HodgepodgeMethod.checkIssueCheckStatus(issueModel.getCheckStatus());
+
+            // 更新下发表的审核状态
+            IssueModel issueUpdate = HodgepodgeMethod.assembleIssueUpdate(issueModel.getId(), null,null,0,null,
+                    null,0,0,0, requestModel.checkStatus, requestModel.checkInfo, null, 0);
+            ComponentUtil.issueService.update(issueUpdate);
+
+            // 更新卡商充值表的审核状态
+
+
+
+            // 添加上报的下发数据
+            IssueModel issueAdd = HodgepodgeMethod.assembleIssueAdd(requestModel, sgid);
+            int num = ComponentUtil.issueService.add(issueAdd);
+            String resStr = "";
+            if (num > 0){
+                resStr = "ok";
+            }else {
+                resStr = "no";
+            }
+
+            // 返回数据给客户端
+            PrintWriter out = response.getWriter();
+            out.print(resStr);
+            out.flush();
+            out.close();
+        }catch (Exception e){
+            Map<String,String> map = ExceptionMethod.getException(e, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_TWO);
+            log.error(String.format("this IssueController.actionUpdateCheck() is error , the all data=%s!", data));
+            if (!StringUtils.isBlank(map.get("dbCode"))){
+                log.error(String.format("this IssueController.actionUpdateCheck() is error codeInfo, the dbCode=%s and dbMessage=%s !", map.get("dbCode"), map.get("dbMessage")));
+            }
+            e.printStackTrace();
+
+            PrintWriter out = response.getWriter();
+            out.print("no");
+            out.flush();
+            out.close();
+        }
+    }
 }
