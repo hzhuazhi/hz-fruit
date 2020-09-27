@@ -311,7 +311,8 @@ public class IssueController {
                 MerchantRechargeModel merchantRechargeModel = (MerchantRechargeModel)ComponentUtil.merchantRechargeService.findByObject(merchantRechargeQuery);
                 if (merchantRechargeModel != null && merchantRechargeModel.getId() != null && merchantRechargeModel.getId() > 0){
                     // 更新卡商充值表的审核状态
-                    MerchantRechargeModel merchantRechargeUpdate = HodgepodgeMethod.assembleMerchantRechargeUpdate(merchantRechargeModel.getId(),null, orderStatus,null,0,0,                            requestModel.checkStatus, requestModel.checkInfo, null);
+                    MerchantRechargeModel merchantRechargeUpdate = HodgepodgeMethod.assembleMerchantRechargeUpdate(merchantRechargeModel.getId(),null, orderStatus,null,0,0,
+                            requestModel.checkStatus, requestModel.checkInfo, null);
                     ComponentUtil.merchantRechargeService.update(merchantRechargeUpdate);
                 }
 

@@ -1203,6 +1203,9 @@ public class HodgepodgeMethod {
         if (!StringUtils.isBlank(pictureAds)){
             resBean.setPictureAds(pictureAds);
         }
+        if (operateStatus > 0){
+            resBean.setOperateStatus(operateStatus);
+        }
         if (isSynchro > 0){
             resBean.setIsSynchro(isSynchro);
         }

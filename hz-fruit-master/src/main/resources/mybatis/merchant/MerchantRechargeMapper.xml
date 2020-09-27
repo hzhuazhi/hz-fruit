@@ -333,6 +333,12 @@
             <if test="remark != null and remark != '' " >
                 a.remark = #{remark},
             </if>
+            <if test="sendNum != null and sendNum != '' " >
+                a.send_num = #{sendNum},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' " >
+                a.send_status = #{sendStatus},
+            </if>
             a.update_time = NOW(),
         </trim>
         where 1=1
