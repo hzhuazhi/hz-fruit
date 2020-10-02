@@ -3,6 +3,7 @@ package com.hz.fruit.master.core.controller.order;
 import com.alibaba.fastjson.JSON;
 import com.hz.fruit.master.core.common.exception.ExceptionMethod;
 import com.hz.fruit.master.core.common.utils.JsonResult;
+import com.hz.fruit.master.core.common.utils.ShortChainUtil;
 import com.hz.fruit.master.core.common.utils.SignUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
@@ -276,7 +277,8 @@ public class OrderController {
 
             // 生成短链
 //            String shortChain = "";
-            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds(), shortChainMoney);
+//            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds(), shortChainMoney);
+            String shortChain = ShortChainUtil.getShortChainH5Url(shortChainModel.getInterfaceAds());
 
             // 组装返回客户端的数据
             long stime = System.currentTimeMillis();
