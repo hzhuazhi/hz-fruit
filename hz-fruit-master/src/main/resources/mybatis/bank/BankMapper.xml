@@ -451,7 +451,8 @@
         from tb_fr_bank a left join tb_fr_mobile_card b on a.mobile_card_id = b.id and b.is_arrears =1 and b.heartbeat_status = 2 and b.use_status = 1 and b.yn = 0
         left join tb_fr_bank_strategy c on a.id = c.bank_id and c.use_status = 1 and c.yn = 0
         left join tb_hz_sys_account d on a.account_id = d.id and d.role_id = 2 and d.is_enable = 2 and d.yn = 0
-        left join tb_fr_merchant e on d.id = e.account_id and (e.least_money+0) > (e.balance+0) and e.least_money > #{money} and e.use_status = 1 and e.yn = 0
+        <!--left join tb_fr_merchant e on d.id = e.account_id and (e.least_money+0) > (e.balance+0) and (e.least_money + 0) > #{money} and e.use_status = 1 and e.yn = 0-->
+        left join tb_fr_merchant e on d.id = e.account_id and (e.least_money - e.balance) > #{money} and e.use_status = 1 and e.yn = 0
         where 1=1
         <if test="yesBankIdList != null and yesBankIdList.size()>0">
             and a.id in
