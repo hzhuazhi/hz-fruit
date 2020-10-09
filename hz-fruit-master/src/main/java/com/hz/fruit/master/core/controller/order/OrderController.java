@@ -144,6 +144,13 @@ public class OrderController {
             invalidTimeNum = strategyInvalidTimeNumModel.getStgNumValue();
 
 
+            // 策略数据：给出银行卡是否要绑定才给出
+            int bankOutType = 0;
+            StrategyModel strategyBankOutTypeQuery = HodgepodgeMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.BANK_OUT_TYPE.getStgType());
+            StrategyModel strategyBankOutTypeModel = ComponentUtil.strategyService.getStrategyModel(strategyBankOutTypeQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+            bankOutType = strategyBankOutTypeModel.getStgNumValue();
+
+
             // 根据秘钥获取商户信息
             ChannelModel channelQuery = HodgepodgeMethod.assembleChannelQuery(0, requestModel.secretKey, 1);
             ChannelModel channelModel = ComponentUtil.channelService.getChannel(channelQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
@@ -182,7 +189,7 @@ public class OrderController {
 
 
             // 区分出与银行卡绑定关系以及未绑定关系
-            List<BankModel> bankAllList = HodgepodgeMethod.assembleBankByPriority(bankList, bankIdList);
+            List<BankModel> bankAllList = HodgepodgeMethod.assembleBankByPriority(bankList, bankIdList, bankOutType);
 //            for (BankModel bankModel : bankAllList){
 //                log.info("ID:" + bankModel.getId() + ",priority:" + bankModel.getPriority());
 //            }

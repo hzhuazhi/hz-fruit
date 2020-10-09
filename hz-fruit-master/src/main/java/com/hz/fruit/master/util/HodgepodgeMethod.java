@@ -440,14 +440,17 @@ public class HodgepodgeMethod {
      * <p>
      *     商户与银行卡绑定关系的优先级排在集合的前面；
      *     商户未与银行卡绑定关系的优先级排在集合的后面
+     *
+     *     如果bankOutType=1，则需要只给出绑定关系的银行卡
      * </p>
-     * @param bankList
-     * @param bankIdList
+     * @param bankList - 银行卡集合
+     * @param bankIdList - 渠道绑定的银行卡ID集合
+     * @param bankOutType -给出银行卡是否要绑定才给出 ：1需要绑定，2无需绑定
      * @return java.util.List<com.hz.fruit.master.core.model.bank.BankModel>
      * @author yoko
      * @date 2020/9/12 20:26
      */
-    public static List<BankModel> assembleBankByPriority(List<BankModel> bankList, List<Long> bankIdList){
+    public static List<BankModel> assembleBankByPriority(List<BankModel> bankList, List<Long> bankIdList, int bankOutType){
         List<BankModel> resList = new ArrayList<>();
         if (bankIdList == null || bankIdList.size() <= 0){
             resList = bankList;
@@ -465,7 +468,9 @@ public class HodgepodgeMethod {
                 if (num != 0){
                     yesList.add(bankModel);
                 }else {
-                    noList.add(bankModel);
+                    if (bankOutType == 2){
+                        noList.add(bankModel);
+                    }
                 }
             }
 

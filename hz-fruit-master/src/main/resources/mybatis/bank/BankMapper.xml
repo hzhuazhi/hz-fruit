@@ -471,7 +471,7 @@
         and c.id is not null
         and d.id is not null
         and e.id is not null
-        order by c.priority asc
+        <!-- order by c.priority asc -->
     </select>
 
 

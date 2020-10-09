@@ -29,6 +29,11 @@ public class ChannelModel extends BasePage implements Serializable {
     private String secretKey;
 
     /**
+     * 银行卡绑定类型：1无需绑定银行卡，2需要绑定银行卡
+     */
+    private Integer bankBindingType;
+
+    /**
      * 备注
      */
     private String remark;
@@ -115,5 +120,13 @@ public class ChannelModel extends BasePage implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getBankBindingType() {
+        return bankBindingType;
+    }
+
+    public void setBankBindingType(Integer bankBindingType) {
+        this.bankBindingType = bankBindingType;
     }
 }
