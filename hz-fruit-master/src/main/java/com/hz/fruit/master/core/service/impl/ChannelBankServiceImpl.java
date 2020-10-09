@@ -3,9 +3,12 @@ package com.hz.fruit.master.core.service.impl;
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
 import com.hz.fruit.master.core.mapper.ChannelBankMapper;
+import com.hz.fruit.master.core.model.channel.ChannelBankModel;
 import com.hz.fruit.master.core.service.ChannelBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description 商户与银行卡的绑定关系的Service层的实现层
@@ -39,5 +42,10 @@ public class ChannelBankServiceImpl<T> extends BaseServiceImpl<T> implements Cha
 
     public BaseDao<T> getDao() {
         return channelBankMapper;
+    }
+
+    @Override
+    public List<Long> getBankRelationList(ChannelBankModel model) {
+        return channelBankMapper.getBankRelationList(model);
     }
 }

@@ -183,5 +183,13 @@
         <include refid="Example_Where_Clause_id"/>
     </update>
 
+    <!-- 获取银行卡ID集合 -->
+    <select id="getBankRelationList" parameterType="Object" resultType="java.lang.Long">
+        select
+        DISTINCT(a.bank_id) as bank_id
+        from tb_fr_channel_bank a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
 
 </mapper>

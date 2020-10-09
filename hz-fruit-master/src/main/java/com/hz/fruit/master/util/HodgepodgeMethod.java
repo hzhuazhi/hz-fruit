@@ -408,16 +408,29 @@ public class HodgepodgeMethod {
 
     /**
      * @Description: 组装银行卡以及放量策略的查询条件
-     * @param orderMoney
+     * @param orderMoney - 订单金额
+     * @param bankBindingType - 银行卡绑定类型：1无需绑定银行卡，2需要绑定银行卡
+     * @param bankIdList - 银行卡ID集合
      * @return
      * @author yoko
      * @date 2020/9/12 20:15
     */
-    public static BankModel assembleBankByOrderQuery(String orderMoney){
+    public static BankModel assembleBankByOrderQuery(String orderMoney, int bankBindingType, List<Long> bankIdList){
         BankModel resBean = new BankModel();
         if (!StringUtils.isBlank(orderMoney)){
             BigDecimal bd = new BigDecimal(orderMoney);
             resBean.setMoney(bd);
+        }
+        if (bankBindingType == 1){
+            // 无需绑定银行卡
+            if (bankIdList != null && bankIdList.size() > 0){
+                resBean.setNoBankIdList(bankIdList);
+            }
+        }else if (bankBindingType == 2){
+            // 需要绑定银行卡
+            if (bankIdList != null && bankIdList.size() > 0){
+                resBean.setYesBankIdList(bankIdList);
+            }
         }
         return resBean;
     }
@@ -432,6 +445,20 @@ public class HodgepodgeMethod {
     public static void checkBankIsNull(List<BankModel> bankList) throws Exception{
         if (bankList == null || bankList.size() <= 0){
             throw new ServiceException(ErrorCode.ENUM_ERROR.OR00012.geteCode(), ErrorCode.ENUM_ERROR.OR00012.geteDesc());
+        }
+    }
+
+
+    /**
+     * @Description: check校验渠道与银行卡绑定数据是否为空
+     * @param bankIdList
+     * @return
+     * @author yoko
+     * @date 2020/9/12 20:19
+     */
+    public static void checkBankRelationIsNull(List<Long> bankIdList) throws Exception{
+        if (bankIdList == null || bankIdList.size() <= 0){
+            throw new ServiceException(ErrorCode.ENUM_ERROR.OR00018.geteCode(), ErrorCode.ENUM_ERROR.OR00018.geteDesc());
         }
     }
 
@@ -1247,6 +1274,9 @@ public class HodgepodgeMethod {
             }
             System.out.println("money:" + money);
         }
+
+        String sb = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99";
+        System.out.println("sb:" + sb.length());
 
     }
 

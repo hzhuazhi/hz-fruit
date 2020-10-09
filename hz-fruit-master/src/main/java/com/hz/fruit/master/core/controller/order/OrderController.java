@@ -17,6 +17,7 @@ import com.hz.fruit.master.core.model.mobilecard.MobileCardModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
 import com.hz.fruit.master.core.model.region.RegionModel;
 import com.hz.fruit.master.core.model.shortchain.ShortChainModel;
+import com.hz.fruit.master.core.model.strategy.StrategyData;
 import com.hz.fruit.master.core.model.strategy.StrategyModel;
 import com.hz.fruit.master.core.protocol.request.order.ProtocolOrder;
 import com.hz.fruit.master.core.protocol.request.order.RequestOrder;
@@ -144,11 +145,15 @@ public class OrderController {
             invalidTimeNum = strategyInvalidTimeNumModel.getStgNumValue();
 
 
-            // 策略数据：给出银行卡是否要绑定才给出
-            int bankOutType = 0;
-            StrategyModel strategyBankOutTypeQuery = HodgepodgeMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.BANK_OUT_TYPE.getStgType());
-            StrategyModel strategyBankOutTypeModel = ComponentUtil.strategyService.getStrategyModel(strategyBankOutTypeQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
-            bankOutType = strategyBankOutTypeModel.getStgNumValue();
+            // 策略数据：银行卡金额给出策略（浮动：动态：1为减，2加，3随机加减，4为整数）
+            int bankMoneyOut = 0;
+            StrategyModel strategyBankMoneyOutQuery = HodgepodgeMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.BANK_MONEY_OUT.getStgType());
+            StrategyModel strategyBankMoneyOutModel = ComponentUtil.strategyService.getStrategyModel(strategyBankMoneyOutQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+            bankMoneyOut = strategyBankMoneyOutModel.getStgNumValue();
+
+            // 解析金额列表的值
+            List<StrategyData> strategyDataList = JSON.parseArray(strategyBankMoneyOutModel.getStgBigValue(), StrategyData.class);
+
 
 
             // 根据秘钥获取商户信息
@@ -172,30 +177,48 @@ public class OrderController {
 //            // 获取手机卡的主键ID集合
 //            List<Long> mobileCardIdList = mobileCardList.stream().map(MobileCardModel::getId).collect(Collectors.toList());
 
-            // 获取商户与银行卡绑定关系的集合
-            ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0, channelModel.getId(),0, 1);
-            List<ChannelBankModel> channelBankList = ComponentUtil.channelBankService.findByCondition(channelBankQuery);
 
-            // 获取绑定关系的银行卡ID
             List<Long> bankIdList = null;
-            if (channelBankList != null && channelBankList.size() > 0){
-                bankIdList = channelBankList.stream().map(ChannelBankModel::getBankId).collect(Collectors.toList());
+            // 银行卡绑定类型：1无需绑定银行卡，2需要绑定银行卡
+            int bankBindingType = channelModel.getBankBindingType();
+            if (bankBindingType == 1){
+                // 无需绑定银行卡
+
+                // 查询已经绑定的银行卡ID集合
+                ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0,0,0,0);
+                bankIdList = ComponentUtil.channelBankService.getBankRelationList(channelBankQuery);
+            }else if (bankBindingType == 2){
+                // 需要绑定银行卡
+
+                // 查询此渠道已绑定的银行卡ID集合
+                ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0,channelModel.getId(),0,1);
+                bankIdList = ComponentUtil.channelBankService.getBankRelationList(channelBankQuery);
+                // 需要绑定银行卡，校验是否有绑定的银行卡
+                HodgepodgeMethod.checkBankRelationIsNull(bankIdList);
+
             }
 
+//            // 获取商户与银行卡绑定关系的集合
+//            ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0, channelModel.getId(),0, 1);
+//            List<ChannelBankModel> channelBankList = ComponentUtil.channelBankService.findByCondition(channelBankQuery);
+//
+//            // 获取绑定关系的银行卡ID
+//            List<Long> bankIdList = null;
+//            if (channelBankList != null && channelBankList.size() > 0){
+//                bankIdList = channelBankList.stream().map(ChannelBankModel::getBankId).collect(Collectors.toList());
+//            }
+
             // 获取银行卡以及银行卡的放量策略数据
-            BankModel bankByOrderQuery = HodgepodgeMethod.assembleBankByOrderQuery(requestModel.money);
+            BankModel bankByOrderQuery = HodgepodgeMethod.assembleBankByOrderQuery(requestModel.money, bankBindingType, bankIdList);
             List<BankModel> bankList = ComponentUtil.bankService.getBankAndStrategy(bankByOrderQuery);
             HodgepodgeMethod.checkBankIsNull(bankList);
 
 
-            // 区分出与银行卡绑定关系以及未绑定关系
-            List<BankModel> bankAllList = HodgepodgeMethod.assembleBankByPriority(bankList, bankIdList, bankOutType);
-//            for (BankModel bankModel : bankAllList){
-//                log.info("ID:" + bankModel.getId() + ",priority:" + bankModel.getPriority());
-//            }
+//            // 区分出与银行卡绑定关系以及未绑定关系
+//            List<BankModel> bankAllList = HodgepodgeMethod.assembleBankByPriority(bankList, bankIdList, bankOutType);
 
             // 筛选可用的银行卡
-            BankModel bankModel = ComponentUtil.orderService.screenBank(bankAllList, requestModel.money, requestModel.payType, orderMoneyLockTime);
+            BankModel bankModel = ComponentUtil.orderService.screenBank(bankList, requestModel.money, requestModel.payType, orderMoneyLockTime);
             HodgepodgeMethod.checkScreenBankIsNull(bankModel);
 
             // 添加订单
