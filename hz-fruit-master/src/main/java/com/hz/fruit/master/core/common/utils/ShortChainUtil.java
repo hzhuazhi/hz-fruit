@@ -49,7 +49,8 @@ public class ShortChainUtil {
     public static String getShortChainH5Url(String shortChainApi){
         String str1 = "";
         try{
-            String url1 = "https://www.alipay.com/?appId=09999988";
+//            String url1 = "https://www.alipay.com/?appId=09999988";
+            String url1 = "https://www.alipay.com";
             url1 = URLEncoder.encode(url1,"UTF-8");
 //            String url = "http://api.6du.in/urls/add?secretkey=555098a19f6ae3b0ICAgICA0c782c0757f395fdgNjA2Mg&lurl="+url1;
             String url = shortChainApi + "&lurl=" + url1;

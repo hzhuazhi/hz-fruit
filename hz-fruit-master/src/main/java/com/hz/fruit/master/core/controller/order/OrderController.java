@@ -276,9 +276,9 @@ public class OrderController {
             OrderModel orderData = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
 
             // 生成短链
-//            String shortChain = "";
+            String shortChain = "";
 //            String shortChain = HodgepodgeMethod.getShortChain(orderData, shortChainModel.getInterfaceAds(), shortChainMoney);
-            String shortChain = ShortChainUtil.getShortChainH5Url(shortChainModel.getInterfaceAds());
+//            String shortChain = ShortChainUtil.getShortChainH5Url(shortChainModel.getInterfaceAds());
 
             // 组装返回客户端的数据
             long stime = System.currentTimeMillis();

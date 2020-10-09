@@ -1235,7 +1235,13 @@ public class HodgepodgeMethod {
         String str = "00:01-19:12#12:01-19:00#20:01-23:59";
         boolean flag = checkOpenTimeSlot(str);
         System.out.println("flag:" + flag);
-
+        String money ="300.01";
+        if (!StringUtils.isBlank(money)){
+            if (money.indexOf(".") <= -1){
+                money = money + ".00";
+            }
+            System.out.println("money:" + money);
+        }
 
     }
 
