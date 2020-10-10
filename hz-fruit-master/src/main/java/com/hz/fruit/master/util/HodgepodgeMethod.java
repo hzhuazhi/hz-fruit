@@ -6,6 +6,8 @@ import com.hz.fruit.master.core.common.utils.BeanUtils;
 import com.hz.fruit.master.core.common.utils.DateUtil;
 import com.hz.fruit.master.core.common.utils.ShortChainUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
+import com.hz.fruit.master.core.common.utils.constant.CacheKey;
+import com.hz.fruit.master.core.common.utils.constant.CachedKeyUtils;
 import com.hz.fruit.master.core.common.utils.constant.ErrorCode;
 import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.model.bank.BankModel;
@@ -38,6 +40,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -543,6 +546,7 @@ public class HodgepodgeMethod {
         resBean.setBankId(bankModel.getId());
         resBean.setOrderType(requestModel.payType);
         resBean.setOrderMoney(requestModel.money);
+        resBean.setDistributionMoney(bankModel.getDistributionMoney());
         resBean.setOutTradeNo(requestModel.outTradeNo);
         // 订单失效时间
         String invalidTime = DateUtil.addDateMinute(invalidTimeNum);
@@ -558,6 +562,13 @@ public class HodgepodgeMethod {
         if (!StringUtils.isBlank(bankModel.getAcName())){
             resBean.setMerchantName(bankModel.getAcName());
         }
+        if (bankModel.getCardSiteId() != null && bankModel.getCardSiteId() > 0){
+            resBean.setCardSiteId(bankModel.getCardSiteId());
+        }
+        if (!StringUtils.isBlank(bankModel.getCardSiteName())){
+            resBean.setCardSiteName(bankModel.getCardSiteName());
+        }
+
         if (channelModel != null && channelModel.getId() != null && channelModel.getId() > 0){
             resBean.setChannelId(channelModel.getId());
             if (!StringUtils.isBlank(channelModel.getAlias())){
@@ -701,6 +712,11 @@ public class HodgepodgeMethod {
                 order.qrCode = orderModel.getQrCode();
             }
             order.orderMoney = orderModel.getOrderMoney();
+            order.distributionMoney = orderModel.getDistributionMoney();
+
+            //计算差额
+            order.differenceMoney = StringUtil.getBigDecimalSubtractByStr(orderModel.getOrderMoney(), orderModel.getDistributionMoney()).replace("-", "");
+
             order.invalidTime = orderModel.getInvalidTime();
             int invalidSecond = DateUtil.calLastedTime(orderModel.getInvalidTime());
             order.invalidSecond = String.valueOf(invalidSecond);
@@ -1254,6 +1270,106 @@ public class HodgepodgeMethod {
     }
 
 
+    /**
+     * @Description: 获取上一次使用过的银行卡ID
+     * <p>
+     *     从缓存中获取上次给出码的银行卡ID
+     *     数据来由：每次给出之后，把银行卡ID进行纪录
+     * </p>
+     * @param bankBindingType - 银行卡绑定类型
+     * @param channelId - 渠道的主键ID
+     * @return
+     * @author yoko
+     * @date 2020/5/21 15:38
+     */
+    public static long getMaxBankByRedis(int bankBindingType, long channelId) throws Exception{
+        String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.BANK_BINDING_TYPE, bankBindingType, channelId);
+        String strCache = (String) ComponentUtil.redisService.get(strKeyCache);
+        if (!StringUtils.isBlank(strCache)) {
+            return Long.parseLong(strCache);
+        }else{
+            return 0;
+        }
+    }
+
+
+    /**
+     * @Description: 银行卡集合排序
+     * <p>
+     *     排序方式：小于上次给过的银行卡ID放在集合的后面，大于上次给过的银行卡ID放集合的前面
+     * </p>
+     * @param bankList - 银行卡集合
+     * @param maxBankId - 上次给出的银行卡ID
+     * @return java.util.List<com.hz.fruit.master.core.model.bank.BankModel>
+     * @author yoko
+     * @date 2020/10/10 11:49
+     */
+    public static List<BankModel> sortBankList(List<BankModel> bankList, long maxBankId){
+        if (maxBankId > 0){
+            List<BankModel> resList = new ArrayList<>();
+            List<BankModel> noList = new ArrayList<>();// 没有给出过出码的银行集合
+            List<BankModel> yesList = new ArrayList<>();// 有给出过出码的银行集合
+            for (BankModel bankModel : bankList){
+                if (bankModel.getId() > maxBankId){
+                    noList.add(bankModel);
+                }else {
+                    yesList.add(bankModel);
+                }
+            }
+            if (noList != null && noList.size() > 0){
+                resList.addAll(noList);
+            }
+            if (yesList != null && yesList.size() > 0){
+                resList.addAll(yesList);
+            }
+            return resList;
+        }else {
+            return bankList;
+        }
+    }
+
+    /**
+     * @Description: 获取是减金额还是加金额
+     * @param bankMoneyOut - 动态：1为减，2加，3随机加减，4为整数
+     * @return 
+     * @author yoko
+     * @date 2020/10/10 14:50 
+    */
+    public static int getAddAndSubtract(int bankMoneyOut){
+        int num = 0;
+        if (bankMoneyOut == 1){
+            num = 1;
+        }else if (bankMoneyOut == 2){
+            num = 2;
+        }else if (bankMoneyOut == 3){
+            int random = new Random().nextInt(2);//生成随机数0跟1，0表示减，1表示加
+            if (random == 0){
+                num = 1;
+            }else{
+                num = 2;
+            }
+        }
+        return num;
+    }
+
+    /**
+     * @Description: redis：添加给出的银行卡ID
+     * @param bankBindingType - 渠道与银行卡绑定类型
+     * @param channelId - 渠道ID
+     * @param bankId - 银行卡ID
+     * @return void
+     * @author yoko
+     * @date 2020/10/10 15:44
+     */
+    public static void saveMaxBankByRedis(int bankBindingType, long channelId, long bankId){
+        if (bankBindingType == 1){
+            channelId = 0;
+        }
+        String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.BANK_BINDING_TYPE, bankBindingType, channelId);
+        ComponentUtil.redisService.set(strKeyCache, String.valueOf(bankId));
+    }
+
+
 
 
 
@@ -1275,8 +1391,13 @@ public class HodgepodgeMethod {
             System.out.println("money:" + money);
         }
 
-        String sb = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99";
-        System.out.println("sb:" + sb.length());
+        String sb3 = "500.00";
+        String sb4 = "499.98";
+//        String sb3 = "500.00";
+//        String sb4 = "500.00";
+        String sb5 = StringUtil.getBigDecimalSubtractByStr(sb3, sb4).replace("-", "");
+        System.out.println("sb5:" + sb5);
+
 
     }
 

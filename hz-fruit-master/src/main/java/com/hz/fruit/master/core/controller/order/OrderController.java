@@ -6,6 +6,8 @@ import com.hz.fruit.master.core.common.utils.JsonResult;
 import com.hz.fruit.master.core.common.utils.ShortChainUtil;
 import com.hz.fruit.master.core.common.utils.SignUtil;
 import com.hz.fruit.master.core.common.utils.StringUtil;
+import com.hz.fruit.master.core.common.utils.constant.CacheKey;
+import com.hz.fruit.master.core.common.utils.constant.CachedKeyUtils;
 import com.hz.fruit.master.core.common.utils.constant.ServerConstant;
 import com.hz.fruit.master.core.model.RequestEncryptionJson;
 import com.hz.fruit.master.core.model.ResponseEncryptionJson;
@@ -177,6 +179,8 @@ public class OrderController {
 //            // 获取手机卡的主键ID集合
 //            List<Long> mobileCardIdList = mobileCardList.stream().map(MobileCardModel::getId).collect(Collectors.toList());
 
+            // 获取根据渠道/商户银行卡绑定类型，获取上次最大的银行卡ID
+            long maxBankId = 0;
 
             List<Long> bankIdList = null;
             // 银行卡绑定类型：1无需绑定银行卡，2需要绑定银行卡
@@ -187,6 +191,9 @@ public class OrderController {
                 // 查询已经绑定的银行卡ID集合
                 ChannelBankModel channelBankQuery = HodgepodgeMethod.assembleChannelBankQuery(0,0,0,0);
                 bankIdList = ComponentUtil.channelBankService.getBankRelationList(channelBankQuery);
+
+                // 获取上次给出的银行卡ID
+                maxBankId = HodgepodgeMethod.getMaxBankByRedis(bankBindingType, 0);
             }else if (bankBindingType == 2){
                 // 需要绑定银行卡
 
@@ -196,6 +203,8 @@ public class OrderController {
                 // 需要绑定银行卡，校验是否有绑定的银行卡
                 HodgepodgeMethod.checkBankRelationIsNull(bankIdList);
 
+                // 获取上次此渠道给出的银行卡ID
+                maxBankId = HodgepodgeMethod.getMaxBankByRedis(bankBindingType, channelModel.getId());
             }
 
 //            // 获取商户与银行卡绑定关系的集合
@@ -213,12 +222,15 @@ public class OrderController {
             List<BankModel> bankList = ComponentUtil.bankService.getBankAndStrategy(bankByOrderQuery);
             HodgepodgeMethod.checkBankIsNull(bankList);
 
+            // 银行卡集合按照上次给出过码进行排序
+            List<BankModel> sortList = HodgepodgeMethod.sortBankList(bankList, maxBankId);
+
 
 //            // 区分出与银行卡绑定关系以及未绑定关系
 //            List<BankModel> bankAllList = HodgepodgeMethod.assembleBankByPriority(bankList, bankIdList, bankOutType);
 
             // 筛选可用的银行卡
-            BankModel bankModel = ComponentUtil.orderService.screenBank(bankList, requestModel.money, requestModel.payType, orderMoneyLockTime);
+            BankModel bankModel = ComponentUtil.orderService.screenBankByMoney(sortList, requestModel.money, requestModel.payType, orderMoneyLockTime, bankMoneyOut, strategyDataList);
             HodgepodgeMethod.checkScreenBankIsNull(bankModel);
 
             // 添加订单
@@ -226,7 +238,8 @@ public class OrderController {
             int num = ComponentUtil.orderService.add(orderModel);
             HodgepodgeMethod.checkAddOrderIsOk(num);
 
-
+            // 存储redis：给出的银行卡ID，用于字段maxBankId
+            HodgepodgeMethod.saveMaxBankByRedis(bankBindingType, channelModel.getId(), bankModel.getId());
 
             String payQrCodeUrl = "";// 要跳转的支付页
             if (requestModel.payType == 2){

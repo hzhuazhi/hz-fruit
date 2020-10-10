@@ -15,14 +15,15 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List_Two">
-        a.id,a.alias,a.mobile_card_id,a.bank_type_id,a.account_id,a.bank_name,a.bank_card,a.subbranch_name,a.account_name,a.bank_code,a.province,a.city,
+        a.id,a.alias,a.mobile_card_id,a.bank_type_id,a.account_id,a.card_site_id,a.bank_name,a.bank_card,a.subbranch_name,a.account_name,a.bank_code,a.province,a.city,
         a.sms_num,a.last_num,a.in_day_money,a.in_month_money,a.out_day_money,a.out_month_money,a.is_arrears,
         a.check_status,a.data_explain,a.is_ok,a.remark,a.use_status,
         a.create_time,a.update_time,a.yn,
         b.phone_num,
         c.id as bank_strategy_id,c.bank_id,c.alias,c.priority,c.open_time_slot,c.wx_in_day_money,c.wx_in_month_money,c.wx_in_day_num,c.zfb_in_day_money,c.zfb_in_month_money,
         c.zfb_in_day_num,c.card_in_day_money,c.card_in_month_money,c.card_in_day_num,
-        d.ac_name,d.ac_contacts
+        d.ac_name,d.ac_contacts,
+        f.ac_name as card_site_name
     </sql>
 
     <!-- 查询条件 -->
@@ -453,6 +454,7 @@
         left join tb_hz_sys_account d on a.account_id = d.id and d.role_id = 2 and d.is_enable = 2 and d.yn = 0
         <!--left join tb_fr_merchant e on d.id = e.account_id and (e.least_money+0) > (e.balance+0) and (e.least_money + 0) > #{money} and e.use_status = 1 and e.yn = 0-->
         left join tb_fr_merchant e on d.id = e.account_id and (e.least_money - e.balance) > #{money} and e.use_status = 1 and e.yn = 0
+        left join tb_hz_sys_account f on a.card_site_id = f.id and f.role_id = 3 and f.yn = 0
         where 1=1
         <if test="yesBankIdList != null and yesBankIdList.size()>0">
             and a.id in

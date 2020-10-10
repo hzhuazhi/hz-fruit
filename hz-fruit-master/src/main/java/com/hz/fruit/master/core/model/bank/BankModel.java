@@ -45,6 +45,11 @@ public class BankModel extends BasePage implements Serializable {
     private Long accountId;
 
     /**
+     * 银行卡归属卡站点ID：对应表tb_hz_sys_account的主键ID，并且角色是卡站点
+     */
+    private Long cardSiteId;
+
+    /**
      * 银行名称/归属开户行
      */
     private String bankName;
@@ -262,6 +267,15 @@ public class BankModel extends BasePage implements Serializable {
      */
     private BigDecimal money;
 
+    /**
+     * 分配的金额
+     */
+    private String distributionMoney;
+
+    /**
+     * 卡站点名称
+     */
+    private String cardSiteName;
 
     public Long getId() {
         return id;
@@ -638,5 +652,30 @@ public class BankModel extends BasePage implements Serializable {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+
+    public String getDistributionMoney() {
+        return distributionMoney;
+    }
+
+    public void setDistributionMoney(String distributionMoney) {
+        this.distributionMoney = distributionMoney;
+    }
+
+
+    public Long getCardSiteId() {
+        return cardSiteId;
+    }
+
+    public void setCardSiteId(Long cardSiteId) {
+        this.cardSiteId = cardSiteId;
+    }
+
+    public String getCardSiteName() {
+        return cardSiteName;
+    }
+
+    public void setCardSiteName(String cardSiteName) {
+        this.cardSiteName = cardSiteName;
     }
 }

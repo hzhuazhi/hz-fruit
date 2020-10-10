@@ -2,11 +2,13 @@ package com.hz.fruit.master.core.service.impl;
 
 import com.hz.fruit.master.core.common.dao.BaseDao;
 import com.hz.fruit.master.core.common.service.impl.BaseServiceImpl;
+import com.hz.fruit.master.core.common.utils.StringUtil;
 import com.hz.fruit.master.core.common.utils.constant.CacheKey;
 import com.hz.fruit.master.core.common.utils.constant.CachedKeyUtils;
 import com.hz.fruit.master.core.mapper.OrderMapper;
 import com.hz.fruit.master.core.model.bank.BankModel;
 import com.hz.fruit.master.core.model.order.OrderModel;
+import com.hz.fruit.master.core.model.strategy.StrategyData;
 import com.hz.fruit.master.core.service.OrderService;
 import com.hz.fruit.master.util.ComponentUtil;
 import com.hz.fruit.master.util.HodgepodgeMethod;
@@ -69,6 +71,52 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
         return orderMapper.getOrderStatus(model);
     }
 
+    @Override
+    public BankModel screenBankByMoney(List<BankModel> bankList, String orderMoney, int payType, int orderMoneyLockTime, int bankMoneyOut, List<StrategyData> moneyList) {
+        BankModel bankModel = null;
+        if (bankMoneyOut != 4){
+            // 属于小数点金额
+            int addAndSubtract = 0;// 金额加减：1表示减，2表示加
+            addAndSubtract = HodgepodgeMethod.getAddAndSubtract(bankMoneyOut);
+            String money = "";
+            if (addAndSubtract == 1){
+                // 金额相减
+                for (StrategyData strategyData : moneyList){
+                    money = StringUtil.getBigDecimalSubtractByStr(orderMoney, strategyData.getStgValue());
+                    for (BankModel bankData : bankList){
+                        bankModel = getBankData(bankData, money, payType, orderMoneyLockTime);
+                        if (bankModel != null && bankModel.getId() != null && bankModel.getId() > 0){
+                            return bankModel;
+                        }
+                    }
+                }
+            }else if (addAndSubtract == 2){
+                // 金额相加
+                for (StrategyData strategyData : moneyList){
+                    money = StringUtil.getBigDecimalAdd(orderMoney, strategyData.getStgValue());
+                    for (BankModel bankData : bankList){
+                        bankModel = getBankData(bankData, money, payType, orderMoneyLockTime);
+                        if (bankModel != null && bankModel.getId() != null && bankModel.getId() > 0){
+                            return bankModel;
+                        }
+                    }
+                }
+            }
+        }else {
+            // 属于整数金额
+            for (BankModel bankData : bankList){
+                bankModel = getBankData(bankData, orderMoney, payType, orderMoneyLockTime);
+                if (bankModel != null && bankModel.getId() != null && bankModel.getId() > 0){
+                    return bankModel;
+                }
+            }
+        }
+
+
+
+        return null;
+    }
+
     /**
      * @Description: check校验被筛选的银行卡的使用状态
      * @param bankModel - 银行卡数据
@@ -80,7 +128,7 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
      * @date 2020/9/12 21:02
      */
     public BankModel getBankData(BankModel bankModel, String orderMoney, int payType, int orderMoneyLockTime){
-        // 判断此用户是否被锁住
+        // 判断此银行卡是否被锁住
         String lockKey_bank = CachedKeyUtils.getCacheKey(CacheKey.LOCK_BANK, bankModel.getId());
         boolean flagLock_bank = ComponentUtil.redisIdService.lock(lockKey_bank);
         if (flagLock_bank){
@@ -103,6 +151,7 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
 
                             // 解锁
                             ComponentUtil.redisIdService.delLock(lockKey_bank);
+                            bankModel.setDistributionMoney(orderMoney);// 赋值实际派发的金额
                             return bankModel;
                         }
                     }

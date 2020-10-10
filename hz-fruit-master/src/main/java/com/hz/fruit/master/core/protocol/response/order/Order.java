@@ -27,6 +27,16 @@ public class Order implements Serializable {
     public String orderMoney;
 
     /**
+     * 实际派发金额
+     */
+    public String distributionMoney;
+
+    /**
+     * 差额
+     */
+    public String differenceMoney;
+
+    /**
      * 订单状态：1初始化，2超时/失败，3有质疑，4成功
      */
     public Integer orderStatus;
@@ -169,5 +179,21 @@ public class Order implements Serializable {
 
     public void setShortChain(String shortChain) {
         this.shortChain = shortChain;
+    }
+
+    public String getDistributionMoney() {
+        return distributionMoney;
+    }
+
+    public void setDistributionMoney(String distributionMoney) {
+        this.distributionMoney = distributionMoney;
+    }
+
+    public String getDifferenceMoney() {
+        return differenceMoney;
+    }
+
+    public void setDifferenceMoney(String differenceMoney) {
+        this.differenceMoney = differenceMoney;
     }
 }

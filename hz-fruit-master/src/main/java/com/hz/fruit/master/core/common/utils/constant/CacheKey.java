@@ -106,4 +106,9 @@ public interface CacheKey {
      */
     String LOCK_MERCHANT_MONEY = "-17";
 
+    /**
+     * 给出绑定银行卡的ID纪录
+     */
+    String BANK_BINDING_TYPE = "-18";
+
 }
